@@ -121,12 +121,18 @@ module Kiwi.GameObjects.Tilemap {
 		* @public
 		*/
         public screenToChart(scrPt: any, tileW: number=this.tileWidth, tileH: number=this.tileHeight): any {
-            var column = Math.floor( scrPt.x / (tileW * 0.5) );
-            var row = Math.floor( ( scrPt.y - column * ( tileH / 2 ) ) / tileH);
-            return {
-                x: column + row,
-                y: row
-            };
+			var tileWH = tileW * 0.5;
+			var tileHH = tileH * 0.5;
+			return {
+				x: Math.ceil((scrPt.x / tileWH + scrPt.y / tileHH) / 2),
+				y: Math.ceil((scrPt.y / tileHH -(scrPt.x / tileWH)) / 2)
+			};
+            // var column = Math.floor( scrPt.x / (tileW * 0.5) );
+            // var row = Math.floor( ( scrPt.y - column * ( tileH / 2 ) ) / tileH);
+            // return {
+            //     x: column + row,
+            //     y: row
+            // };
         } 
 
 
