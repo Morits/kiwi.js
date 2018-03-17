@@ -48,3 +48,4 @@ _ReSharper*/
 /testgl
 tscommand.tmp.txt
 .tscache/build/*
+package-lock.json
