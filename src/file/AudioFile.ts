@@ -5,6 +5,9 @@
 * 
 */
 
+declare class Promise {
+}
+
 module Kiwi.Files {
 
 	/**
@@ -162,23 +165,29 @@ module Kiwi.Files {
         private _decodeAudio() {
 
             var _this: any = this;
+            if(_this.processed)
+                return;
 
-            this.game.audio.context.decodeAudioData(this.data.raw, function (buffer) {
+            _this.processed = true;
+            var fail = function (error) {
+                Kiwi.Log.error('Kiwi.Files.AudioFile: Error decoding audio data.', '#loading', '#decoding', error);
+                _this.loadError(error);
+            };
+            var success = function (buffer) {
                 if (buffer) {
                     _this.data.buffer = buffer;
                     _this.data.decoded = true;
                     _this.loadSuccess();
                 }
-            }, function (error) {
+            };
 
-                Kiwi.Log.error('Kiwi.Files.AudioFile: Error decoding audio data.', '#loading', '#decoding');
-                _this.loadError(error);
-
-            });
+            var p = this.game.audio.context.decodeAudioData(this.data.raw, success, fail);
+            if(Promise && p instanceof Promise)
+                p.then(success);
 
         }
 
 
-	}
+    }
 
 }
