@@ -102,6 +102,7 @@ module Kiwi.Sound {
 			this.onLoop = new Kiwi.Signal();
 			this.onMute = new Kiwi.Signal();
 			this.onComplete = new Kiwi.Signal();
+			this.onPrepareComplete = new Kiwi.Signal();
 		}
 
 		/**
@@ -377,6 +378,14 @@ module Kiwi.Sound {
 		* @private
 		*/
 		private _currentMarker: string = 'default';
+		/**
+		 * Flag that tells if the next action has been prepared
+		 * @property _prepared
+		 * @type boolean
+		 * @default false
+		 * @private
+		 */
+		private _prepared: boolean = false;
 
 		/**
 		* A Kiwi Signal that dispatches a event when the audio starts playing.
@@ -434,6 +443,15 @@ module Kiwi.Sound {
 		* @public
 		*/
 		public onComplete: Kiwi.Signal;
+
+		/**
+		 * A Kiwi Signal that dispatches a event when the audio is 2 / 3 rd complete
+		 *
+		 * @property onPrepareComplete
+		 * @type Kiwi.Signal
+		 * @public
+		 */
+		public onPrepareComplete: Kiwi.Signal;
 
 		/**
 		* Retrieves the audio data from the file store.
@@ -774,6 +792,11 @@ module Kiwi.Sound {
 			if (this.isPlaying) {
 
 				this._currentTime = this._game.time.now() - this._startTime;
+				// when played 2 / 3 rds of the file; prepare next action
+				if(!this._prepared && this._currentTime >= this.duration / 3 * 2) {
+					this._prepared = true;
+					this.onPrepareComplete.dispatch();
+				}
 				
                 if (this._currentTime >= this.duration) {
 
