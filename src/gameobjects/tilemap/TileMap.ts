@@ -237,7 +237,8 @@ module Kiwi.GameObjects.Tilemap {
 						break;
 
 					case "objectgroup":
-						this.createNewObjectLayer();
+						// This is fucked by me
+						// this.createNewObjectLayer();
 						break;
 
 					case "imagelayer":
@@ -461,12 +462,48 @@ module Kiwi.GameObjects.Tilemap {
 
 
 		/**
-		* Eventually will create a new object layer. Currently does nothing.
-		* @method createNewObjectLayer
-		* @public
-		*/
-		public createNewObjectLayer() {
-			Kiwi.Log.log("OBJECT GROUP layers are currently not supported.", '#tilemap');
+		 * Creates a new TileMapLayer with the details that are provided.
+		 * If no width/height/tileWidth/tileHeight parameters are passed then the values will be what this TileMap has.
+		 * If no 'data' is provided then the map will be automatically filled with empty Types of Tiles.
+		 * Returns the new TileMapLayer that was created.
+		 * @method createNewLayer
+		 * @param name {String} Name of the TileMap.
+		 * @param atlas {Kiwi.Textures.TextureAtlas} The TextureAtlas that this layer should use.
+		 * @param data {Number[]} The tile information.
+		 * @param [w=this.width] {Number} The width of the whole tile map. In Tiles.
+		 * @param [h=this.height] {Number} The height of the whole tile map. In Tiles.
+		 * @param [x=0] {Number} The position of the tilemap on the x axis. In pixels.
+		 * @param [y=0] {Number} The position of the tilemap on the y axis. In pixels.
+		 * @param [tw=this.tileWidth] {Number} The width of a single tile.
+		 * @param [th=this.tileHeight] {Number} The height of a single tile.
+		 * @param [orientation] {String} At the moment only Orthogonal orientation is supported
+		 * @return {TileMapLayer} The TileMapLayer that was created.
+		 * @public
+		 */
+		public createNewObjectLayer(name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[] = [], w: number = this.width, h: number = this.height, x: number = 0, y: number = 0, tw: number = this.tileWidth, th: number = this.tileHeight, orientation: string=this.orientation): TileMapLayer {
+			//Did the user provide enough data?
+			if (data.length < w * h) {
+
+				//No... So push empty cells instead
+				var i = data.length - 1;
+				while (++i < w * h) {
+					data.push(0);
+				}
+			}
+
+			//Create the new layer
+			var layer: TileMapLayer;
+
+			if (orientation == ISOMETRIC) {
+				Kiwi.Log.log("At the moment only Orthogonal orientation is supported.", '#tilemap');
+			} else {
+				layer = new Kiwi.GameObjects.Tilemap.TileMapObjectLayerOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
+			}
+
+			//Add the new layer to the array
+			this.layers.push(layer);
+
+			return layer;
 		}
 
 

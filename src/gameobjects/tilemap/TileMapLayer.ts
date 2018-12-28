@@ -31,7 +31,7 @@ module Kiwi.GameObjects.Tilemap {
 	*/
     export class TileMapLayer extends Kiwi.Entity {
 
-		constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[], tw: number, th: number, x: number= 0, y: number= 0, w:number=0, h:number=0) {
+		constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: any[], tw: number, th: number, x: number= 0, y: number= 0, w:number=0, h:number=0) {
 			super(tilemap.state, x, y);
 
 			//Request the Shared Texture Atlas renderer.
@@ -218,7 +218,7 @@ module Kiwi.GameObjects.Tilemap {
 		* @type Array
 		* @protected
 		*/
-        protected _data: number[];
+        protected _data: any[];
 
         /**
         * READ ONLY: Returns the raw data for this tilemap.
@@ -228,7 +228,7 @@ module Kiwi.GameObjects.Tilemap {
         * @public
         * @since 1.3.0
         */      
-        public get data(): number[] {
+        public get data(): any[] {
             return this._data;
         }
 
@@ -242,7 +242,7 @@ module Kiwi.GameObjects.Tilemap {
         * @readOnly
 		* @public
 		*/
-        public get tileData(): number[] {
+        public get tileData(): any[] {
             return this._data;
         }
 
@@ -394,7 +394,7 @@ module Kiwi.GameObjects.Tilemap {
 		* @return {Boolean} If a tile was changed or not.
 		* @public
 		*/
-		public setTile(x: number, y: number, tileType:number):boolean {
+		public setTile(x: number, y: number, tileType:any):boolean {
 			var x = this.getIndexFromXY(x, y);
 
 			if (x !== -1) {
@@ -413,7 +413,7 @@ module Kiwi.GameObjects.Tilemap {
 		* @param tileType {Number} The new tile type to be used at that position.
 		* @public
 		*/
-		public setTileByIndex(index: number, tileType: number) {
+		public setTileByIndex(index: number, tileType: any) {
 			this._data[index] = tileType;
 		}
 
