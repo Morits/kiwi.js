@@ -54,7 +54,7 @@ module Kiwi.GameObjects.Tilemap {
 		 */
 		public getTileFromXY(x: number, y: number): TileType {
 			var t = this.getIndexFromXY(x, y);
-			return (t !== -1) ? this.tilemap.tileTypes[ this._data[t].tileType ] : null;
+			return (t !== -1) ? this.tilemap.tileTypes[ this._data[t]? this._data[t].tileType: 0 ] : null;
 		}
 
 		/**

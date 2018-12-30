@@ -480,7 +480,7 @@ module Kiwi.GameObjects.Tilemap {
 		 * @return {TileMapLayer} The TileMapLayer that was created.
 		 * @public
 		 */
-		public createNewObjectLayer(name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[] = [], w: number = this.width, h: number = this.height, x: number = 0, y: number = 0, tw: number = this.tileWidth, th: number = this.tileHeight, orientation: string=this.orientation): TileMapLayer {
+		public createNewObjectLayer(name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[] = [], w: number = this.width, h: number = this.height, x: number = 0, y: number = 0, tw: number = this.tileWidth, th: number = this.tileHeight, orientation: string=this.orientation, cls = null): TileMapLayer {
 			//Did the user provide enough data?
 			if (data.length < w * h) {
 
@@ -494,7 +494,10 @@ module Kiwi.GameObjects.Tilemap {
 			//Create the new layer
 			var layer: TileMapLayer;
 
-			if (orientation == ISOMETRIC) {
+			if(cls !== null) {
+				layer = new cls(this, name, atlas, data, tw, th, x, y, w, h);
+			}
+			else if (orientation == ISOMETRIC) {
 				Kiwi.Log.log("At the moment only Orthogonal orientation is supported.", '#tilemap');
 			} else {
 				layer = new Kiwi.GameObjects.Tilemap.TileMapObjectLayerOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
