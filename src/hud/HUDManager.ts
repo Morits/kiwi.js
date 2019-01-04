@@ -90,7 +90,7 @@ module Kiwi.HUD {
 				this._hudContainer.style.height = "100%";
 				this._hudContainer.style.top = '0';
 				this._hudContainer.style.left = '0';
-				this._game.stage.container.appendChild(this._hudContainer);
+				this._game.stage.container.parentElement.appendChild(this._hudContainer);
 
 				this._huds = new Array<HUDDisplay>();
 

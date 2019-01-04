@@ -582,7 +582,8 @@ module Kiwi {
 				this.tweens.update();
 				this.cameras.update();
 				if (this._deviceTargetOption !== Kiwi.TARGET_COCOON) {
-					this.huds.update();
+					// We do not need to update huds, they are updated using bindings; save some cpu cycles
+					// this.huds.update();
 				}
 				this.states.update();
 				this.pluginManager.update();
