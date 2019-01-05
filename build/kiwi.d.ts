@@ -4533,11 +4533,25 @@ declare module Kiwi.GameObjects.Tilemap {
         */
         createNewLayer(name: string, atlas: Kiwi.Textures.TextureAtlas, data?: number[], w?: number, h?: number, x?: number, y?: number, tw?: number, th?: number, orientation?: string): TileMapLayer;
         /**
-        * Eventually will create a new object layer. Currently does nothing.
-        * @method createNewObjectLayer
-        * @public
-        */
-        createNewObjectLayer(): void;
+         * Creates a new TileMapLayer with the details that are provided.
+         * If no width/height/tileWidth/tileHeight parameters are passed then the values will be what this TileMap has.
+         * If no 'data' is provided then the map will be automatically filled with empty Types of Tiles.
+         * Returns the new TileMapLayer that was created.
+         * @method createNewLayer
+         * @param name {String} Name of the TileMap.
+         * @param atlas {Kiwi.Textures.TextureAtlas} The TextureAtlas that this layer should use.
+         * @param data {Number[]} The tile information.
+         * @param [w=this.width] {Number} The width of the whole tile map. In Tiles.
+         * @param [h=this.height] {Number} The height of the whole tile map. In Tiles.
+         * @param [x=0] {Number} The position of the tilemap on the x axis. In pixels.
+         * @param [y=0] {Number} The position of the tilemap on the y axis. In pixels.
+         * @param [tw=this.tileWidth] {Number} The width of a single tile.
+         * @param [th=this.tileHeight] {Number} The height of a single tile.
+         * @param [orientation] {String} At the moment only Orthogonal orientation is supported
+         * @return {TileMapLayer} The TileMapLayer that was created.
+         * @public
+         */
+        createNewObjectLayer(name: string, atlas: Kiwi.Textures.TextureAtlas, data?: number[], w?: number, h?: number, x?: number, y?: number, tw?: number, th?: number, orientation?: string, cls?: any): TileMapLayer;
         /**
         * Eventually will create a new image layer. Currently does nothing.
         * @method createNewObjectLayer
@@ -4606,7 +4620,7 @@ declare module Kiwi.GameObjects.Tilemap {
     * @return {TileMapLayer}
     */
     class TileMapLayer extends Kiwi.Entity {
-        constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[], tw: number, th: number, x?: number, y?: number, w?: number, h?: number);
+        constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: any[], tw: number, th: number, x?: number, y?: number, w?: number, h?: number);
         /**
         * The physics component contained on the Tilemap. Use for basic collisions between People and Tiles.
         * Note: That tilemap layers a immovable and collisions with tiles are set on the individual TileTypes that are contained on the TileMap.
@@ -4730,7 +4744,7 @@ declare module Kiwi.GameObjects.Tilemap {
         * @type Array
         * @protected
         */
-        protected _data: number[];
+        protected _data: any[];
         /**
         * READ ONLY: Returns the raw data for this tilemap.
         * @property data
@@ -4739,7 +4753,7 @@ declare module Kiwi.GameObjects.Tilemap {
         * @public
         * @since 1.3.0
         */
-        data: number[];
+        data: any[];
         /**
         * READ ONLY: A list containing all of the types of tiles found on this TileMapLayer.
         * Same as the `data` property.
@@ -4749,7 +4763,7 @@ declare module Kiwi.GameObjects.Tilemap {
         * @readOnly
         * @public
         */
-        tileData: number[];
+        tileData: any[];
         /**
         * Returns the total number of tiles. Either for a particular type if passed, otherwise of any type if not passed.
         * @method countTiles
@@ -4852,7 +4866,7 @@ declare module Kiwi.GameObjects.Tilemap {
         * @return {Boolean} If a tile was changed or not.
         * @public
         */
-        setTile(x: number, y: number, tileType: number): boolean;
+        setTile(x: number, y: number, tileType: any): boolean;
         /**
         * Sets the tile to be used at the index provided.
         * Can be used to override a tile that may already exist at the location.
@@ -4861,7 +4875,7 @@ declare module Kiwi.GameObjects.Tilemap {
         * @param tileType {Number} The new tile type to be used at that position.
         * @public
         */
-        setTileByIndex(index: number, tileType: number): void;
+        setTileByIndex(index: number, tileType: any): void;
         /**
         * Randomizes the types of tiles used in an area of the layer. You can choose which types of tiles to use, and the area.
         * Default tile types used are everyone avaiable.
@@ -20025,6 +20039,14 @@ declare module Kiwi.Sound {
         */
         private _currentMarker;
         /**
+         * Flag that tells if the next action has been prepared
+         * @property _prepared
+         * @type boolean
+         * @default false
+         * @private
+         */
+        private _prepared;
+        /**
         * A Kiwi Signal that dispatches a event when the audio starts playing.
         * @property onPlay
         * @type Kiwi.Signal
@@ -20074,6 +20096,14 @@ declare module Kiwi.Sound {
         * @public
         */
         onComplete: Kiwi.Signal;
+        /**
+         * A Kiwi Signal that dispatches a event when the audio is 2 / 3 rd complete
+         *
+         * @property onPrepareComplete
+         * @type Kiwi.Signal
+         * @public
+         */
+        onPrepareComplete: Kiwi.Signal;
         /**
         * Retrieves the audio data from the file store.
         * @method _setAudio
@@ -23882,11 +23912,114 @@ declare module Kiwi {
     var extend: Function;
 }
 /**
+ *
+ * @module Kiwi
+ * @submodule Components
+ *
+ */
+declare module Kiwi.Components {
+    /**
+     * Box 2
+     *
+     * @class Box
+     * @extends Kiwi.Component
+     * @namespace Kiwi.Components
+     * @constructor
+     * @param parent {Kiwi.Entity} The entity that this box belongs to.
+     * @param [x=0] {Number} Its position on the x axis
+     * @param [y=0] {Number} Its position on the y axis
+     * @param [width=0] {Number} The width of the box.
+     * @param [height=0] {Number} The height of the box.
+     * @return {Kiwi.Components.Box}
+     */
+    class Box2 extends Component {
+        constructor(parent: Entity, offsetX?: number, offsetY?: number, width?: number, height?: number);
+        /**
+         * The type of object that this is.
+         *
+         * @return {string} "Box2"
+         * @public
+         */
+        objType(): string;
+        /**
+         * Indicates whether or not this component needs re-rendering/updating or not.
+         *
+         * @type boolean
+         * @public
+         */
+        _dirty: boolean;
+        /**
+        * Contains offset point for the hitbox
+         *
+        * @type Kiwi.Geom.Point
+        * @private
+        */
+        private _offset;
+        /**
+        * Returns the offset value of the hitbox as a point.
+        * Pre transform
+        *
+        * @type Kiwi.Geom.Point
+        * @readonly
+        * @public
+        */
+        offset: Kiwi.Geom.Point;
+        /**
+         * Contains dimension point for the hitbox
+         *
+         * @type Kiwi.Geom.Point
+         * @private
+         */
+        private _dimensions;
+        /**
+         * Returns the dimensions of the hitbox as a point for the.
+         * Pre transformation.
+         *
+         * @type Kiwi.Geom.Point
+         * @readonly
+         * @public
+         */
+        dimensions: Kiwi.Geom.Point;
+        /**
+         * The transformed or 'normal' hitbox for the entity. This is its box after rotation/scale.
+         *
+         * @type Kiwi.Geom.Rectangle
+         * @private
+         */
+        private _transformedHitbox;
+        private _invertedTransformMatrix;
+        hitbox: Kiwi.Geom.Rectangle;
+        private clean();
+        /**
+         * Check if a point is inside hitbox
+         *
+         * @param pt
+         */
+        check(pt: any): boolean;
+        /**
+        * Draws the various bounds on a context that is passed. Useful for debugging and using in combination with the debug canvas.
+        * @method draw
+        * @param ctx {CanvasRenderingContext2D} Context of the canvas that this box component is to be rendered on top of.
+        * @param [camera] {Kiwi.Camera} A camera that should be taken into account before rendered. This is the default camera by default.
+        * @public
+        */
+        draw(ctx: CanvasRenderingContext2D, camera?: Kiwi.Camera): void;
+        /**
+        * Destroys this component and all of the links it may have to other objects.
+        * @method destroy
+        * @public
+        */
+        destroy(): void;
+    }
+}
+/**
 *
 * @module Kiwi
 * @submodule Files
 *
 */
+declare class Promise {
+}
 declare module Kiwi.Files {
     /**
     * AudioFile which contains settings, loading, and processing details for Audio files to be used.
@@ -24133,5 +24266,388 @@ declare module Kiwi.Files {
         * @public
         */
         destroy(): void;
+    }
+}
+/**
+*
+* @module GameObjects
+* @submodule Tilemap
+*
+*/
+declare module Kiwi.GameObjects.Tilemap {
+    /**
+    * Contains the code for managing and rendering Orthogonal types of TileMaps.
+    * This class should not be directly created, but instead should be created via methods on the TileMap class.
+    *
+    * @class TileMapLayerOrthogonal
+    * @extends Kiwi.GameObjects.Tilemap.TileMapLayer
+    * @namespace Kiwi.GameObjects.Tilemap
+    * @since 1.3.0
+    * @constructor
+    * @param tilemap {Kiwi.GameObjects.Tilemap.TileMap} The TileMap that this layer belongs to.
+    * @param name {String} The name of this TileMapLayer.
+    * @param atlas {Kiwi.Textures.TextureAtlas} The texture atlas that should be used when rendering this TileMapLayer onscreen.
+    * @param data {Number[]} The information about the tiles.
+    * @param tw {Number} The width of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+    * @param th {Number} The height of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+    * @param [x=0] {Number} The x coordinate of the tilemap in pixels.
+    * @param [y=0] {Number} The y coordinate of the tilemap in pixels.
+    * @param [w=0] {Number} The width of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+    * @param [h=0] {Number} The height of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+    * @return {TileMapLayer}
+    */
+    class TileMapObjectLayerOrthogonal extends TileMapLayerOrthogonal {
+        /**
+        * The type of object that it is.
+        * @method objType
+        * @return {String} "TileMapLayer"
+        * @public
+        */
+        objType(): string;
+        /**
+         * Returns the TileType for a tile that is at a particular set of coordinates passed.
+         * If no tile is found the null is returned instead.
+         * Coordinates passed are in tiles.
+         * @method getTileFromXY
+         * @param x {Number}
+         * @param y {Number}
+         * @return {Kiwi.GameObjects.Tilemap.TileType}
+         * @public
+         * @override
+         */
+        getTileFromXY(x: number, y: number): TileType;
+        /**
+         * Returns the total number of tiles. Either for a particular type if passed, otherwise of any type if not passed.
+         * @method countTiles
+         * @param [type] {Number} The type of tile you want to count.
+         * @return {Number} The number of tiles on this layer.
+         * @public
+         * @override
+         */
+        countTiles(type?: number): number;
+        /**
+         * Returns the indexes of every tile of a type you pass.
+         * @method getIndexsByType
+         * @param type {Number}
+         * @return {Number[]}
+         * @public
+         * @override
+         */
+        getIndexesByType(type: number): number[];
+        /**
+         * Returns the TileType of a tile by an index passed.
+         * Thanks to @rydairegames
+         *
+         * @method getTileFromIndex
+         * @param index {Number}
+         * @return {Kiwi.GameObjects.Tilemap.TileType}
+         * @public
+         * @override
+         */
+        getTileFromIndex(index: number): TileType;
+        /**
+         * Returns the TileType for a tile that is at a particular coordinate passed.
+         * If no tile is found then null is returned instead.
+         * Coordinates passed are in pixels and use the world coordinates of the tilemap.
+         *
+         * @method getTileFromCoords
+         * @param x {Number}
+         * @param y {Number}
+         * @return {Kiwi.GameObjects.Tilemap.TileType}
+         * @public
+         * @override
+         */
+        getTileFromCoords(x: number, y: number): TileType;
+        /**
+         * Randomizes the types of tiles used in an area of the layer. You can choose which types of tiles to use, and the area.
+         * Default tile types used are everyone avaiable.
+         * @method randomizeTiles
+         * @param [types] {Number[]} A list of TileTypes that can be used. Default is every tiletype on the TileMap.
+         * @param [x=0] {Number} The starting tile on the x axis to fill.
+         * @param [y=0] {Number} The starting tile on the y axis to fill.
+         * @param [width=this.width] {Number} How far across you want to go.
+         * @param [height=this.height] {Number} How far down you want to go.
+         * @public
+         * @override
+         */
+        randomizeTiles(types?: number[], x?: number, y?: number, width?: number, height?: number): void;
+        /**
+         * Replaces all tiles of typeA to typeB in the area specified. If no area is specified then it is on the whole layer.
+         * @method replaceTiles
+         * @param typeA {Number} The type of tile you want to be replaced.
+         * @param typeB {Number} The type of tile you want to be used instead.
+         * @param [x=0] {Number} The starting tile on the x axis to fill.
+         * @param [y=0] {Number} The starting tile on the y axis to fill.
+         * @param [width=this.width] {Number} How far across you want to go.
+         * @param [height=this.height] {Number} How far down you want to go.
+         * @public
+         * @override
+         */
+        replaceTiles(typeA: number, typeB: number, x?: number, y?: number, width?: number, height?: number): void;
+        /**
+         * Swaps all the tiles that are typeA -> typeB and typeB -> typeA inside the area specified. If no area is specified then it is on the whole layer.
+         * @method swapTiles
+         * @param typeA {number} The type of tile you want to be replaced with typeB.
+         * @param typeB {number} The type of tile you want to be replaced with typeA.
+         * @param [x=0] {number} The starting tile on the x axis to fill.
+         * @param [y=0] {number} The starting tile on the y axis to fill.
+         * @param [width=this.width] {number} How far across you want to go.
+         * @param [height=this.height] {number} How far down you want to go.
+         * @public
+         * @override
+         */
+        swapTiles(typeA: number, typeB: number, x?: number, y?: number, width?: number, height?: number): void;
+    }
+}
+/**
+ *
+ * @module GameObjects
+ * @submodule Tilemap
+ *
+ */
+declare module Kiwi.GameObjects.Tilemap {
+    /**
+     * TODO: write this
+     *
+     * @class TileObject
+     * @namespace Kiwi.GameObjects.Tilemap
+     * @constructor
+     * @param tileType {Number} The tile type.
+     * @return {TileObject}
+     */
+    class TileObject {
+        protected _tileType: number;
+        constructor();
+        tileType: number;
+    }
+}
+/**
+*
+* @module Kiwi
+* @submodule Geom
+*/
+declare module Kiwi.Geom {
+    /**
+    * A three dimensional vector object for storing and manipulating x, y and z vector components.
+    *
+    * @class Vector3
+    * @namespace Kiwi.Geom
+    * @constructor
+    * @param [x=0] {Number} The x component of the vector.
+    * @param [y=0] {Number} The y component of the vector.
+    * @param [z=0] {Number} The z component of the vector.
+    * @return {Kiwi.Geom.Vector3}
+    */
+    class Vector3 {
+        constructor(x?: number, y?: number, z?: number);
+        /**
+        * The type of this object.
+        * @method objType
+        * @return {String} "Vector3"
+        * @public
+        */
+        objType(): string;
+        /**
+        * The x component of this Vector3.
+        * @property x
+        * @type Number
+        * @public
+        */
+        private _x;
+        /**
+        * The y component of this Vector3.
+        * @property y
+        * @type Number
+        * @public
+        */
+        private _y;
+        /**
+         * The z component of this Vector3.
+         * @property z
+         * @type Number
+         * @public
+         */
+        private _z;
+        x: any;
+        y: any;
+        z: any;
+        xy: any;
+        yz: any;
+        xyz: any;
+        /**
+        * Generate a Vector3 from an angle
+        * @method fromAngle
+        * @param angle {Number} The angle to generate the Vector3 from.
+        * @return {Kiwi.Geom.Vector3} A new Vector3
+        * @static
+        * @public
+        */
+        static fromAngle(angle: number): Vector3;
+        /**
+        * Generate a random Vector3 within a given radius.
+        * @method randomRadius
+        * @param radius {Number} The size of the radius to use.
+        * @return {Kiwi.Geom.Vector3} A new Vector3
+        * @static
+        * @public
+        */
+        static randomRadius(radius: number): Vector3;
+        /**
+        * Add each component of another Vector3 to this vectors components.
+        * @method add
+        * @param {Kiwi.Geom.Vector3} vector3 to add
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the product
+        * @public
+        */
+        add(vector3: Vector3): Vector3;
+        /**
+        * Add only the x component of another Vector3 to this vector.
+        * @method addX
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+        * @public
+        */
+        addX(vector3: Vector3): Vector3;
+        /**
+        * Add only the y component of another Vector3 to this vector.
+        * @method addY
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+        * @public
+        */
+        addY(vector3: Vector3): Vector3;
+        /**
+         * Add only the z component of another Vector3 to this vector.
+         * @method addZ
+         * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+         * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+         * @public
+         */
+        addZ(vector3: Vector3): Vector3;
+        /**
+        * Subtract each component of another Vector3 from this vectors components.
+        * @method subtract
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3 to subtract
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+        * @public
+        */
+        subtract(vector3: Vector3): Vector3;
+        /**
+        * Multiply each component of another Vector3 with this vectors components.
+        * @method multiply
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3 to multiply
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+        * @public
+        */
+        multiply(vector3: Vector3): Vector3;
+        /**
+        * Multiply each component of this vector with a scalar number.
+        * @method multiplyScalar
+        * @param scalar {Number} Scalar to multiply
+        * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+        * @public
+        */
+        multiplyScalar(scalar: number): Vector3;
+        /**
+        * Calculate the dot product if a Vector3 with this Vector3.
+        * @method dot
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3 to dot with this Vector3.
+        * @return {Number} Result of dot product.
+        * @public
+        */
+        dot(vector3: Vector3): number;
+        /**
+        * Calculate the square length of this Vector3 (Distance from the origin).
+        * @method lenSqr
+        * @return {Number} The square length.
+        * @public
+        */
+        lenSqr(): number;
+        /**
+        * Calculate the length of this Vector3 (Distance from the origin).
+        * @method len
+        * @return {Number} The length.
+        * @public
+        */
+        len(): number;
+        /**
+        * Calculate a normalised unit Vector3 from this Vector3.
+        * @method unit
+        * @return {Kiwi.Geom.Vector3} a new Unit Length Vector3.
+        * @public
+        */
+        unit(): Vector3;
+        /**
+        * Reduce each component of the Vector to the closest lower round value.
+        * @method floor
+        * @return {Kiwi.Geom.Vector3} a rounded down Vector3.
+        * @public
+        */
+        floor(): Vector3;
+        /**
+        * Increase each component of the Vector to the closest upper round value.
+        * @method ceil
+        * @return {Kiwi.Geom.Vector3} a rounded up Vector3.
+        * @public
+        */
+        ceil(): Vector3;
+        /**
+        * Round each component of the Vector to the closest round value.
+        * @method round
+        * @return {Kiwi.Geom.Vector3} a rounded Vector3.
+        * @public
+        */
+        round(): Vector3;
+        /**
+        * Clamp the vector between a maximum and minimum Vector3 range component-wise.
+        * @method clamp
+        * @param min {Kiwi.Geom.Vector3} Minimum values for Vector3.
+        * @param max {Kiwi.Geom.Vector3} Maximum values for Vector3.
+        * @return {Kiwi.Geom.Vector3} a clamped Vector3.
+        * @public
+        */
+        clamp(min: Vector3, max: Vector3): Vector3;
+        /**
+        * Calculate a Vector3 perpendicular to this Vector3.
+        * @method perp
+        * @return {Kiwi.Geom.Vector3} the perpendicular Vector3.
+        * @public
+        */
+        perp(): Vector3;
+        /**
+        * Calculate a Vector3 opposite to this Vector3.
+        * @method neg
+        * @return {Kiwi.Geom.Vector3} the opposite Vector3.
+        * @public
+        */
+        neg(): Vector3;
+        /**
+        * Check if two Vector3s from equal components.
+        * @method equal
+        * @param vector3 {Kiwi.Geom.Vector3} Vector3. Vector3 to check against.
+        * @return {boolean} returns true if equal.
+        * @public
+        */
+        equal(vector3: Vector3): boolean;
+        /**
+        * Set both components to zero.
+        * @method clear
+        * @return {Kiwi.Geom.Vector3} This object.
+        * @public
+        */
+        clear(): Vector3;
+        /**
+        * Get a clone of this Vector3.
+        * @method clone
+        * @return {Kiwi.Geom.Vector3} Either a new cloned Vector3 or the output vector with cloned components.
+        * @public
+        */
+        clone(): Vector3;
+        /**
+        * Get a string representation of this object.
+        * @method toString
+        * @return {String} This object as a string.
+        */
+        toString(): string;
     }
 }

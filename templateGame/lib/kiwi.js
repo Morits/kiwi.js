@@ -491,7 +491,6 @@ var Kiwi;
                 this.tweens.update();
                 this.cameras.update();
                 if (this._deviceTargetOption !== Kiwi.TARGET_COCOON) {
-                    this.huds.update();
                 }
                 this.states.update();
                 this.pluginManager.update();
@@ -6231,7 +6230,6 @@ var Kiwi;
                                     layer.properties = layerData.properties;
                                 break;
                             case "objectgroup":
-                                this.createNewObjectLayer();
                                 break;
                             case "imagelayer":
                                 this.createNewImageLayer();
@@ -6420,12 +6418,56 @@ var Kiwi;
                     return layer;
                 };
                 /**
-                * Eventually will create a new object layer. Currently does nothing.
-                * @method createNewObjectLayer
-                * @public
-                */
-                TileMap.prototype.createNewObjectLayer = function () {
-                    Kiwi.Log.log("OBJECT GROUP layers are currently not supported.", '#tilemap');
+                 * Creates a new TileMapLayer with the details that are provided.
+                 * If no width/height/tileWidth/tileHeight parameters are passed then the values will be what this TileMap has.
+                 * If no 'data' is provided then the map will be automatically filled with empty Types of Tiles.
+                 * Returns the new TileMapLayer that was created.
+                 * @method createNewLayer
+                 * @param name {String} Name of the TileMap.
+                 * @param atlas {Kiwi.Textures.TextureAtlas} The TextureAtlas that this layer should use.
+                 * @param data {Number[]} The tile information.
+                 * @param [w=this.width] {Number} The width of the whole tile map. In Tiles.
+                 * @param [h=this.height] {Number} The height of the whole tile map. In Tiles.
+                 * @param [x=0] {Number} The position of the tilemap on the x axis. In pixels.
+                 * @param [y=0] {Number} The position of the tilemap on the y axis. In pixels.
+                 * @param [tw=this.tileWidth] {Number} The width of a single tile.
+                 * @param [th=this.tileHeight] {Number} The height of a single tile.
+                 * @param [orientation] {String} At the moment only Orthogonal orientation is supported
+                 * @return {TileMapLayer} The TileMapLayer that was created.
+                 * @public
+                 */
+                TileMap.prototype.createNewObjectLayer = function (name, atlas, data, w, h, x, y, tw, th, orientation, cls) {
+                    if (data === void 0) { data = []; }
+                    if (w === void 0) { w = this.width; }
+                    if (h === void 0) { h = this.height; }
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (tw === void 0) { tw = this.tileWidth; }
+                    if (th === void 0) { th = this.tileHeight; }
+                    if (orientation === void 0) { orientation = this.orientation; }
+                    if (cls === void 0) { cls = null; }
+                    //Did the user provide enough data?
+                    if (data.length < w * h) {
+                        //No... So push empty cells instead
+                        var i = data.length - 1;
+                        while (++i < w * h) {
+                            data.push(0);
+                        }
+                    }
+                    //Create the new layer
+                    var layer;
+                    if (cls !== null) {
+                        layer = new cls(this, name, atlas, data, tw, th, x, y, w, h);
+                    }
+                    else if (orientation == Tilemap.ISOMETRIC) {
+                        Kiwi.Log.log("At the moment only Orthogonal orientation is supported.", '#tilemap');
+                    }
+                    else {
+                        layer = new Kiwi.GameObjects.Tilemap.TileMapObjectLayerOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
+                    }
+                    //Add the new layer to the array
+                    this.layers.push(layer);
+                    return layer;
                 };
                 /**
                 * Eventually will create a new image layer. Currently does nothing.
@@ -7452,12 +7494,18 @@ var Kiwi;
                 TileMapLayerIsometric.prototype.screenToChart = function (scrPt, tileW, tileH) {
                     if (tileW === void 0) { tileW = this.tileWidth; }
                     if (tileH === void 0) { tileH = this.tileHeight; }
-                    var column = Math.floor(scrPt.x / (tileW * 0.5));
-                    var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
+                    var tileWH = tileW * 0.5;
+                    var tileHH = tileH * 0.5;
                     return {
-                        x: column + row,
-                        y: row
+                        x: Math.ceil((scrPt.x / tileWH + scrPt.y / tileHH) / 2),
+                        y: Math.ceil((scrPt.y / tileHH - (scrPt.x / tileWH)) / 2)
                     };
+                    // var column = Math.floor( scrPt.x / (tileW * 0.5) );
+                    // var row = Math.floor( ( scrPt.y - column * ( tileH / 2 ) ) / tileH);
+                    // return {
+                    //     x: column + row,
+                    //     y: row
+                    // };
                 };
                 /**
                 * The render loop which is used when using the Canvas renderer.
@@ -25603,7 +25651,7 @@ var Kiwi;
                     this._hudContainer.style.height = "100%";
                     this._hudContainer.style.top = '0';
                     this._hudContainer.style.left = '0';
-                    this._game.stage.container.appendChild(this._hudContainer);
+                    this._game.stage.container.parentElement.appendChild(this._hudContainer);
                     this._huds = new Array();
                     this._defaultHUD = this.createHUD("defaultHUD");
                     this._currentHUD = this._defaultHUD;
@@ -28376,6 +28424,14 @@ var Kiwi;
                 * @private
                 */
                 this._currentMarker = 'default';
+                /**
+                 * Flag that tells if the next action has been prepared
+                 * @property _prepared
+                 * @type boolean
+                 * @default false
+                 * @private
+                 */
+                this._prepared = false;
                 this.ready = false;
                 this._game = game;
                 this._game.audio.registerSound(this);
@@ -28436,6 +28492,7 @@ var Kiwi;
                 this.onLoop = new Kiwi.Signal();
                 this.onMute = new Kiwi.Signal();
                 this.onComplete = new Kiwi.Signal();
+                this.onPrepareComplete = new Kiwi.Signal();
             }
             Object.defineProperty(Audio.prototype, "playable", {
                 /**
@@ -28791,6 +28848,11 @@ var Kiwi;
                 //if the audio is playing
                 if (this.isPlaying) {
                     this._currentTime = this._game.time.now() - this._startTime;
+                    // when played 2 / 3 rds of the file; prepare next action
+                    if (!this._prepared && this._currentTime >= this.duration / 3 * 2) {
+                        this._prepared = true;
+                        this.onPrepareComplete.dispatch();
+                    }
                     if (this._currentTime >= this.duration) {
                         if (this._loop) {
                             this.play(this._currentMarker, true);
@@ -34707,6 +34769,162 @@ var Kiwi;
     };
 })(Kiwi || (Kiwi = {}));
 /**
+ *
+ * @module Kiwi
+ * @submodule Components
+ *
+ */
+var Kiwi;
+(function (Kiwi) {
+    var Components;
+    (function (Components) {
+        /**
+         * Box 2
+         *
+         * @class Box
+         * @extends Kiwi.Component
+         * @namespace Kiwi.Components
+         * @constructor
+         * @param parent {Kiwi.Entity} The entity that this box belongs to.
+         * @param [x=0] {Number} Its position on the x axis
+         * @param [y=0] {Number} Its position on the y axis
+         * @param [width=0] {Number} The width of the box.
+         * @param [height=0] {Number} The height of the box.
+         * @return {Kiwi.Components.Box}
+         */
+        var Box2 = (function (_super) {
+            __extends(Box2, _super);
+            function Box2(parent, offsetX, offsetY, width, height) {
+                if (offsetX === void 0) { offsetX = 0; }
+                if (offsetY === void 0) { offsetY = 0; }
+                if (width === void 0) { width = 0; }
+                if (height === void 0) { height = 0; }
+                _super.call(this, parent, 'Box2');
+                this._offset = new Kiwi.Geom.Point(offsetX, offsetY);
+                this._dimensions = new Kiwi.Geom.Point(width, height);
+                this._dirty = true;
+            }
+            /**
+             * The type of object that this is.
+             *
+             * @return {string} "Box2"
+             * @public
+             */
+            Box2.prototype.objType = function () {
+                return "Box2";
+            };
+            Object.defineProperty(Box2.prototype, "offset", {
+                /**
+                * Returns the offset value of the hitbox as a point.
+                * Pre transform
+                *
+                * @type Kiwi.Geom.Point
+                * @readonly
+                * @public
+                */
+                get: function () {
+                    return this._offset;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Box2.prototype, "dimensions", {
+                /**
+                 * Returns the dimensions of the hitbox as a point for the.
+                 * Pre transformation.
+                 *
+                 * @type Kiwi.Geom.Point
+                 * @readonly
+                 * @public
+                 */
+                get: function () {
+                    return this._dimensions;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Box2.prototype, "hitbox", {
+                set: function (value) {
+                    throw 'Not yet implemented';
+                    // this._offset.x = value.x;
+                    // this._offset.y = value.y;
+                    //
+                    // this._rawHitbox = value;
+                    //
+                    // this._rawHitbox.x += this._rawBounds.x;
+                    // this._rawHitbox.y += this._rawBounds.y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Box2.prototype.clean = function () {
+                this._invertedTransformMatrix = this.owner.transform.getConcatenatedMatrix().clone().invert();
+            };
+            /**
+             * Check if a point is inside hitbox
+             *
+             * @param pt
+             */
+            Box2.prototype.check = function (pt) {
+                // Transform external space into local space
+                if (this._dirty) {
+                    this.clean();
+                }
+                var localPt = this._invertedTransformMatrix.transformPoint(pt);
+                return localPt.x > this._offset.x && localPt.x < this._dimensions.x && localPt.y > this._offset.y && localPt.y < this._dimensions.y;
+            };
+            /**
+            * Draws the various bounds on a context that is passed. Useful for debugging and using in combination with the debug canvas.
+            * @method draw
+            * @param ctx {CanvasRenderingContext2D} Context of the canvas that this box component is to be rendered on top of.
+            * @param [camera] {Kiwi.Camera} A camera that should be taken into account before rendered. This is the default camera by default.
+            * @public
+            */
+            Box2.prototype.draw = function (ctx, camera) {
+                if (camera === void 0) { camera = this.game.cameras.defaultCamera; }
+                throw 'Not yet implemented';
+                // var t: Kiwi.Geom.Transform = this.entity.transform;
+                // var ct: Kiwi.Geom.Transform = camera.transform;
+                //
+                // // Draw raw bounds and raw center
+                // ctx.strokeStyle = "red";
+                // ctx.fillRect(this.rawCenter.x + ct.x - 1, this.rawCenter.y + ct.y - 1, 3, 3);
+                // ctx.strokeRect(t.x + ct.x + t.rotPointX - 3, t.y + ct.y + t.rotPointY - 3, 7, 7);
+                //
+                // // Draw bounds
+                // ctx.strokeStyle = "blue";
+                // ctx.strokeRect(this.bounds.x + ct.x, this.bounds.y + ct.y, this.bounds.width, this.bounds.height);
+                //
+                // // Draw hitbox
+                // ctx.strokeStyle = "green";
+                // ctx.strokeRect(this.hitbox.x + ct.x, this.hitbox.y + ct.y, this.hitbox.width, this.hitbox.height);
+                //
+                // // Draw raw hitbox
+                // ctx.strokeStyle = "white";
+                // ctx.strokeRect(this.rawHitbox.x + ct.x, this.rawHitbox.y + ct.y, this.rawHitbox.width, this.rawHitbox.height);
+                //
+                // // Draw world bounds
+                // ctx.strokeStyle = "purple";
+                // ctx.strokeRect(this.worldBounds.x, this.worldBounds.y, this.worldBounds.width, this.worldBounds.height);
+                //
+                // // Draw world hitbox
+                // ctx.strokeStyle = "cyan";
+                // ctx.strokeRect(this.worldHitbox.x, this.worldHitbox.y, this.worldHitbox.width, this.worldHitbox.height);
+            };
+            /**
+            * Destroys this component and all of the links it may have to other objects.
+            * @method destroy
+            * @public
+            */
+            Box2.prototype.destroy = function () {
+                _super.prototype.destroy.call(this);
+            };
+            return Box2;
+        })(Kiwi.Component);
+        Components.Box2 = Box2;
+    })(Components = Kiwi.Components || (Kiwi.Components = {}));
+})(Kiwi || (Kiwi = {}));
+/**
 *
 * @module Kiwi
 * @submodule Files
@@ -34845,16 +35063,23 @@ var Kiwi;
             */
             AudioFile.prototype._decodeAudio = function () {
                 var _this = this;
-                this.game.audio.context.decodeAudioData(this.data.raw, function (buffer) {
+                if (_this.processed)
+                    return;
+                _this.processed = true;
+                var fail = function (error) {
+                    Kiwi.Log.error('Kiwi.Files.AudioFile: Error decoding audio data.', '#loading', '#decoding', error);
+                    _this.loadError(error);
+                };
+                var success = function (buffer) {
                     if (buffer) {
                         _this.data.buffer = buffer;
                         _this.data.decoded = true;
                         _this.loadSuccess();
                     }
-                }, function (error) {
-                    Kiwi.Log.error('Kiwi.Files.AudioFile: Error decoding audio data.', '#loading', '#decoding');
-                    _this.loadError(error);
-                });
+                };
+                var p = this.game.audio.context.decodeAudioData(this.data.raw, success, fail);
+                if (Promise && p instanceof Promise)
+                    p.then(success);
             };
             return AudioFile;
         })(Kiwi.Files.File);
@@ -35176,4 +35401,582 @@ var Kiwi;
         })(Kiwi.Files.File);
         Files.TextureFile = TextureFile;
     })(Files = Kiwi.Files || (Kiwi.Files = {}));
+})(Kiwi || (Kiwi = {}));
+/**
+*
+* @module GameObjects
+* @submodule Tilemap
+*
+*/
+var Kiwi;
+(function (Kiwi) {
+    var GameObjects;
+    (function (GameObjects) {
+        var Tilemap;
+        (function (Tilemap) {
+            /**
+            * Contains the code for managing and rendering Orthogonal types of TileMaps.
+            * This class should not be directly created, but instead should be created via methods on the TileMap class.
+            *
+            * @class TileMapLayerOrthogonal
+            * @extends Kiwi.GameObjects.Tilemap.TileMapLayer
+            * @namespace Kiwi.GameObjects.Tilemap
+            * @since 1.3.0
+            * @constructor
+            * @param tilemap {Kiwi.GameObjects.Tilemap.TileMap} The TileMap that this layer belongs to.
+            * @param name {String} The name of this TileMapLayer.
+            * @param atlas {Kiwi.Textures.TextureAtlas} The texture atlas that should be used when rendering this TileMapLayer onscreen.
+            * @param data {Number[]} The information about the tiles.
+            * @param tw {Number} The width of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+            * @param th {Number} The height of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+            * @param [x=0] {Number} The x coordinate of the tilemap in pixels.
+            * @param [y=0] {Number} The y coordinate of the tilemap in pixels.
+            * @param [w=0] {Number} The width of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+            * @param [h=0] {Number} The height of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+            * @return {TileMapLayer}
+            */
+            var TileMapObjectLayerOrthogonal = (function (_super) {
+                __extends(TileMapObjectLayerOrthogonal, _super);
+                function TileMapObjectLayerOrthogonal() {
+                    _super.apply(this, arguments);
+                }
+                /**
+                * The type of object that it is.
+                * @method objType
+                * @return {String} "TileMapLayer"
+                * @public
+                */
+                TileMapObjectLayerOrthogonal.prototype.objType = function () {
+                    return "TileMapObjectLayer";
+                };
+                /**
+                 * Returns the TileType for a tile that is at a particular set of coordinates passed.
+                 * If no tile is found the null is returned instead.
+                 * Coordinates passed are in tiles.
+                 * @method getTileFromXY
+                 * @param x {Number}
+                 * @param y {Number}
+                 * @return {Kiwi.GameObjects.Tilemap.TileType}
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.getTileFromXY = function (x, y) {
+                    var t = this.getIndexFromXY(x, y);
+                    return (t !== -1) ? this.tilemap.tileTypes[this._data[t] ? this._data[t].tileType : 0] : null;
+                };
+                /**
+                 * Returns the total number of tiles. Either for a particular type if passed, otherwise of any type if not passed.
+                 * @method countTiles
+                 * @param [type] {Number} The type of tile you want to count.
+                 * @return {Number} The number of tiles on this layer.
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.countTiles = function (type) {
+                    var cnt = 0;
+                    for (var i = 0; i < this._data.length; i++) {
+                        if (type == undefined && this._data[i].tileType !== 0)
+                            cnt++;
+                        else if (type === this._data[i].tileType)
+                            cnt++;
+                    }
+                    return cnt;
+                };
+                /**
+                 * Returns the indexes of every tile of a type you pass.
+                 * @method getIndexsByType
+                 * @param type {Number}
+                 * @return {Number[]}
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.getIndexesByType = function (type) {
+                    var tiles = [];
+                    for (var i = 0; i < this._data.length; i++) {
+                        if (this._data[i].tileType == type)
+                            tiles.push(i);
+                    }
+                    return tiles;
+                };
+                /**
+                 * Returns the TileType of a tile by an index passed.
+                 * Thanks to @rydairegames
+                 *
+                 * @method getTileFromIndex
+                 * @param index {Number}
+                 * @return {Kiwi.GameObjects.Tilemap.TileType}
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.getTileFromIndex = function (index) {
+                    return (index !== -1) ? this.tilemap.tileTypes[this._data[index].tileType] : null;
+                };
+                /**
+                 * Returns the TileType for a tile that is at a particular coordinate passed.
+                 * If no tile is found then null is returned instead.
+                 * Coordinates passed are in pixels and use the world coordinates of the tilemap.
+                 *
+                 * @method getTileFromCoords
+                 * @param x {Number}
+                 * @param y {Number}
+                 * @return {Kiwi.GameObjects.Tilemap.TileType}
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.getTileFromCoords = function (x, y) {
+                    var t = this.getIndexFromCoords(x, y);
+                    return (t !== -1) ? this.tilemap.tileTypes[this._data[t].tileType] : null;
+                };
+                /**
+                 * Randomizes the types of tiles used in an area of the layer. You can choose which types of tiles to use, and the area.
+                 * Default tile types used are everyone avaiable.
+                 * @method randomizeTiles
+                 * @param [types] {Number[]} A list of TileTypes that can be used. Default is every tiletype on the TileMap.
+                 * @param [x=0] {Number} The starting tile on the x axis to fill.
+                 * @param [y=0] {Number} The starting tile on the y axis to fill.
+                 * @param [width=this.width] {Number} How far across you want to go.
+                 * @param [height=this.height] {Number} How far down you want to go.
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.randomizeTiles = function (types, x, y, width, height) {
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (width === void 0) { width = this.width; }
+                    if (height === void 0) { height = this.height; }
+                    Kiwi.Log.log("Not implemented.", '#tilemap');
+                };
+                /**
+                 * Replaces all tiles of typeA to typeB in the area specified. If no area is specified then it is on the whole layer.
+                 * @method replaceTiles
+                 * @param typeA {Number} The type of tile you want to be replaced.
+                 * @param typeB {Number} The type of tile you want to be used instead.
+                 * @param [x=0] {Number} The starting tile on the x axis to fill.
+                 * @param [y=0] {Number} The starting tile on the y axis to fill.
+                 * @param [width=this.width] {Number} How far across you want to go.
+                 * @param [height=this.height] {Number} How far down you want to go.
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.replaceTiles = function (typeA, typeB, x, y, width, height) {
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (width === void 0) { width = this.width; }
+                    if (height === void 0) { height = this.height; }
+                    Kiwi.Log.log("Not implemented.", '#tilemap');
+                };
+                /**
+                 * Swaps all the tiles that are typeA -> typeB and typeB -> typeA inside the area specified. If no area is specified then it is on the whole layer.
+                 * @method swapTiles
+                 * @param typeA {number} The type of tile you want to be replaced with typeB.
+                 * @param typeB {number} The type of tile you want to be replaced with typeA.
+                 * @param [x=0] {number} The starting tile on the x axis to fill.
+                 * @param [y=0] {number} The starting tile on the y axis to fill.
+                 * @param [width=this.width] {number} How far across you want to go.
+                 * @param [height=this.height] {number} How far down you want to go.
+                 * @public
+                 * @override
+                 */
+                TileMapObjectLayerOrthogonal.prototype.swapTiles = function (typeA, typeB, x, y, width, height) {
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (width === void 0) { width = this.width; }
+                    if (height === void 0) { height = this.height; }
+                    Kiwi.Log.log("Not implemented.", '#tilemap');
+                };
+                return TileMapObjectLayerOrthogonal;
+            })(Tilemap.TileMapLayerOrthogonal);
+            Tilemap.TileMapObjectLayerOrthogonal = TileMapObjectLayerOrthogonal;
+        })(Tilemap = GameObjects.Tilemap || (GameObjects.Tilemap = {}));
+    })(GameObjects = Kiwi.GameObjects || (Kiwi.GameObjects = {}));
+})(Kiwi || (Kiwi = {}));
+/**
+ *
+ * @module GameObjects
+ * @submodule Tilemap
+ *
+ */
+var Kiwi;
+(function (Kiwi) {
+    var GameObjects;
+    (function (GameObjects) {
+        var Tilemap;
+        (function (Tilemap) {
+            /**
+             * TODO: write this
+             *
+             * @class TileObject
+             * @namespace Kiwi.GameObjects.Tilemap
+             * @constructor
+             * @param tileType {Number} The tile type.
+             * @return {TileObject}
+             */
+            var TileObject = (function () {
+                function TileObject() {
+                    this._tileType = 0;
+                }
+                Object.defineProperty(TileObject.prototype, "tileType", {
+                    get: function () {
+                        return this._tileType;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                return TileObject;
+            })();
+            Tilemap.TileObject = TileObject;
+        })(Tilemap = GameObjects.Tilemap || (GameObjects.Tilemap = {}));
+    })(GameObjects = Kiwi.GameObjects || (Kiwi.GameObjects = {}));
+})(Kiwi || (Kiwi = {}));
+/**
+*
+* @module Kiwi
+* @submodule Geom
+*/
+var Kiwi;
+(function (Kiwi) {
+    var Geom;
+    (function (Geom) {
+        /**
+        * A three dimensional vector object for storing and manipulating x, y and z vector components.
+        *
+        * @class Vector3
+        * @namespace Kiwi.Geom
+        * @constructor
+        * @param [x=0] {Number} The x component of the vector.
+        * @param [y=0] {Number} The y component of the vector.
+        * @param [z=0] {Number} The z component of the vector.
+        * @return {Kiwi.Geom.Vector3}
+        */
+        var Vector3 = (function () {
+            function Vector3(x, y, z) {
+                if (x === void 0) { x = 0; }
+                if (y === void 0) { y = 0; }
+                if (z === void 0) { z = 0; }
+                this._x = x;
+                this._y = y;
+                this._z = z;
+            }
+            /**
+            * The type of this object.
+            * @method objType
+            * @return {String} "Vector3"
+            * @public
+            */
+            Vector3.prototype.objType = function () {
+                return "Vector3";
+            };
+            Object.defineProperty(Vector3.prototype, "x", {
+                get: function () {
+                    return this._x;
+                },
+                set: function (v) {
+                    this._x = typeof v == 'number' ? v : v.x;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Vector3.prototype, "y", {
+                get: function () {
+                    return this._y;
+                },
+                set: function (v) {
+                    this._y = typeof v == 'number' ? v : v.y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Vector3.prototype, "z", {
+                get: function () {
+                    return this._z;
+                },
+                set: function (v) {
+                    this._z = typeof v == 'number' ? v : v.z;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Vector3.prototype, "xy", {
+                get: function () {
+                    return { x: this._x, y: this._y };
+                },
+                set: function (v) {
+                    if (typeof v == 'number') {
+                        this._x = v;
+                        this._y = v;
+                    }
+                    else {
+                        this._x = v.x;
+                        this._y = v.y;
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Vector3.prototype, "yz", {
+                get: function () {
+                    return { y: this._y, z: this._z };
+                },
+                set: function (v) {
+                    if (typeof v == 'number') {
+                        this._y = v;
+                        this._z = v;
+                    }
+                    else {
+                        this._y = v.y;
+                        this._z = v.z;
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Vector3.prototype, "xyz", {
+                get: function () {
+                    return { x: this._x, y: this._y, z: this._z };
+                },
+                set: function (v) {
+                    if (typeof v == 'number') {
+                        this._x = v;
+                        this._y = v;
+                        this._z = v;
+                    }
+                    else {
+                        this._x = v.x;
+                        this._y = v.y;
+                        this._z = v.z;
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+            * Generate a Vector3 from an angle
+            * @method fromAngle
+            * @param angle {Number} The angle to generate the Vector3 from.
+            * @return {Kiwi.Geom.Vector3} A new Vector3
+            * @static
+            * @public
+            */
+            Vector3.fromAngle = function (angle) {
+                return new Vector3(Math.cos(angle), Math.sin(angle), 1);
+            };
+            /**
+            * Generate a random Vector3 within a given radius.
+            * @method randomRadius
+            * @param radius {Number} The size of the radius to use.
+            * @return {Kiwi.Geom.Vector3} A new Vector3
+            * @static
+            * @public
+            */
+            Vector3.randomRadius = function (radius) {
+                return new Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).multiplyScalar(radius);
+            };
+            /**
+            * Add each component of another Vector3 to this vectors components.
+            * @method add
+            * @param {Kiwi.Geom.Vector3} vector3 to add
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the product
+            * @public
+            */
+            Vector3.prototype.add = function (vector3) {
+                return new Vector3(this.x + vector3.x, this.y + vector3.y, this.z + vector3.z);
+            };
+            /**
+            * Add only the x component of another Vector3 to this vector.
+            * @method addX
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+            * @public
+            */
+            Vector3.prototype.addX = function (vector3) {
+                return new Vector3(this.x + vector3.x, this.y, this.z);
+            };
+            /**
+            * Add only the y component of another Vector3 to this vector.
+            * @method addY
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+            * @public
+            */
+            Vector3.prototype.addY = function (vector3) {
+                return new Vector3(this.x, this.y + vector3.y, this.z);
+            };
+            /**
+             * Add only the z component of another Vector3 to this vector.
+             * @method addZ
+             * @param vector3 {Kiwi.Geom.Vector3} Vector3 to add
+             * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+             * @public
+             */
+            Vector3.prototype.addZ = function (vector3) {
+                return new Vector3(this.x, this.y, this.z + vector3.z);
+            };
+            /**
+            * Subtract each component of another Vector3 from this vectors components.
+            * @method subtract
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3 to subtract
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+            * @public
+            */
+            Vector3.prototype.subtract = function (vector3) {
+                return new Kiwi.Geom.Vector3(this.x - vector3.x, this.y - vector3.y, this.z - vector3.z);
+            };
+            /**
+            * Multiply each component of another Vector3 with this vectors components.
+            * @method multiply
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3 to multiply
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+            * @public
+            */
+            Vector3.prototype.multiply = function (vector3) {
+                return new Kiwi.Geom.Vector3(this.x * vector3.x, this.y * vector3.y, this.z * vector3.z);
+            };
+            /**
+            * Multiply each component of this vector with a scalar number.
+            * @method multiplyScalar
+            * @param scalar {Number} Scalar to multiply
+            * @return {Kiwi.Geom.Vector3} A new Vector3 containing the result
+            * @public
+            */
+            Vector3.prototype.multiplyScalar = function (scalar) {
+                return new Kiwi.Geom.Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
+            };
+            /**
+            * Calculate the dot product if a Vector3 with this Vector3.
+            * @method dot
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3 to dot with this Vector3.
+            * @return {Number} Result of dot product.
+            * @public
+            */
+            Vector3.prototype.dot = function (vector3) {
+                return this.x * vector3.x + this.y * vector3.y + this.z * vector3.z;
+            };
+            /**
+            * Calculate the square length of this Vector3 (Distance from the origin).
+            * @method lenSqr
+            * @return {Number} The square length.
+            * @public
+            */
+            Vector3.prototype.lenSqr = function () {
+                return this.x * this.x + this.y * this.y + this.z * this.z;
+            };
+            /**
+            * Calculate the length of this Vector3 (Distance from the origin).
+            * @method len
+            * @return {Number} The length.
+            * @public
+            */
+            Vector3.prototype.len = function () {
+                return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+            };
+            /**
+            * Calculate a normalised unit Vector3 from this Vector3.
+            * @method unit
+            * @return {Kiwi.Geom.Vector3} a new Unit Length Vector3.
+            * @public
+            */
+            Vector3.prototype.unit = function () {
+                var invLen = 1.0 / this.len();
+                return this.multiplyScalar(invLen);
+            };
+            /**
+            * Reduce each component of the Vector to the closest lower round value.
+            * @method floor
+            * @return {Kiwi.Geom.Vector3} a rounded down Vector3.
+            * @public
+            */
+            Vector3.prototype.floor = function () {
+                return new Vector3(Math.floor(this.x), Math.floor(this.y), Math.floor(this.z));
+            };
+            /**
+            * Increase each component of the Vector to the closest upper round value.
+            * @method ceil
+            * @return {Kiwi.Geom.Vector3} a rounded up Vector3.
+            * @public
+            */
+            Vector3.prototype.ceil = function () {
+                return new Vector3(Math.ceil(this.x), Math.ceil(this.y), Math.ceil(this.z));
+            };
+            /**
+            * Round each component of the Vector to the closest round value.
+            * @method round
+            * @return {Kiwi.Geom.Vector3} a rounded Vector3.
+            * @public
+            */
+            Vector3.prototype.round = function () {
+                return new Vector3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
+            };
+            /**
+            * Clamp the vector between a maximum and minimum Vector3 range component-wise.
+            * @method clamp
+            * @param min {Kiwi.Geom.Vector3} Minimum values for Vector3.
+            * @param max {Kiwi.Geom.Vector3} Maximum values for Vector3.
+            * @return {Kiwi.Geom.Vector3} a clamped Vector3.
+            * @public
+            */
+            Vector3.prototype.clamp = function (min, max) {
+                return new Vector3(Math.max(Math.min(this.x, max.x), min.x), Math.max(Math.min(this.y, max.y), min.y), Math.max(Math.min(this.z, max.z), min.z));
+            };
+            /**
+            * Calculate a Vector3 perpendicular to this Vector3.
+            * @method perp
+            * @return {Kiwi.Geom.Vector3} the perpendicular Vector3.
+            * @public
+            */
+            Vector3.prototype.perp = function () {
+                throw 'Not implemented';
+                // return new Vector3(-this.y, this.x);
+            };
+            /**
+            * Calculate a Vector3 opposite to this Vector3.
+            * @method neg
+            * @return {Kiwi.Geom.Vector3} the opposite Vector3.
+            * @public
+            */
+            Vector3.prototype.neg = function () {
+                return new Vector3(-this.x, -this.y, -this.z);
+            };
+            /**
+            * Check if two Vector3s from equal components.
+            * @method equal
+            * @param vector3 {Kiwi.Geom.Vector3} Vector3. Vector3 to check against.
+            * @return {boolean} returns true if equal.
+            * @public
+            */
+            Vector3.prototype.equal = function (vector3) {
+                return this.x === vector3.x && this.y === vector3.y && this.z === vector3.z;
+            };
+            /**
+            * Set both components to zero.
+            * @method clear
+            * @return {Kiwi.Geom.Vector3} This object.
+            * @public
+            */
+            Vector3.prototype.clear = function () {
+                this.x = 0;
+                this.y = 0;
+                this.z = 0;
+                return this;
+            };
+            /**
+            * Get a clone of this Vector3.
+            * @method clone
+            * @return {Kiwi.Geom.Vector3} Either a new cloned Vector3 or the output vector with cloned components.
+            * @public
+            */
+            Vector3.prototype.clone = function () {
+                return new Vector3(this.x, this.y, this.z);
+            };
+            /**
+            * Get a string representation of this object.
+            * @method toString
+            * @return {String} This object as a string.
+            */
+            Vector3.prototype.toString = function () {
+                return '[{Vector3 (x=' + this.x + ' y=' + this.y + ' z=' + this.z + ')}]';
+            };
+            return Vector3;
+        })();
+        Geom.Vector3 = Vector3;
+    })(Geom = Kiwi.Geom || (Kiwi.Geom = {}));
 })(Kiwi || (Kiwi = {}));
