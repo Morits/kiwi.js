@@ -24,6 +24,10 @@ module Kiwi.Geom {
 
 		}
 
+		public set xy(val: Point) {
+			this.x = val.x;
+			this.y = val.y;
+		}
 
 		/**
 		* The type of this object.

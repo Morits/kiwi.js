@@ -35,8 +35,8 @@ module Kiwi.Shaders {
 		* @public
 		*/
 		public init(gl: WebGLRenderingContext) {
-			this.vertShader = this.compile(gl, this.vertSource.join("\n"), gl.VERTEX_SHADER);
-			this.fragShader = this.compile(gl, this.fragSource.join("\n"), gl.FRAGMENT_SHADER);
+			this.vertShader = this.compile(gl, this.vertSource, gl.VERTEX_SHADER);
+			this.fragShader = this.compile(gl, this.fragSource, gl.FRAGMENT_SHADER);
 			this.shaderProgram = this.attach(gl, this.vertShader, this.fragShader);
 			this.loaded = true;
 		}
@@ -133,7 +133,7 @@ module Kiwi.Shaders {
 		* @type Array
 		* @public
 		*/
-		public fragSource: Array<any>;
+		public fragSource: string;
 
 		/**
 		* Shader vert source (for override)
@@ -141,7 +141,7 @@ module Kiwi.Shaders {
 		* @type Array
 		* @public
 		*/
-		public vertSource: Array<any>;
+		public vertSource: string;
 
 		/**
 		* Sets a single uniform value and marks it as dirty.

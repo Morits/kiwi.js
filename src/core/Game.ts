@@ -1,45 +1,45 @@
 /**
-* 
-* @module Kiwi
-* 
-*/
+ *
+ * @module Kiwi
+ *
+ */
 
 module Kiwi {
 
 	/**
-	* The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
-	*
-	* @class Game
-	* @namespace Kiwi
-	* @constructor
-	* @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
-	* @param [name='KiwiGame'] {String} The name of the game that is being created. 
-	* @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
-	* @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
-	*   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
-	*   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
-	*   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
-	*   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use. 
-	*   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
-	*   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
-	*   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
-	*   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
-	*   @param [options.log] {Object} Default state of the Log properties
-	*       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
-	*       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
-	*       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
-	*       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
-	* @return {Kiwi.Game}
-	* 
-	*/
+	 * The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
+	 *
+	 * @class Game
+	 * @namespace Kiwi
+	 * @constructor
+	 * @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
+	 * @param [name='KiwiGame'] {String} The name of the game that is being created.
+	 * @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
+	 * @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
+	 *   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
+	 *   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
+	 *   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
+	 *   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use.
+	 *   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
+	 *   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
+	 *   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
+	 *   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
+	 *   @param [options.log] {Object} Default state of the Log properties
+	 *       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
+	 *       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
+	 *       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
+	 *       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
+	 * @return {Kiwi.Game}
+	 *
+	 */
 	export class Game {
 
 		constructor(domParent: string = '', name: string = 'KiwiGame', state: any = null, options: any= {}) {
 
-			Kiwi.Log.setDefaultsFromParams(options.log); 
+			Kiwi.Log.setDefaultsFromParams(options.log);
 			Kiwi.Log.log('Kiwi.Game: ' + name + ' is booting using Kiwi.js ' + Kiwi.VERSION, '#version');
 
-			if (Kiwi.DEVICE === null) { 
+			if (Kiwi.DEVICE === null) {
 				Kiwi.DEVICE = new Kiwi.System.Device();
 			}
 
@@ -85,7 +85,7 @@ module Kiwi {
 				}
 			} else {
 				this._deviceTargetOption = Kiwi.TARGET_BROWSER;
-				Kiwi.Log.log('  Kiwi.Game: Targeted device not specified. Defaulting to BROWSER.', '#target'); 
+				Kiwi.Log.log('  Kiwi.Game: Targeted device not specified. Defaulting to BROWSER.', '#target');
 			}
 
 			var renderDefault = Kiwi.RENDERER_WEBGL;
@@ -158,7 +158,7 @@ module Kiwi {
 
 			Kiwi.Log.log('  Kiwi.Game: Stage Dimensions: ' + width + 'x' + height, '#dimensions');
 
-			
+
 			if ( !Kiwi.Utils.Common.isUndefined( options.scaleType ) ) {
 
 				switch (options.scaleType) {
@@ -219,115 +219,115 @@ module Kiwi {
 		}
 
 		/**
-		* The render mode of the game. This will be either set to CANVAS or WEBGL.
-		* @property _renderOption
-		* @type number
-		* @private
-		*/
+		 * The render mode of the game. This will be either set to CANVAS or WEBGL.
+		 * @property _renderOption
+		 * @type number
+		 * @private
+		 */
 		private _renderOption: number;
 
 		/**
-		* Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
-		* @property renderOption
-		* @type number
-		* @public
-		*/
+		 * Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
+		 * @property renderOption
+		 * @type number
+		 * @public
+		 */
 		public get renderOption(): number {
 			return this._renderOption;
 		}
 
 		/**
-		* A callback function that can be passed in as an option in the conifugration object. Invoked after the boot process has completed.
-		* @property bootCallbackOption
-		* @type Function
-		* @private
-		*/
+		 * A callback function that can be passed in as an option in the conifugration object. Invoked after the boot process has completed.
+		 * @property bootCallbackOption
+		 * @type Function
+		 * @private
+		 */
 		public bootCallbackOption: Function;
 
 		/**
-		* The type of device that you are targeting. This is either set to COCOON or BROWSER
-		* @property _deviceTargetOption
-		* @type number
-		* @private
-		*/
+		 * The type of device that you are targeting. This is either set to COCOON or BROWSER
+		 * @property _deviceTargetOption
+		 * @type number
+		 * @private
+		 */
 		private _deviceTargetOption: number;
 
 		/**
-		* Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
-		* @property deviceTargetOption
-		* @type number
-		* @public
-		*/
+		 * Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
+		 * @property deviceTargetOption
+		 * @type number
+		 * @public
+		 */
 		public get deviceTargetOption(): number {
 			return this._deviceTargetOption;
 		}
 
 		/**
-		* If when rendering, the game should render a new CANVAS which is above everything. This new canvas is for debugging purposes only.
-		* This gets set to either DEBUG_ON or DEBUG_OFF
-		* @property _debugOption
-		* @type number
-		* @private
-		*/
+		 * If when rendering, the game should render a new CANVAS which is above everything. This new canvas is for debugging purposes only.
+		 * This gets set to either DEBUG_ON or DEBUG_OFF
+		 * @property _debugOption
+		 * @type number
+		 * @private
+		 */
 		private _debugOption: number;
 
 		/**
-		* Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
-		* @property debugOption
-		* @type number
-		* @public
-		*/
+		 * Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
+		 * @property debugOption
+		 * @type number
+		 * @public
+		 */
 		public get debugOption(): number {
 			return this._debugOption;
 		}
 
 		/**
-		* Returns true if debug option is set to Kiwi.DEBUG_ON
-		* @property debug
-		* @type boolean
-		* @public
-		*/
+		 * Returns true if debug option is set to Kiwi.DEBUG_ON
+		 * @property debug
+		 * @type boolean
+		 * @public
+		 */
 
 		public get debug(): boolean {
 			return this._debugOption === Kiwi.DEBUG_ON;
 		}
 
 		/**
-		* Holds the renderer that is being used. This is determined based on the _renderMode
-		* @property renderer
-		* @type IRenderManager
-		* @public
-		*/
+		 * Holds the renderer that is being used. This is determined based on the _renderMode
+		 * @property renderer
+		 * @type IRenderManager
+		 * @public
+		 */
 		public renderer: IRenderManager;
 
 		/**
-		* Holds the hud manager.
-		* @property huds
-		* @type HUDManager
-		* @public
-		*/
+		 * Holds the hud manager.
+		 * @property huds
+		 * @type HUDManager
+		 * @public
+		 */
 		public huds: Kiwi.HUD.HUDManager;
 
 		/**
-		* The type of object that the game is.
-		* @method objType
-		* @return {String} "Game"
-		* @public
-		*/
+		 * The type of object that the game is.
+		 * @method objType
+		 * @return {String} "Game"
+		 * @public
+		 */
 		public objType() {
 			return "Game";
 		}
 
 		/**
-		* The object that peforms DOM and device startup operations for browsers (ie not cocoon)
-		* @property _startup
-		* @type Kiwi.System.Bootstrap
-		* @private
-		*/
+		 * The object that peforms DOM and device startup operations for browsers (ie not cocoon)
+		 * @property _startup
+		 * @type Kiwi.System.Bootstrap
+		 * @private
+		 */
 		private _startup: Kiwi.System.Bootstrap = null;
 
 		/*
-		* The unique id for the game. 
+		* The unique id for the game.
 		* @property id
 		* @type Number
 		* @public
@@ -335,155 +335,155 @@ module Kiwi {
 		public id: number;
 
 		/**
-		* The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
-		* @property audio
-		* @type Kiwi.Sound.AudioManager
-		* @public
-		*/
+		 * The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
+		 * @property audio
+		 * @type Kiwi.Sound.AudioManager
+		 * @public
+		 */
 		public audio: Kiwi.Sound.AudioManager = null;
 
 		/**
-		* The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
-		* @property fileStore
-		* @type Kiwi.Files.FileStore
-		* @public
-		*/
+		 * The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
+		 * @property fileStore
+		 * @type Kiwi.Files.FileStore
+		 * @public
+		 */
 		public fileStore: Kiwi.Files.FileStore = null;
 
 		/**
-		* Handles any user input with the game. These could via the users keyboard, mouse or touch events.
-		* @property input
-		* @type Kiwi.Input.InputManager
-		* @public
-		*/
+		 * Handles any user input with the game. These could via the users keyboard, mouse or touch events.
+		 * @property input
+		 * @type Kiwi.Input.InputManager
+		 * @public
+		 */
 		public input: Kiwi.Input.InputManager = null;
 
 		/**
-		* Manages the cameras the are on the stage. Single default Camera only in this version.
-		* @property cameras
-		* @type Kiwi.CameraManager
-		* @public
-		*/
+		 * Manages the cameras the are on the stage. Single default Camera only in this version.
+		 * @property cameras
+		 * @type Kiwi.CameraManager
+		 * @public
+		 */
 		public cameras: Kiwi.CameraManager = null;
 
 		/**
-		* Manages plugins registration and initialisation for the game instance.
-		* @property pluginManager
-		* @type Kiwi.PluginManager
-		* @public
-		*/
+		 * Manages plugins registration and initialisation for the game instance.
+		 * @property pluginManager
+		 * @type Kiwi.PluginManager
+		 * @public
+		 */
 		public pluginManager: Kiwi.PluginManager = null;
 
 		/**
-		* Loads files from outside sources and checks to see that they have loaded correctly or not.
-		* @property loader
-		* @type Kiwi.Files.Loader
-		* @public
-		*/
+		 * Loads files from outside sources and checks to see that they have loaded correctly or not.
+		 * @property loader
+		 * @type Kiwi.Files.Loader
+		 * @public
+		 */
 		public loader: Kiwi.Files.Loader = null;
 
 		/**
-		* The Request Animation Frame that is being used for the update and render loops.
-		* @property raf
-		* @type Kiwi.Utils.RequestAnimationFrame
-		* @public
-		*/
+		 * The Request Animation Frame that is being used for the update and render loops.
+		 * @property raf
+		 * @type Kiwi.Utils.RequestAnimationFrame
+		 * @public
+		 */
 		public raf: Kiwi.Utils.RequestAnimationFrame = null;
 
 		/**
-		* The ONLY stage that is being used for this game.
-		* @property stage
-		* @type Stage
-		* @public
-		*/
+		 * The ONLY stage that is being used for this game.
+		 * @property stage
+		 * @type Stage
+		 * @public
+		 */
 		public stage: Kiwi.Stage = null;
 
 		/**
-		* Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
-		* @property states
-		* @type Kiwi.StateManager
-		* @public
-		*/
+		 * Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
+		 * @property states
+		 * @type Kiwi.StateManager
+		 * @public
+		 */
 		public states: Kiwi.StateManager = null;
 
 		/**
-		* Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
-		* @property time
-		* @type Kiwi.Time.ClockManager
-		* @public
-		*/
+		 * Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
+		 * @property time
+		 * @type Kiwi.Time.ClockManager
+		 * @public
+		 */
 		public time: Kiwi.Time.ClockManager = null;
 
 		/**
-		* The tween manager holds a reference to all of the tweens that are created and currently being used. 
-		* @property tweens
-		* @type Kiwi.Animations.Tweens.TweenManager
-		* @public
-		*/
+		 * The tween manager holds a reference to all of the tweens that are created and currently being used.
+		 * @property tweens
+		 * @type Kiwi.Animations.Tweens.TweenManager
+		 * @public
+		 */
 		public tweens: Kiwi.Animations.Tweens.TweenManager = null;
 
 		/**
-		* A Random Data Generator. This is useful for create unique ids and random information.
-		* @property rnd
-		* @type Kiwi.Utils.RandomDataGenerato
-		* @public
-		*/
+		 * A Random Data Generator. This is useful for create unique ids and random information.
+		 * @property rnd
+		 * @type Kiwi.Utils.RandomDataGenerato
+		 * @public
+		 */
 		public rnd: Kiwi.Utils.RandomDataGenerator = null;
 
 		/**
-		* The framerate at which the game will update at.
-		* @property _framerate
-		* @type Number
-		* @default 60
-		* @private
-		*/
+		 * The framerate at which the game will update at.
+		 * @property _framerate
+		 * @type Number
+		 * @default 60
+		 * @private
+		 */
 		private _frameRate: number = 60;
 
 		/**
-		* The interval between frames.
-		* @property _interval
-		* @type Number
-		* @default 1000/60
-		* @private
-		*/
+		 * The interval between frames.
+		 * @property _interval
+		 * @type Number
+		 * @default 1000/60
+		 * @private
+		 */
 		private _interval: number = 1000 / 60;
 
 		/**
-		* The current interval between frames.
-		* @property _delta
-		* @type number
-		* @private
-		*/
+		 * The current interval between frames.
+		 * @property _delta
+		 * @type number
+		 * @private
+		 */
 		private _delta: number = 0;
 
 		/**
-		* The last time the game was updated
-		* @property _lastTime
-		* @type number
-		* @private
-		*/
+		 * The last time the game was updated
+		 * @property _lastTime
+		 * @type number
+		 * @private
+		 */
 		private _lastTime: number;
 
 		/**
-		* The number of frames since the game was launched.
-		* @property _frame
-		* @type number
-		* @private
-		* @since 1.1.0
-		*/
+		 * The number of frames since the game was launched.
+		 * @property _frame
+		 * @type number
+		 * @private
+		 * @since 1.1.0
+		 */
 		private _frame: number = 0;
 
 		/**
-		* The number of frames since the game was launched.
-		* 
-		* Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
-		*
-		* The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
-		* @property frame
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
+		 * The number of frames since the game was launched.
+		 *
+		 * Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
+		 *
+		 * The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
+		 * @property frame
+		 * @type number
+		 * @public
+		 * @since 1.1.0
+		 */
 		public get frame(): number {
 			return( this._frame );
 		}
@@ -492,25 +492,25 @@ module Kiwi {
 		}
 
 		/**
-		* The number of ideal frames since the game was launched.
-		*
-		* Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
-		* @property idealFrame
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
+		 * The number of ideal frames since the game was launched.
+		 *
+		 * Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
+		 * @property idealFrame
+		 * @type number
+		 * @public
+		 * @since 1.1.0
+		 */
 		public get idealFrame(): number {
 			return (this.time.elapsed() / (1000 / this._frameRate) );
 		}
 
 
 		/**
-		* The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
-		* @property frameRate
-		* @return string
-		* @public
-		*/
+		 * The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
+		 * @property frameRate
+		 * @return string
+		 * @public
+		 */
 		public get frameRate(): number {
 
 			return this._frameRate;
@@ -524,11 +524,11 @@ module Kiwi {
 		}
 
 		/**
-		* The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
-		* Once the managers have started up the start loop will then begin to create the game loop.
-		* @method start
-		* @private
-		*/
+		 * The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
+		 * Once the managers have started up the start loop will then begin to create the game loop.
+		 * @method start
+		 * @private
+		 */
 		private _start() {
 
 
@@ -565,10 +565,10 @@ module Kiwi {
 		}
 
 		/**
-		* The game loop. 
-		* @method _loop
-		* @private
-		*/
+		 * The game loop.
+		 * @method _loop
+		 * @private
+		 */
 		private _loop() {
 
 			// Only update non-graphical game systems if a full frame

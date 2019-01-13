@@ -147,7 +147,7 @@ module Kiwi.Renderers {
 
 			this._game.stage.ctx.save();
 			this._game.stage.ctx.setTransform(cm.a, cm.b, cm.c, cm.d, cm.tx, cm.ty);
-			this._game.stage.ctx.transform( 1,0,0,1, -ct.rotPointX, -ct.rotPointY );
+			// this._game.stage.ctx.transform( 1,0,0,1, -ct.pivotPoint.x, -ct.pivotPoint.y );
 
 
 			for (var i = 0; i < root.length; i++) {

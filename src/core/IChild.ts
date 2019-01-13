@@ -119,16 +119,6 @@ module Kiwi {
 		/**
 		* Controls whether this object's render methods are called by its parent.
 		*
-		* @property willRender
-		* @type boolean
-		* @public
-		* @deprecated Use visible instead
-		*/
-		willRender: boolean;
-
-		/**
-		* Controls whether this object's render methods are called by its parent.
-		*
 		* @property visible
 		* @type boolean
 		* @public
@@ -153,109 +143,6 @@ module Kiwi {
 		* @public
 		*/
 		transform: Kiwi.Geom.Transform;
-
-		/**
-		* The X coordinate of this object. This is just aliased to the transform property.
-		* @property x
-		* @type number
-		* @public
-		*/
-		x: number;
-
-		/**
-		* The Y coordinate of this object. This is just aliased to the transform property.
-		* @property y
-		* @type number
-		* @public
-		*/
-		y: number;
-
-		/**
-		* The X coordinate of this object in world space - that is, after inheriting transforms from parents. This is just aliased to the transform property.
-		* @property worldX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		worldX: number;
-
-		/**
-		* The Y coordinate of this object in world space - that is, after inheriting transforms from parents. This is just aliased to the transform property.
-		* @property worldY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		worldY: number;
-
-		/**
-		* The rotation of this object. This is just aliased to the transform property.
-		* @property rotation
-		* @type number
-		* @public
-		*/
-		rotation: number;
-
-		/**
-		* The Scale X of this object. This is just aliased to the transform property.
-		* @property scaleX
-		* @type number
-		* @public
-		*/
-		scaleX: number;
-
-		/**
-		* The Scale Y of this object. This is just aliased to the transform property.
-		* @property scaleY
-		* @type number
-		* @public
-		*/
-		scaleY: number;
-
-		/**
-		* The scale of this object. This is just aliased to the transform property.
-		* @property scale
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		scale: number;
-
-		/**
-		* The rotation offset of this object on the X axis. This is just aliased to the transform property.
-		* @property rotPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		rotPointX: number;
-
-		/**
-		* The rotation offset of this object on the Y axis. This is just aliased to the transform property.
-		* @property rotPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		rotPointY: number;
-
-		/**
-		* The anchor point offset of this object on the X axis. This is an alias of the rotPointX property on the transform.
-		* @property anchorPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		anchorPointX: number;
-
-		/**
-		* The anchor point offset of this object on the Y axis. This is an alias of the rotPointY property on the transform.
-		* @property anchorPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		anchorPointY: number;
 
 		/**
 		* Call this to clean up the object for deletion and garbage collection.

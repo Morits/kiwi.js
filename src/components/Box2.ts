@@ -119,7 +119,10 @@ module Kiwi.Components {
 		}
 
 		private clean() {
-			this._invertedTransformMatrix = this.owner.transform.getConcatenatedMatrix().clone().invert();
+			this._invertedTransformMatrix = this.owner.transform.getConcatenatedMatrix().invertCopy();
+			// this._invertedTransformMatrix.tx -= this.owner.transform.rotPointX;
+			// this._invertedTransformMatrix.ty -= this.owner.transform.rotPointY;
+			// this._invertedTransformMatrix.invert();
 		}
 
 		/**

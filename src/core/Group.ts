@@ -106,160 +106,6 @@ module Kiwi {
 		}
 
 		/**
-		* The X coordinate of this group. This is just aliased to the transform property.
-		* @property x
-		* @type Number
-		* @public
-		*/
-		public get x(): number {
-			return this.transform.x;
-		}
-		public set x(value: number) {
-			this.transform.x = value;
-		}
-
-		/**
-		* The Y coordinate of this group. This is just aliased to the transform property.
-		* @property y
-		* @type Number
-		* @public
-		*/
-		public get y(): number {
-			return this.transform.y;
-		}
-		public set y(value: number) {
-			this.transform.y = value;
-		}
-
-		/**
-		* The X coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-		* @property worldX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldX(): number {
-			return this.transform.worldX;
-		}
-
-		/**
-		* The Y coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-		* @property worldY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldY(): number {
-			return this.transform.worldY;
-		}
-
-		/*
-		* The Scale X of this group. This is just aliased to the transform property.
-		* @property scaleX
-		* @type Number
-		* @public
-		*/
-		public get scaleX(): number {
-			return this.transform.scaleX;
-		}
-		public set scaleX(value: number) {
-			this.transform.scaleX = value;
-		}
-
-		/*
-		* The Scale Y coordinate of this group. This is just aliased to the transform property.
-		* @property scaleY
-		* @type Number
-		* @public
-		*/
-		public get scaleY(): number {
-			return this.transform.scaleY;
-		}
-		public set scaleY(value: number) {
-			this.transform.scaleY = value;
-		}
-
-		/**
-		* The scale of this group. This is just aliased to the transform property. This is WRITE-ONLY.
-		* @property scale
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public set scale(value: number) {
-			this.transform.scale = value;
-		}
-
-		/*
-		* The rotation of this group. This is just aliased to the transform property.
-		* @property rotation
-		* @type Number
-		* @public
-		*/
-		public get rotation(): number {
-			return this.transform.rotation;
-		}
-		public set rotation(value: number) {
-			this.transform.rotation = value;
-		}
-
-		/**
-		* The rotation offset of this group in the X axis. This is just aliased to the transform property.
-		* @property rotPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get rotPointX(): number {
-			return this.transform.rotPointX;
-		}
-		public set rotPointX(value: number) {
-			this.transform.rotPointX = value;
-		}
-
-		/**
-		* The rotation offset of this group in the Y axis. This is just aliased to the transform property.
-		* @property rotPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get rotPointY(): number {
-			return this.transform.rotPointY;
-		}
-		public set rotPointY(value: number) {
-			this.transform.rotPointY = value;
-		}
-
-		/**
-		* The anchor point offset of this group in the X axis. This is just aliased to the transform property, and is in turn an alias of rotPointX.
-		* @property anchorPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointX(): number {
-			return this.transform.anchorPointX;
-		}
-		public set anchorPointX(value: number) {
-			this.transform.anchorPointX = value;
-		}
-
-		/**
-		* The anchor point offset of this group in the Y axis. This is just aliased to the transform property, and is in turn an alias of rotPointY.
-		* @property anchorPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointY(): number {
-			return this.transform.anchorPointY;
-		}
-		public set anchorPointY(value: number) {
-			this.transform.anchorPointY = value;
-		}
-
-		/**
 		* The Component Manager
 		* @property components
 		* @type Kiwi.ComponentManager
@@ -324,11 +170,16 @@ module Kiwi {
 		* @public
 		*/
 		public set dirty(value: boolean) {
-			if (value !== undefined) {
-				this._dirty = value;
+			if(!value) {
+				// Only set this object as clean
+				this._dirty = false;
+			}
+			else {
+				// Set children as dirty
+				this._dirty = true;
 
 				for (var i = 0; i < this.members.length; i++) {
-					this.members[i].dirty = value;
+					this.members[i].dirty = true;
 				}
 			}
 		}
@@ -1190,30 +1041,6 @@ module Kiwi {
 
 		}
  
-		/**
-		* Controls whether render is automatically called by the parent.
-		* @property _willRender
-		* @type Boolean
-		* @private
-		* @deprecated Use _visible instead
-		*/
-		private _willRender: boolean;
-
-		/**
-		* Controls whether render is automatically called by the parent.
-		* @property willRender
-		* @type boolean
-		* @return {boolean}
-		* @public
-		* @deprecated Use visible instead
-		*/
-		public set willRender(value: boolean) {
-			this._willRender = value;
-		}
-		public get willRender():boolean {
-			return this._willRender;
-		}
-
 		/**
 		* A boolean that indicates whether or not this entity is visible or not. Note that is does not get set to false if the alpha is 0.
 		* @property _visible

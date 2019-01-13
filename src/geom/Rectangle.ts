@@ -684,13 +684,12 @@ module Kiwi.Geom {
 		public scale(x:number,y:number,translation:Kiwi.Geom.Point): Rectangle {
 
 			var trans: Kiwi.Geom.Transform = new Kiwi.Geom.Transform;
-			trans.scaleX = x;
-			trans.scaleY = y;
+			trans.scale.setTo(x, y);
 			trans.x = translation.x;
 			trans.y = translation.y;
 			
 			var tl: Kiwi.Geom.Point = this.topLeft;
-			trans.transformPoint(tl);
+			trans.getConcatenatedMatrix().transformPointInPlace(tl);
 			this.topLeft = tl;
 
 			this.width *= x;
