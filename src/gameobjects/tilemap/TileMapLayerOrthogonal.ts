@@ -68,18 +68,20 @@ module Kiwi.GameObjects.Tilemap {
 		* @return {Number} Either the index of the tile retrieved or -1 if none was found.
 		* @public
 		*/
-        public getIndexFromCoords(x: number, y: number): number {
-
-            //Not with the bounds?
-            if (x > this.transform.worldX + this.widthInPixels || y > this.transform.worldY + this.heightInPixels || x < this.transform.worldX || y < this.transform.worldY)
-                return -1;
-
-            //Is so get the tile
-            var tx = Kiwi.Utils.GameMath.snapToFloor(x - this.transform.worldX, this.tileWidth) / this.tileWidth;
-            var ty = Kiwi.Utils.GameMath.snapToFloor(y - this.transform.worldY, this.tileHeight) / this.tileHeight;
-
-            return this.getIndexFromXY(tx, ty);
-        }
+        // public getIndexFromCoords(x: number, y: number): number {
+		//
+        // 	// TODO: reimplemnt this method
+        // 	// TODO: culling of tiles outside camera
+        //     //Not with the bounds?
+        //     // if (x > this.transform.worldX + this.widthInPixels || y > this.transform.worldY + this.heightInPixels || x < this.transform.worldX || y < this.transform.worldY)
+        //     //     return -1;
+		//
+        //     //Is so get the tile
+        //     var tx = Kiwi.Utils.GameMath.snapToFloor(x - this.transform.worldX, this.tileWidth) / this.tileWidth;
+        //     var ty = Kiwi.Utils.GameMath.snapToFloor(y - this.transform.worldY, this.tileHeight) / this.tileHeight;
+		//
+        //     return this.getIndexFromXY(tx, ty);
+        // }
 
 
 		/**
@@ -92,48 +94,48 @@ module Kiwi.GameObjects.Tilemap {
 		* @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object. 
 		* @public
 		*/
-        public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number = Kiwi.Components.ArcadePhysics.ANY): any {
-
-            //Do they have a box?
-            if (entity.components.hasComponent("Box") == false)
-                return [];
-
-            //Get the box off them
-            var b: Kiwi.Geom.Rectangle = entity.components.getComponent('Box').worldHitbox;
-
-            var worldX = this.transform.worldX;
-            var worldY = this.transform.worldY;
-
-            //Is the person within the map's bounds?    
-            if (b.left > worldX + this.widthInPixels || b.right < worldX || b.bottom < worldY || b.top > worldY + this.heightInPixels)
-                return [];
-
-
-            var nx = b.x - worldX;
-            var ny = b.y - worldY;
-
-            //Get starting location and now many tiles from there we will check. 
-            var x = Kiwi.Utils.GameMath.snapToFloor(nx, this.tileWidth) / this.tileWidth;
-            var y = Kiwi.Utils.GameMath.snapToFloor(ny, this.tileHeight) / this.tileHeight;
-            var w = Kiwi.Utils.GameMath.snapToCeil(b.width, this.tileWidth) / this.tileWidth;
-            var h = Kiwi.Utils.GameMath.snapToCeil(b.height, this.tileHeight) / this.tileHeight;
-
-            //Add one, because we want to include the very end tile.
-            var tiles = this.getCollidableTiles(x, y, w + 1, h + 1, collisionType);
-
-            //Loop through the tiles and make sure they are actually overlapping with the Entity.
-            for (var i = 0; i < tiles.length; i++) {
-                var t = tiles[i];
-
-                if (t.x + worldX > b.right || t.x + this.tileWidth + worldX < b.left || t.y + worldY > b.bottom || t.y + this.tileHeight + worldY < b.top) {
-                    tiles.splice(i, 1);
-                    i--;
-                }
-            }
-
-            return tiles;
-
-        }
+        // public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number = Kiwi.Components.ArcadePhysics.ANY): any {
+		//
+        //     //Do they have a box?
+        //     if (entity.components.hasComponent("Box") == false)
+        //         return [];
+		//
+        //     //Get the box off them
+        //     var b: Kiwi.Geom.Rectangle = entity.components.getComponent('Box').worldHitbox;
+		//
+        //     var worldX = this.transform.worldX;
+        //     var worldY = this.transform.worldY;
+		//
+        //     //Is the person within the map's bounds?
+        //     if (b.left > worldX + this.widthInPixels || b.right < worldX || b.bottom < worldY || b.top > worldY + this.heightInPixels)
+        //         return [];
+		//
+		//
+        //     var nx = b.x - worldX;
+        //     var ny = b.y - worldY;
+		//
+        //     //Get starting location and now many tiles from there we will check.
+        //     var x = Kiwi.Utils.GameMath.snapToFloor(nx, this.tileWidth) / this.tileWidth;
+        //     var y = Kiwi.Utils.GameMath.snapToFloor(ny, this.tileHeight) / this.tileHeight;
+        //     var w = Kiwi.Utils.GameMath.snapToCeil(b.width, this.tileWidth) / this.tileWidth;
+        //     var h = Kiwi.Utils.GameMath.snapToCeil(b.height, this.tileHeight) / this.tileHeight;
+		//
+        //     //Add one, because we want to include the very end tile.
+        //     var tiles = this.getCollidableTiles(x, y, w + 1, h + 1, collisionType);
+		//
+        //     //Loop through the tiles and make sure they are actually overlapping with the Entity.
+        //     for (var i = 0; i < tiles.length; i++) {
+        //         var t = tiles[i];
+		//
+        //         if (t.x + worldX > b.right || t.x + this.tileWidth + worldX < b.left || t.y + worldY > b.bottom || t.y + this.tileHeight + worldY < b.top) {
+        //             tiles.splice(i, 1);
+        //             i--;
+        //         }
+        //     }
+		//
+        //     return tiles;
+		//
+        // }
 
 		/**
 		* Used to calculate the position of the tilemap on the stage as well as how many tiles can fit on the screen. 
@@ -141,7 +143,7 @@ module Kiwi.GameObjects.Tilemap {
 		*
 		* @method _calculateBoundaries
 		* @param camera {Camera}
-		* @param matrix {Matrix} 
+		* @param matrix {matrix}
 		* @protected
 		*/
         protected _calculateBoundaries(camera: Kiwi.Camera, matrix: Kiwi.Geom.Matrix) {
@@ -155,10 +157,10 @@ module Kiwi.GameObjects.Tilemap {
             this._corner3.setTo(this.game.stage.width, this.game.stage.height);
             this._corner4.setTo(0, this.game.stage.height);
             // Transform corners by camera...
-            this._corner1 = camera.transformPoint(this._corner1);
-            this._corner2 = camera.transformPoint(this._corner2);
-            this._corner3 = camera.transformPoint(this._corner3);
-            this._corner4 = camera.transformPoint(this._corner4);
+            this._corner1 = camera.transformWorldToStage(this._corner1);
+            this._corner2 = camera.transformWorldToStage(this._corner2);
+            this._corner3 = camera.transformWorldToStage(this._corner3);
+            this._corner4 = camera.transformWorldToStage(this._corner4);
             // Transform corners by object...
             var m = matrix.clone();
             m.invert();
@@ -283,25 +285,26 @@ module Kiwi.GameObjects.Tilemap {
 
 
                     //Set up the points
-                    this._corner1.setTo(tx - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                    this._corner2.setTo(tx + cell.w - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                    this._corner3.setTo(tx + cell.w - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
-                    this._corner4.setTo(tx - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
+					// TODO: this is probably wrong now
+                    this._corner1.setTo(tx - t.pivotPoint.x, ty - t.pivotPoint.y - (cell.h - this.tileHeight));
+                    this._corner2.setTo(tx + cell.w - t.pivotPoint.x, ty - t.pivotPoint.y - (cell.h - this.tileHeight));
+                    this._corner3.setTo(tx + cell.w - t.pivotPoint.x, ty + cell.h - t.pivotPoint.y - (cell.h - this.tileHeight));
+                    this._corner4.setTo(tx - t.pivotPoint.x, ty + cell.h - t.pivotPoint.y - (cell.h - this.tileHeight));
 
 
                     //Add on the matrix to the points
-                    m.transformPoint( this._corner1 );
-                    m.transformPoint( this._corner2 );
-                    m.transformPoint( this._corner3 );
-                    m.transformPoint( this._corner4 );
+                    m.transformPointInPlace( this._corner1 );
+                    m.transformPointInPlace( this._corner2 );
+                    m.transformPointInPlace( this._corner3 );
+                    m.transformPointInPlace( this._corner4 );
 
 
                     //Append to the xyuv array
                     vertexItems.push(
-                        this._corner1.x + t.rotPointX, this._corner1.y + t.rotPointY, cell.x, cell.y, this.alpha,                   //Top Left Point
-                        this._corner2.x + t.rotPointX, this._corner2.y + t.rotPointY, cell.x + cell.w, cell.y, this.alpha,          //Top Right Point
-                        this._corner3.x + t.rotPointX, this._corner3.y + t.rotPointY, cell.x + cell.w, cell.y + cell.h, this.alpha, //Bottom Right Point
-                        this._corner4.x + t.rotPointX, this._corner4.y + t.rotPointY, cell.x, cell.y + cell.h, this.alpha           //Bottom Left Point
+                        this._corner1.x + t.pivotPoint.x, this._corner1.y + t.pivotPoint.y, cell.x, cell.y, this.alpha,                   //Top Left Point
+                        this._corner2.x + t.pivotPoint.x, this._corner2.y + t.pivotPoint.y, cell.x + cell.w, cell.y, this.alpha,          //Top Right Point
+                        this._corner3.x + t.pivotPoint.x, this._corner3.y + t.pivotPoint.y, cell.x + cell.w, cell.y + cell.h, this.alpha, //Bottom Right Point
+                        this._corner4.x + t.pivotPoint.x, this._corner4.y + t.pivotPoint.y, cell.x, cell.y + cell.h, this.alpha           //Bottom Left Point
                         );
                 }
             }

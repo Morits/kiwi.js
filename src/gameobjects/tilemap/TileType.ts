@@ -38,7 +38,7 @@ module Kiwi.GameObjects.Tilemap {
 		* @default NONE
 		* @public
 		*/
-		public allowCollisions: number = Kiwi.Components.ArcadePhysics.NONE;
+		// public allowCollisions: number = Kiwi.Components.ArcadePhysics.NONE;
 
 		/**
 		* The properties associated with this type of tile. 
