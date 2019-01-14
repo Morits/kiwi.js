@@ -170,10 +170,10 @@ module Kiwi.GameObjects.Tilemap {
             this._corner4.setTo(0, this.game.stage.height);
 
             // TODO: Transform corners by camera...
-            camera.transformWorldToStage(this._corner1, false);
-            camera.transformWorldToStage(this._corner2, false);
-            camera.transformWorldToStage(this._corner3, false);
-            camera.transformWorldToStage(this._corner4, false);
+            camera.transformStageToWorld(this._corner1, false);
+            camera.transformStageToWorld(this._corner2, false);
+            camera.transformStageToWorld(this._corner3, false);
+            camera.transformStageToWorld(this._corner4, false);
 
             // Transform corners by object...
             var m = matrix.clone();

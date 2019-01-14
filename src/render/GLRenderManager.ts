@@ -138,13 +138,6 @@ module Kiwi.Renderers {
 		 * @public
 		 */
 		public camMatrix: Float32Array;
-		/**
-		 * Camera matrix used on graphics card
-		 * @property camMatrix
-		 * @type Float32Array
-		 * @public
-		 */
-		public camScratchMatrix: Kiwi.Geom.Matrix;
 
 		/**
 		 * The most recently bound texture atlas.
@@ -351,7 +344,6 @@ module Kiwi.Renderers {
 
 			//camera matrix
 			this.camMatrix = new Float32Array( [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ] );
-			this.camScratchMatrix = new Kiwi.Geom.Matrix();
 
 			//stage res needs update on stage resize
 			this._game.stage.onResize.add(function (width, height) {
@@ -506,13 +498,14 @@ module Kiwi.Renderers {
 			// with other renderers: if there is only one render batch,
 			// then `enable` will only pass the cam matrix on the first frame,
 			// and subsequent camera movements will not be passed to the shader.
-			this.camScratchMatrix.setToMatrix(camera.transform.getConcatenatedMatrix()).invert();
-			this.camMatrix[ 0 ] = this.camScratchMatrix.a;
-			this.camMatrix[ 1 ] = this.camScratchMatrix.b;
-			this.camMatrix[ 3 ] = this.camScratchMatrix.c;
-			this.camMatrix[ 4 ] = this.camScratchMatrix.d;
-			this.camMatrix[ 6 ] = this.camScratchMatrix.tx;
-			this.camMatrix[ 7 ] = this.camScratchMatrix.ty;
+			// this.camScratchMatrix.setToMatrix(camera.transform.getConcatenatedMatrix()).invert();
+			var cm: Kiwi.Geom.Matrix = camera.getScratchMatrices().inverted;
+			this.camMatrix[ 0 ] = cm.a;
+			this.camMatrix[ 1 ] = cm.b;
+			this.camMatrix[ 3 ] = cm.c;
+			this.camMatrix[ 4 ] = cm.d;
+			this.camMatrix[ 6 ] = cm.tx;
+			this.camMatrix[ 7 ] = cm.ty;
 			// TODO: update this }}}
 
 			// Mandate blend mode in CocoonJS

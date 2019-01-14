@@ -134,9 +134,9 @@ module Kiwi {
 				this.clean();
 
 			if(copy)
-				return this._scratchMatrices.inverted.transformPoint(pt);
+				return this._scratchMatrices.normal.transformPoint(pt);
 
-			this._scratchMatrices.inverted.transformPointInPlace(pt);
+			this._scratchMatrices.normal.transformPointInPlace(pt);
 			return pt;
 		}
 
@@ -156,10 +156,17 @@ module Kiwi {
 				this.clean();
 
 			if(copy)
-				return this._scratchMatrices.normal.transformPoint(pt);
+				return this._scratchMatrices.inverted.transformPoint(pt);
 
-			this._scratchMatrices.normal.transformPointInPlace(pt);
+			this._scratchMatrices.inverted.transformPointInPlace(pt);
 			return pt;
+		}
+
+		public getScratchMatrices() {
+			if(this.dirty)
+				this.clean();
+
+			return this._scratchMatrices;
 		}
 
 		private clean() {
