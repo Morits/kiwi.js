@@ -5,6 +5,7 @@
 /// <reference path="core/CameraManager.ts" />
 /// <reference path="core/StateConfig.ts" />
 /// <reference path="core/StateManager.ts" />
+/// <reference path="core/Transformable.ts" />
 
 /// <reference path="core/IChild.ts" />
 /// <reference path="core/Entity.ts" />
