@@ -182,32 +182,32 @@ module Kiwi.GameObjects.Tilemap {
 		}
         public set cellIndex(val: number) { }
 
-        /**
-        * Scales the tilemap to the value passed.
-        * @method scaleToWidth 
-        * @param value {Number}
-        * @public
-        */
-		public scaleToWidth(value: number) {
-			this.scale = value / this.widthInPixels;
-        }
-
-        /**
-        * Scales the tilemaps to the value passed.
-        * @method scaleToHeight
-        * @param value {Number}
-        * @public
-        */
-		public scaleToHeight(value: number) {
-			this.scale = value / this.heightInPixels;
-        }
+        // /**
+        // * Scales the tilemap to the value passed.
+        // * @method scaleToWidth
+        // * @param value {Number}
+        // * @public
+        // */
+		// public scaleToWidth(value: number) {
+		// 	this.scale = value / this.widthInPixels;
+        // }
+		//
+        // /**
+        // * Scales the tilemaps to the value passed.
+        // * @method scaleToHeight
+        // * @param value {Number}
+        // * @public
+        // */
+		// public scaleToHeight(value: number) {
+		// 	this.scale = value / this.heightInPixels;
+        // }
 
         /**
         * Centers the origin to the middle of the width/height of the tilemap.
         * @public
         */
 		public centerOrigin() {
-			this.origin.setTo(this.widthInPixels * 0.5, this.heightInPixels * 0.5);
+			this.setOrigin(this.widthInPixels * 0.5, this.heightInPixels * 0.5);
 		}
 
 		/**
@@ -727,42 +727,42 @@ module Kiwi.GameObjects.Tilemap {
         }
 
 
-		/** 
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-		*
-		* @method chartToScreen
-		* @param chartPt {any} A Object containing x/y properties of the tile.
-		* @param [tileW] {Number} The width of the tile
-		* @param [tileH] {Number} The height of the tile
-		* @return {Object} With x/y properties of the location of the map onscreen.
-        * @deprecated
-        * @since 1.3.0
-		* @public
-		*/
-        public chartToScreen(chartPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
-            return {
-                x: chartPt.x * tileW - chartPt.y * tileW,
-                y: chartPt.x * tileH / 2 + chartPt.y * tileH / 2
-            };
-        }
+		// /**
+        // * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
+		// *
+		// * @method chartToScreen
+		// * @param chartPt {any} A Object containing x/y properties of the tile.
+		// * @param [tileW] {Number} The width of the tile
+		// * @param [tileH] {Number} The height of the tile
+		// * @return {Object} With x/y properties of the location of the map onscreen.
+        // * @deprecated
+        // * @since 1.3.0
+		// * @public
+		// */
+        // public chartToScreen(chartPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
+        //     return {
+        //         x: chartPt.x * tileW - chartPt.y * tileW,
+        //         y: chartPt.x * tileH / 2 + chartPt.y * tileH / 2
+        //     };
+        // }
 
-		/**
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-		*
-		* @method screenToChart
-		* @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-		* @param [tileW] {Number} The width of a single tile.
-		* @param [tileH] {Number} The height of a single tile.
-		* @return {Object} With x/y properties of the location of tile on the screen.
-        * @deprecated
-        * @since 1.3.0
-		* @public
-		*/
-        public screenToChart(scrPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
-            var column = Math.floor(scrPt.x / tileW);
-            var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
-            return { x: column + row, y: row };
-        } 
+		// /**
+        // * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
+		// *
+		// * @method screenToChart
+		// * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
+		// * @param [tileW] {Number} The width of a single tile.
+		// * @param [tileH] {Number} The height of a single tile.
+		// * @return {Object} With x/y properties of the location of tile on the screen.
+        // * @deprecated
+        // * @since 1.3.0
+		// * @public
+		// */
+        // public screenToChart(scrPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
+        //     var column = Math.floor(scrPt.x / tileW);
+        //     var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
+        //     return { x: column + row, y: row };
+        // }
 
 
 	}

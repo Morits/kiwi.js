@@ -18,7 +18,7 @@ module Kiwi {
 	 * @return {Kiwi.Camera}
 	 *
 	 */
-	export class Camera {
+	export class Camera extends Kiwi.Transformable {
 
 		/**
 		 * The width of this camara.
@@ -44,14 +44,6 @@ module Kiwi {
 		 * @public
 		 */
 		public fitToStage: boolean = true;
-
-		/**
-		 * The Transform controls the location of the camera within the game world. Also controls the cameras scale and rotation.
-		 * @property transform
-		 * @type Kiwi.Geom.Transform
-		 * @public
-		 */
-		public transform: Kiwi.Geom.Transform;
 
 		/**
 		 * The game this Group belongs to
@@ -88,14 +80,16 @@ module Kiwi {
 		public set enabled(val: boolean) { this._enabled = val; }
 
 		constructor(game: Kiwi.Game, id: number, name: string,x:number,y:number,width:number,height:number) {
+			super();
+
+			this.transform.setXY(x, y);
+
 			this._game = game;
 			this.id = id;
 			this.name = name;
 
 			this.width = width;
 			this.height = height;
-			this.transform = new Kiwi.Geom.Transform();
-			this.transform.xy.setTo(x, y);
 			this._updatedStageSize(width, height);
 			this._game.stage.onResize.add(this._updatedStageSize, this);
 		}
@@ -110,8 +104,8 @@ module Kiwi {
 		private _updatedStageSize(width: number, height: number) {
 			this.width = width;
 			this.height = height;
-			this.transform.origin.setTo(width / 2, height / 2);
-			this.transform.pivotPoint.setTo(width / 2, height / 2)
+			this.transform.setOrigin(-width / 2, -height / 2);
+			this.transform.setPivotPoint(-width / 2, -height / 2);
 		}
 
 		/**
@@ -122,7 +116,7 @@ module Kiwi {
 		 * @private
 		 * @since 1.3.1
 		 */
-		private _scratchMatrix: Kiwi.Geom.Matrix;
+		private _scratchMatrices = {inverted: new Kiwi.Geom.Matrix(), normal: new Kiwi.Geom.Matrix()};
 
 		/**
 		 * Convert from screen coordinates to world coordinates.
@@ -130,12 +124,20 @@ module Kiwi {
 		 * properties representing a point and return the transformed point.
 		 * Useful for calculating coordinates with the mouse.
 		 * @method transformPoint
-		 * @param point {Kiwi.Geom.Point}
+		 * @param pt {Kiwi.Geom.Point}
+		 * @param copy boolean Return a copy or in place
 		 * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
 		 * @public
 		 */
-		public transformStageToWorld(point: Kiwi.Geom.Point): Kiwi.Geom.Point {
-			return this._scratchMatrix.setToMatrix(this.transform.getConcatenatedMatrix()).invert().transformPoint(point);
+		public transformStageToWorld( pt: Kiwi.Geom.Point, copy: boolean = true ): Kiwi.Geom.Point {
+			if(this.dirty)
+				this.clean();
+
+			if(copy)
+				return this._scratchMatrices.inverted.transformPoint(pt);
+
+			this._scratchMatrices.inverted.transformPointInPlace(pt);
+			return pt;
 		}
 
 		/**
@@ -143,13 +145,27 @@ module Kiwi {
 		 * Useful for assessing visibility.
 		 * Similar to "transformPoint", but in reverse.
 		 * @method transformPointToScreen
-		 * @param point {Kiwi.Geom.Point}
+		 * @param pt {Kiwi.Geom.Point}
+		 * @param copy boolean
 		 * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
 		 * @public
 		 * @since 1.2.0
 		 */
-		public transformWorldToStage( point: Kiwi.Geom.Point ): Kiwi.Geom.Point {
-			return this._scratchMatrix.setToMatrix(this.transform.getConcatenatedMatrix()).transformPoint(point);
+		public transformWorldToStage( pt: Kiwi.Geom.Point, copy: boolean = true ): Kiwi.Geom.Point {
+			if(this.dirty)
+				this.clean();
+
+			if(copy)
+				return this._scratchMatrices.normal.transformPoint(pt);
+
+			this._scratchMatrices.normal.transformPointInPlace(pt);
+			return pt;
+		}
+
+		private clean() {
+			this._scratchMatrices.normal.setToMatrix(this.transform.getConcatenatedMatrix());
+			this._scratchMatrices.inverted.setToMatrix(this._scratchMatrices.normal).invert();
+			this.dirty = false;
 		}
 
 		/**
@@ -159,6 +175,21 @@ module Kiwi {
 		 */
 		public update() {
 			// Do nothing
+		}
+
+		public zero() {
+			this.transform.x = 0;
+			this.transform.y = 0;
+			this.transform.rotation = 0;
+			this.transform.setScale(1, 1);
+			this._updatedStageSize(this.width, this.height);
+		}
+
+		public destroy(...params) {
+			super.destroy(params);
+			delete this._scratchMatrices.normal;
+			delete this._scratchMatrices.inverted;
+			delete this._scratchMatrices;
 		}
 
 		/**

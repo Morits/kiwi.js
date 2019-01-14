@@ -103,10 +103,10 @@ module Kiwi.Shaders {
 			varying vec2 vTextureCoord;
 			varying float vAlpha;
 			void main(void) {
-//			   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy;
-			   vec2 pos = aXYUV.xy; 
-			   gl_Position = vec4((pos / uResolution) * vec2(1, -1), 0, 1);
-//			   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);
+			   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy;
+//			   vec2 pos = aXYUV.xy; 
+			   // pos / resolution = 0 => 1 : * 2 = 0 => 2 : - 1 = -1 => 1. vec2(2, -1) to flip y
+			   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);
 			   vTextureCoord = aXYUV.zw / uTextureSize;
 			   vAlpha = aAlpha;
 			}

@@ -1,7 +1,7 @@
 /**
-* 
+*
 * @module Kiwi
-* 
+*
 */
 
 module Kiwi {
@@ -19,10 +19,11 @@ module Kiwi {
 	* @return {Kiwi.Entity} This entity.
 	*
 	*/
-	export class Entity implements Kiwi.IChild {
+	export class Entity extends Kiwi.Transformable implements Kiwi.IChild {
 
 		constructor(state: Kiwi.State, x:number, y: number) {
-			
+			super();
+
 			//  Properties
 			this.state = state;
 			this.game = state.game;
@@ -34,20 +35,11 @@ module Kiwi {
 			this._active = true;
 			this._visible = true;
 			this.components = new Kiwi.ComponentManager(Kiwi.ENTITY, this); 
-			this.transform = new Kiwi.Geom.Transform();
 			this.transform.setXY(x, y);
 		}
 
 		public glRenderer: Kiwi.Renderers.Renderer;
 
-
-		/**
-		* Represents the position, scale, rotation and registration of this Entity.
-		* @property transform
-		* @type Kiwi.Geom.Transform
-		* @public
-		*/
-		public transform: Kiwi.Geom.Transform;
 
 		/**
 		* The group that this entity belongs to. If added onto the state then this is the state.
@@ -70,68 +62,6 @@ module Kiwi {
 		}
 		public get parent(): Kiwi.Group {
 			return this._parent;
-		}
-
-		/**
-		* X coordinate of this Entity. This is just aliased to the transform property.
-		* @property x
-		* @type Number
-		* @public
-		*/
-		public get x(): number {
-			return this.transform.x;
-		}
-		public set x(value: number) {
-			this.transform.x = value;
-		}
-
-		/**
-		* Y coordinate of this Entity. This is just aliased to the transform property.
-		* @property y
-		* @type Number
-		* @public
-		*/
-		public get y(): number {
-			return this.transform.y;
-		}
-
-		public set y(value: number) {
-			this.transform.y = value;
-		}
-
-		/**
-		* Scale both axes of this Entity. This is just aliased to the transform property. This is WRITE-ONLY.
-		* @property scale
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public set scale(value: number) {
-			this.transform.scale = value;
-		}
-
-		/**
-		* Rotation of this Entity. This is just aliased to the transform property.
-		* @property rotation
-		* @type Number
-		* @public
-		*/
-		public get rotation(): number {
-			return this.transform.rotation;
-		}
-		public set rotation(value: number) {
-			this.transform.rotation = value;
-		}
-
-		/**
-		* The anchor point on the x-axis. This is just aliased to the rotPointX on the transform object.
-		* @property anchorPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get origin(): Kiwi.Geom.Point {
-			return this.transform.origin;
 		}
 
 		/**
@@ -221,7 +151,8 @@ module Kiwi {
 		* @since 1.1.0
 		*/
 		public scaleToWidth(value: number) {
-			this.scale = value / this.width;
+			var s = value / this.width;
+			this.transform.setScale(s, s);
 		}
 
 		/**
@@ -232,7 +163,8 @@ module Kiwi {
 		* @since 1.1.0
 		*/
 		public scaleToHeight(value: number) {
-			this.scale = value / this.height;
+			var s = value / this.height;
+			this.transform.setScale(s, s);
 		}
 
 		/**
@@ -456,27 +388,6 @@ module Kiwi {
 			return this._clock;
 		}
 
-		/**
-		* A value used by components to control if the Entity needs re-rendering
-		* @property _dirty
-		* @type boolean
-		* @private
-		*/
-		private _dirty: boolean;
-
-		/**
-		* A value used by components to control if the Entity needs re-rendering
-		* @property dirty
-		* @type boolean
-		* @public
-		*/
-		public set dirty(value: boolean) {
-			this._dirty = value;
-		}
-		public get dirty():boolean {
-			return this._dirty;
-		}
-
 		//  Both of these methods can and often should be over-ridden by classes extending Entity to handle specific implementations
 
 		/**
@@ -539,7 +450,7 @@ module Kiwi {
 		* @public
 		*/
 		public destroy(immediate: boolean = false) {
-
+			super.destroy();
 			this._exists = false;
 			this._active = false;
 			this._visible = false;
@@ -549,7 +460,6 @@ module Kiwi {
 				if (this.parent !== null && typeof this.parent !== "undefined") this.parent.removeChild(this);
 				if (this.state) this.state.removeFromTrackingList(this);
 				delete this._parent;
-				delete this.transform;
 				delete this._clock;
 				delete this.state;
 				delete this.game;

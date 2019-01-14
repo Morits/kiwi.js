@@ -42,6 +42,7 @@ module Kiwi.Geom {
 			// Muddy all the descendants
 			if(val) {
 				this._dirty = true;
+				this._owner.dirty = true;
 				this._children.forEach(e => {
 					if(e !== this)
 						e.dirty = true;
@@ -59,6 +60,8 @@ module Kiwi.Geom {
 		private _origin: Point = new Point(0, 0);
 		public get origin() { return this._origin; }
 		public set origin(val) { this._origin = val; this.dirty = true; }
+		public set originX(x: number) { this._pivotPoint.x = x; this.dirty = true; }
+		public set originY(y: number) { this._pivotPoint.y = y; this.dirty = true; }
 		public setOrigin(x: number, y: number) {
 			this._origin.x = x;
 			this._origin.y = y;
@@ -69,6 +72,9 @@ module Kiwi.Geom {
 		private _pivotPoint: Point = new Point(0, 0);
 		public get pivotPoint() { return this._pivotPoint; }
 		public set pivotPoint(val) { this._pivotPoint = val; this.dirty = true;}
+		public set pivotPointX(x: number) { this._pivotPoint.x = x; this.dirty = true; }
+		public set pivotPointY(y: number) { this._pivotPoint.y = y; this.dirty = true; }
+		public setPivotPoint(x: number, y: number) { this._pivotPoint.x = x; this._pivotPoint.y = y; this.dirty = true; }
 
 
 		private _scale: Point = new Point(1, 1);
@@ -77,17 +83,8 @@ module Kiwi.Geom {
 		public get scaleX():number { return this._scale.x; }
 		public set scaleY(value: number) { this._scale.y = value; this.dirty = true; }
 		public get scaleY(): number { return this._scale.y; }
-		public set scale(val: any) {
-			if(val.x)
-				this._scale.xy = val;
-
-			else {
-				this._scale.x = val;
-				this._scale.y = val;
-			}
-
-			this.dirty = true;
-		}
+		public set scale(pt: any) { if(pt.x) this._scale.setTo(pt.x, pt.y); else this._scale.setTo(pt, pt); this.dirty = true; }
+		public setScale(x: number, y: number) { this._scale.setTo(x, y); this.dirty = true;}
 
 
 		private _xy: Point = new Point(0, 0);
@@ -154,7 +151,10 @@ module Kiwi.Geom {
 			}
 		}
 
-		constructor() {
+		private _owner: Transformable;
+
+		constructor(owner: Transformable) {
+			this._owner = owner;
 			this.setTransform(0, 0, 1, 1, 0, 0, 0);
 
 			this._matrix = new Matrix();
@@ -172,8 +172,8 @@ module Kiwi.Geom {
 				-sin * this._scale.y,
 				sin * this._scale.x,
 				cos * this._scale.y,
-				(((-this._pivotPoint.x * cos + -this._pivotPoint.y * sin + this._pivotPoint.x) * this._scale.x) + (-this._origin.x * this._scale.x + this._origin.x)) + this._xy.x,
-				(((-this._pivotPoint.x * -sin + -this._pivotPoint.y * cos + this._pivotPoint.y) * this._scale.y) + (-this._origin.y * this._scale.y + this._origin.y)) + this._xy.y
+				(((-this._pivotPoint.x * cos + -this._pivotPoint.y * sin + this._pivotPoint.x) * this._scale.x) + (-this._origin.x * this._scale.x + this._origin.x)) + this._xy.x + this._origin.x,
+				(((-this._pivotPoint.x * -sin + -this._pivotPoint.y * cos + this._pivotPoint.y) * this._scale.y) + (-this._origin.y * this._scale.y + this._origin.y)) + this._xy.y + this._origin.x
 			);
 		}
 
@@ -262,6 +262,10 @@ module Kiwi.Geom {
 			}*/
 
 			return false;
+		}
+
+		public destroy() {
+
 		}
 
 		/**

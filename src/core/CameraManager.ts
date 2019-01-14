@@ -186,12 +186,7 @@ module Kiwi {
 		 */
 		public zeroCamera(camera:Kiwi.Camera)
 		{
-			camera.transform.x = 0;
-			camera.transform.y = 0;
-			camera.transform.rotation = 0;
-			camera.transform.scale = 1;
-			camera.transform.origin.setTo(camera.width / 2, camera.height / 2);
-			camera.transform.pivotPoint.setTo(camera.width / 2, camera.height / 2);
+			camera.zero();
 		}
 
 	}
