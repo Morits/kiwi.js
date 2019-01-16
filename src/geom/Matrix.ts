@@ -185,8 +185,30 @@ module Kiwi.Geom {
 			return ret;
 		}
 
-		public preMultiplyMatrix(b: Matrix) {
-			this.setToMatrix(b.clone().multiplyMatrix(this));
+		/**
+		 * Alias for append for people used to Matrix calculations
+		 * @param m {Kiwi.Geom.Matrix} The Matrix to append.
+		 * @return {Kiwi.Geom.Matrix} This object.
+		 * @public
+		 */
+		public multiplyMatrixInPlace(b: Matrix): Matrix {
+			var aA = this.a;
+			var aB = this.b;
+			var aC = this.c;
+			var aD = this.d;
+			var aX = this.tx;
+
+			this.a = aA * b.a + aC * b.b;
+			this.b = aB * b.a + aD * b.b;
+			this.c = aA * b.c + aC * b.d;
+			this.d = aB * b.c + aD * b.d;
+			this.tx = aA * b.tx + aC * b.ty + aX;
+			this.ty = aB * b.tx + aD * b.ty + this.ty;
+			return this;
+		}
+
+		public preMultiplyMatrixInPlace(b: Matrix) {
+			this.setToMatrix(b.multiplyMatrix(this));
 		}
 
 		public postMultiply(b: Matrix) {

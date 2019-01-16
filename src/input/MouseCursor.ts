@@ -144,16 +144,16 @@ module Kiwi.Input {
 
 			if (this.preventWheel)  event.preventDefault();
 
-			if (event['wheelDeltaX']) {
-				this.wheelDeltaX = event['wheelDeltaX'];
+			if (event['wheelDeltaX'] && Math.abs(event['wheelDeltaX']) !== 120) {
+				this.wheelDeltaX = -event['wheelDeltaX'] / 1000;
 			} else {
-				this.wheelDeltaX = event.deltaX;
+				this.wheelDeltaX = event.deltaX / 100;
 			}
 
-			if (event['wheelDeltaY']) {
-				this.wheelDeltaY = event['wheelDeltaY'];
+			if (event['wheelDeltaY'] && Math.abs(event['wheelDeltaY']) !== 120) {
+				this.wheelDeltaY = -event['wheelDeltaY'] / 1000;
 			} else {
-				this.wheelDeltaY = event.deltaY;
+				this.wheelDeltaY = event.deltaY / 100;
 			}
 		}
 

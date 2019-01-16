@@ -18,6 +18,7 @@ module Kiwi {
 		public set xy(pt: Kiwi.Geom.Point) { this.transform.xy = pt; }
 		public setXY(x: number, y: number) { this.transform.setXY(x, y); }
 
+		public get scale() { return this.transform.scale; }
 		public set scaleX(x: number) { this.transform.scaleX = x; }
 		public set scaleY(y: number) { this.transform.scaleY = y; }
 		public set scale(pt: Kiwi.Geom.Point | number ) { this.transform.scale = pt; }
@@ -33,10 +34,16 @@ module Kiwi {
 		public set pivotPointY(y: number) { this.transform.pivotPointY = y; }
 		public setPivotPoint(x: number, y: number) { this.transform.setPivotPoint(x, y); }
 
+		public get origin() { return this.transform.origin; }
 		public set origin(pt: Kiwi.Geom.Point) { this.transform.origin = pt; }
 		public set originX(x: number) { this.transform.originX = x; }
 		public set originY(y: number) { this.transform.originY = y; }
 		public setOrigin(x: number, y: number) { this.transform.setOrigin(x, y); }
+
+		// Freeform
+		public freeformScale(x: number, y: number, aroundX: number, aroundY: number) {
+			this.transform.freeformScale(x, y, aroundX, aroundY);
+		}
 
 		constructor() {
 			this.transform = new Kiwi.Geom.Transform(this);

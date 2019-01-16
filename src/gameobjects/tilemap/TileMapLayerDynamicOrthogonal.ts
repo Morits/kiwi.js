@@ -265,9 +265,9 @@ module Kiwi.GameObjects.Tilemap {
                     //Append to the xyuv array
                     vertexItems.push(
                         this._corner1.x, this._corner1.y, cell.x, cell.y, this.alpha,                   //Top Left Point
-                        this._corner2.x, this._corner2.y, cell.x + cell.w, cell.y, this.alpha,          //Top Right Point
-                        this._corner3.x, this._corner3.y, cell.x + cell.w, cell.y + cell.h, this.alpha, //Bottom Right Point
-                        this._corner4.x, this._corner4.y, cell.x, cell.y + cell.h, this.alpha           //Bottom Left Point
+                        this._corner2.x, this._corner2.y, cell.x + cell.w -1, cell.y, this.alpha,          //Top Right Point
+                        this._corner3.x, this._corner3.y, cell.x + cell.w -1, cell.y + cell.h -1, this.alpha, //Bottom Right Point
+                        this._corner4.x, this._corner4.y, cell.x, cell.y + cell.h - 1, this.alpha           //Bottom Left Point
                         );
                 }
             }

@@ -121,6 +121,9 @@ module Kiwi.Geom {
 		private _matrix: Matrix;
 		public get matrix(): Matrix { return this._matrix; }
 
+		private _freeformMatrix: Matrix;
+		public get freeformMatrix(): Matrix { return this._freeformMatrix; }
+
 		/**
 		 * The most recently calculated Matrix from getConcatenatedMatrix.
 		 *
@@ -158,7 +161,14 @@ module Kiwi.Geom {
 			this.setTransform(0, 0, 1, 1, 0, 0, 0);
 
 			this._matrix = new Matrix();
+			this._freeformMatrix = new Matrix();
 			this._cachedConcatenatedMatrix = new Matrix();
+		}
+
+		// TODO: this should only be performed during an update
+		public freeformScale(x: number, y: number, aroundX: number, aroundY: number) {
+			this._freeformMatrix.multiplyMatrixInPlace(new Matrix(x, 0, 0, y, -aroundX * x + aroundX, -aroundY * y + aroundY));
+			this.dirty = true;
 		}
 
 		private _performTransformation() {
@@ -174,7 +184,7 @@ module Kiwi.Geom {
 				cos * this._scale.y,
 				(((-this._pivotPoint.x * cos + -this._pivotPoint.y * sin + this._pivotPoint.x) * this._scale.x) + (-this._origin.x * this._scale.x + this._origin.x)) + this._xy.x + this._origin.x,
 				(((-this._pivotPoint.x * -sin + -this._pivotPoint.y * cos + this._pivotPoint.y) * this._scale.y) + (-this._origin.y * this._scale.y + this._origin.y)) + this._xy.y + this._origin.x
-			);
+			).multiplyMatrixInPlace(this._freeformMatrix);
 		}
 
 		/**
