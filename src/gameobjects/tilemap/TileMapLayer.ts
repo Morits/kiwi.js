@@ -57,18 +57,18 @@ module Kiwi.GameObjects.Tilemap {
 			this._corner3 = new Kiwi.Geom.Point(0,0);
 			this._corner4 = new Kiwi.Geom.Point(0,0);
 
-            this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, null));
-            this.physics.immovable = true;
+            // this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, null));
+            // this.physics.immovable = true;
         }
 
-		/**
-		* The physics component contained on the Tilemap. Use for basic collisions between People and Tiles.
-		* Note: That tilemap layers a immovable and collisions with tiles are set on the individual TileTypes that are contained on the TileMap. 
-		* @property physics
-		* @type ArcadePhysics
-		* @public
-		*/
-        public physics: Kiwi.Components.ArcadePhysics;
+		// /**
+		// * The physics component contained on the Tilemap. Use for basic collisions between People and Tiles.
+		// * Note: That tilemap layers a immovable and collisions with tiles are set on the individual TileTypes that are contained on the TileMap.
+		// * @property physics
+		// * @type ArcadePhysics
+		// * @public
+		// */
+        // public physics: Kiwi.Components.ArcadePhysics;
 
 		/**
 		* Returns the type of child that this is. 
@@ -182,34 +182,32 @@ module Kiwi.GameObjects.Tilemap {
 		}
         public set cellIndex(val: number) { }
 
-        /**
-        * Scales the tilemap to the value passed.
-        * @method scaleToWidth 
-        * @param value {Number}
-        * @public
-        */
-		public scaleToWidth(value: number) {
-			this.scale = value / this.widthInPixels;
-        }
+        // /**
+        // * Scales the tilemap to the value passed.
+        // * @method scaleToWidth
+        // * @param value {Number}
+        // * @public
+        // */
+		// public scaleToWidth(value: number) {
+		// 	this.scale = value / this.widthInPixels;
+        // }
+		//
+        // /**
+        // * Scales the tilemaps to the value passed.
+        // * @method scaleToHeight
+        // * @param value {Number}
+        // * @public
+        // */
+		// public scaleToHeight(value: number) {
+		// 	this.scale = value / this.heightInPixels;
+        // }
 
         /**
-        * Scales the tilemaps to the value passed.
-        * @method scaleToHeight
-        * @param value {Number}
+        * Centers the origin to the middle of the width/height of the tilemap.
         * @public
         */
-		public scaleToHeight(value: number) {
-			this.scale = value / this.heightInPixels;
-        }
-
-        /**
-        * Centers the anchor point to the middle of the width/height of the tilemap.
-        * @method centerAnchorPoint
-        * @public
-        */
-		public centerAnchorPoint() {
-			this.anchorPointX = this.widthInPixels * 0.5;
-			this.anchorPointY = this.heightInPixels * 0.5;
+		public centerOrigin() {
+			this.setOrigin(this.widthInPixels * 0.5, this.heightInPixels * 0.5);
 		}
 
 		/**
@@ -539,9 +537,9 @@ module Kiwi.GameObjects.Tilemap {
 		* @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object. 
 		* @public
 		*/
-		public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
-			return [];
-		}
+		// public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
+		// 	return [];
+		// }
 
 
 		/**
@@ -557,49 +555,49 @@ module Kiwi.GameObjects.Tilemap {
 		* @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object. 
 		* @public
 		*/
-		public getCollidableTiles(x: number= 0, y: number= 0, width: number= this.width, height: number = this.height, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
-
-			var tiles = [];
-
-			//Make sure its within the map.
-			if (x > this.width || y > this.height) return; 
-
-			if (x < 0) x = 0;
-			if (y < 0) y = 0;
-
-			if (x + width > this.width) width = this.width - x;
-			if (y + height > this.height) height = this.height - y;
-
-			//Loop through and of the tiles.
-			for (var j = y; j < y + height; j++) {
-				for (var i = x; i < x + width; i++) {
-
-					//Get the tile index.
-					var index = this.getIndexFromXY(i, j);
-
-					//Does that index exist? Should do but just in case.
-					if (index === -1) continue;
-
-					var type = this.tileData[index];
-
-					//If the collision type matches the one passed. 
-					if ((this.tilemap.tileTypes[type].allowCollisions & collisionType) !== Kiwi.Components.ArcadePhysics.NONE) {
-
-						tiles.push({
-							index: index,
-							type: type,
-							x: i * this.tileWidth,
-							y: j * this.tileHeight
-						});
-
-
-					}
-
-				}
-			}
-
-			return tiles;
-		}
+		// public getCollidableTiles(x: number= 0, y: number= 0, width: number= this.width, height: number = this.height, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
+		//
+		// 	var tiles = [];
+		//
+		// 	//Make sure its within the map.
+		// 	if (x > this.width || y > this.height) return;
+		//
+		// 	if (x < 0) x = 0;
+		// 	if (y < 0) y = 0;
+		//
+		// 	if (x + width > this.width) width = this.width - x;
+		// 	if (y + height > this.height) height = this.height - y;
+		//
+		// 	//Loop through and of the tiles.
+		// 	for (var j = y; j < y + height; j++) {
+		// 		for (var i = x; i < x + width; i++) {
+		//
+		// 			//Get the tile index.
+		// 			var index = this.getIndexFromXY(i, j);
+		//
+		// 			//Does that index exist? Should do but just in case.
+		// 			if (index === -1) continue;
+		//
+		// 			var type = this.tileData[index];
+		//
+		// 			//If the collision type matches the one passed.
+		// 			if ((this.tilemap.tileTypes[type].allowCollisions & collisionType) !== Kiwi.Components.ArcadePhysics.NONE) {
+		//
+		// 				tiles.push({
+		// 					index: index,
+		// 					type: type,
+		// 					x: i * this.tileWidth,
+		// 					y: j * this.tileHeight
+		// 				});
+		//
+		//
+		// 			}
+		//
+		// 		}
+		// 	}
+		//
+		// 	return tiles;
+		// }
 
 
 		/**
@@ -702,7 +700,7 @@ module Kiwi.GameObjects.Tilemap {
 		*
 		* @method _calculateBoundaries
 		* @param camera {Camera}
-		* @param matrix {Matrix} 
+		* @param matrix {matrix}
 		* @protected
 		*/
 		protected _calculateBoundaries(camera: Kiwi.Camera, matrix: Kiwi.Geom.Matrix) {
@@ -729,42 +727,42 @@ module Kiwi.GameObjects.Tilemap {
         }
 
 
-		/** 
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-		*
-		* @method chartToScreen
-		* @param chartPt {any} A Object containing x/y properties of the tile.
-		* @param [tileW] {Number} The width of the tile
-		* @param [tileH] {Number} The height of the tile
-		* @return {Object} With x/y properties of the location of the map onscreen.
-        * @deprecated
-        * @since 1.3.0
-		* @public
-		*/
-        public chartToScreen(chartPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
-            return {
-                x: chartPt.x * tileW - chartPt.y * tileW,
-                y: chartPt.x * tileH / 2 + chartPt.y * tileH / 2
-            };
-        }
+		// /**
+        // * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
+		// *
+		// * @method chartToScreen
+		// * @param chartPt {any} A Object containing x/y properties of the tile.
+		// * @param [tileW] {Number} The width of the tile
+		// * @param [tileH] {Number} The height of the tile
+		// * @return {Object} With x/y properties of the location of the map onscreen.
+        // * @deprecated
+        // * @since 1.3.0
+		// * @public
+		// */
+        // public chartToScreen(chartPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
+        //     return {
+        //         x: chartPt.x * tileW - chartPt.y * tileW,
+        //         y: chartPt.x * tileH / 2 + chartPt.y * tileH / 2
+        //     };
+        // }
 
-		/**
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-		*
-		* @method screenToChart
-		* @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-		* @param [tileW] {Number} The width of a single tile.
-		* @param [tileH] {Number} The height of a single tile.
-		* @return {Object} With x/y properties of the location of tile on the screen.
-        * @deprecated
-        * @since 1.3.0
-		* @public
-		*/
-        public screenToChart(scrPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
-            var column = Math.floor(scrPt.x / tileW);
-            var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
-            return { x: column + row, y: row };
-        } 
+		// /**
+        // * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
+		// *
+		// * @method screenToChart
+		// * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
+		// * @param [tileW] {Number} The width of a single tile.
+		// * @param [tileH] {Number} The height of a single tile.
+		// * @return {Object} With x/y properties of the location of tile on the screen.
+        // * @deprecated
+        // * @since 1.3.0
+		// * @public
+		// */
+        // public screenToChart(scrPt: any, tileW: number = this.tileWidth / 2, tileH: number = this.tileHeight): any {
+        //     var column = Math.floor(scrPt.x / tileW);
+        //     var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
+        //     return { x: column + row, y: row };
+        // }
 
 
 	}

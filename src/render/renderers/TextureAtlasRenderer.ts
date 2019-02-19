@@ -167,6 +167,7 @@ module Kiwi.Renderers {
 		public draw(gl: WebGLRenderingContext) {
 			this._vertexBuffer.uploadBuffer(gl, this._vertexBuffer.items);
 
+			// The vertex buffer is packet like this: xyuva. xyuv = 4* 32 bit (16 byte) a = 1 32 bit: 4 byte. stride = 20 byte
 			gl.enableVertexAttribArray(this.shaderPair.attributes.aXYUV);
 			gl.vertexAttribPointer(this.shaderPair.attributes.aXYUV, 4, gl.FLOAT, false, 20, 0);
 
@@ -246,15 +247,15 @@ module Kiwi.Renderers {
 
 			var cell = entity.atlas.cells[ entity.cellIndex ];
 
-			this._pt1.setTo( 0 - t.rotPointX, 0 - t.rotPointY );
-			this._pt2.setTo( cell.w - t.rotPointX, 0 - t.rotPointY );
-			this._pt3.setTo( cell.w - t.rotPointX, cell.h - t.rotPointY );
-			this._pt4.setTo( 0 - t.rotPointX, cell.h - t.rotPointY );
+			this._pt1.setTo( 0, 0 );
+			this._pt2.setTo( cell.w, 0 );
+			this._pt3.setTo( cell.w, cell.h );
+			this._pt4.setTo( 0, cell.h );
 
-			m.transformPoint(this._pt1);
-			m.transformPoint(this._pt2);
-			m.transformPoint(this._pt3);
-			m.transformPoint(this._pt4);
+			m.transformPointInPlace(this._pt1);
+			m.transformPointInPlace(this._pt2);
+			m.transformPointInPlace(this._pt3);
+			m.transformPointInPlace(this._pt4);
 
 			this._vertexBuffer.items.push(
 				this._pt1.x, this._pt1.y, cell.x, cell.y, entity.alpha,

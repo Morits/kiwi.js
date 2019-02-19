@@ -1,7 +1,7 @@
 /**
-* 
+*
 * @module Kiwi
-* 
+*
 */
 
 module Kiwi {
@@ -19,10 +19,11 @@ module Kiwi {
 	* @return {Kiwi.Entity} This entity.
 	*
 	*/
-	export class Entity implements Kiwi.IChild {
+	export class Entity extends Kiwi.Transformable implements Kiwi.IChild {
 
 		constructor(state: Kiwi.State, x:number, y: number) {
-			
+			super();
+
 			//  Properties
 			this.state = state;
 			this.game = state.game;
@@ -34,22 +35,11 @@ module Kiwi {
 			this._active = true;
 			this._visible = true;
 			this.components = new Kiwi.ComponentManager(Kiwi.ENTITY, this); 
-			this.transform = new Kiwi.Geom.Transform();
-			this.transform.x = x;
-			this.transform.y = y; 
-
+			this.transform.setXY(x, y);
 		}
 
 		public glRenderer: Kiwi.Renderers.Renderer;
 
-
-		/**
-		* Represents the position, scale, rotation and registration of this Entity.
-		* @property transform
-		* @type Kiwi.Geom.Transform
-		* @public
-		*/
-		public transform: Kiwi.Geom.Transform;
 
 		/**
 		* The group that this entity belongs to. If added onto the state then this is the state.
@@ -72,160 +62,6 @@ module Kiwi {
 		}
 		public get parent(): Kiwi.Group {
 			return this._parent;
-		}
-
-		/**
-		* X coordinate of this Entity. This is just aliased to the transform property.
-		* @property x
-		* @type Number
-		* @public
-		*/
-		public get x(): number {
-			return this.transform.x;
-		}
-		public set x(value: number) {
-			this.transform.x = value;
-		}
-
-		/**
-		* Y coordinate of this Entity. This is just aliased to the transform property.
-		* @property y
-		* @type Number
-		* @public
-		*/
-		public get y(): number {
-			return this.transform.y;
-		}
-
-		public set y(value: number) {
-			this.transform.y = value;
-		}
-
-		/**
-		* X coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-		* @property worldX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldX(): number {
-			return( this.transform.worldX );
-		}
-
-		/**
-		* Y coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-		* @property worldY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldY(): number {
-			return( this.transform.worldY );
-		}
-
-		/**
-		* Scale X of this Entity. This is just aliased to the transform property.
-		* @property scaleX
-		* @type Number
-		* @public
-		*/
-		public get scaleX():number {
-			return this.transform.scaleX;
-		}
-		public set scaleX(value:number) {
-			this.transform.scaleX = value;
-		}
-
-		/**
-		* Scale Y coordinate of this Entity. This is just aliased to the transform property.
-		* @property scaleY
-		* @type Number
-		* @public
-		*/
-		public get scaleY(): number {
-			return this.transform.scaleY;
-		}
-		
-		public set scaleY(value: number) {
-			this.transform.scaleY = value;
-		}
-
-		/**
-		* Scale both axes of this Entity. This is just aliased to the transform property. This is WRITE-ONLY.
-		* @property scale
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public set scale(value: number) {
-			this.transform.scale = value;
-		}
-
-		/**
-		* Rotation of this Entity. This is just aliased to the transform property.
-		* @property rotation
-		* @type Number
-		* @public
-		*/
-		public get rotation(): number {
-			return this.transform.rotation;
-		}
-		public set rotation(value: number) {
-			this.transform.rotation = value;
-		}
-
-		/**
-		* The rotation point on the x-axis. This is just aliased to the rotPointX on the transform object.
-		* @property rotPointX
-		* @type number
-		* @public
-		*/
-		public get rotPointX(): number {
-			return this.transform.rotPointX;
-		}
-		public set rotPointX(value: number) {
-			this.transform.rotPointX = value;
-		}
-
-		/**
-		* The rotation point on the y-axis. This is just aliased to the rotPointY on the transform object.
-		* @property rotPointY
-		* @type number
-		* @public
-		*/
-		public get rotPointY(): number {
-			return this.transform.rotPointY;
-		}
-		public set rotPointY(value: number) {
-			this.transform.rotPointY = value;
-		}
-
-		/**
-		* The anchor point on the x-axis. This is just aliased to the rotPointX on the transform object.
-		* @property anchorPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointX(): number {
-			return this.transform.anchorPointX;
-		}
-		public set anchorPointX(value: number) {
-			this.transform.anchorPointX = value;
-		}
-
-		/**
-		* The anchor point on the y-axis. This is just aliased to the rotPointY on the transform object.
-		* @property anchorPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointY(): number {
-			return this.transform.anchorPointY;
-		}
-		public set anchorPointY(value: number) {
-			this.transform.anchorPointY = value;
 		}
 
 		/**
@@ -315,7 +151,8 @@ module Kiwi {
 		* @since 1.1.0
 		*/
 		public scaleToWidth(value: number) {
-			this.scale = value / this.width;
+			var s = value / this.width;
+			this.transform.setScale(s, s);
 		}
 
 		/**
@@ -326,18 +163,8 @@ module Kiwi {
 		* @since 1.1.0
 		*/
 		public scaleToHeight(value: number) {
-			this.scale = value / this.height;
-		}
-
-		/**
-		* Center the anchor point. Moves the anchor point (rotPointX and Y) to precisely halfway along the width and height properties of this Entity.
-		* @method centerAnchorPoint
-		* @public
-		* @since 1.1.0
-		*/
-		public centerAnchorPoint() {
-			this.anchorPointX = this.width * 0.5;
-			this.anchorPointY = this.height * 0.5;
+			var s = value / this.height;
+			this.transform.setScale(s, s);
 		}
 
 		/**
@@ -541,55 +368,6 @@ module Kiwi {
 		}
 
 		/**
-		* Controls whether render is automatically called by the parent. 
-		* @property _willRender
-		* @type boolean
-		* @default true
-		* @private
-		* @deprecated Use _visible instead
-		*/
-		private _willRender: boolean;
-
-		/**
-		* Toggles if this Entity will be rendered.
-		* @property willRender
-		* @type boolean
-		* @default true
-		* @public
-		* @deprecated Use visible instead
-		*/
-		public set willRender(value: boolean) {
-			this._willRender = value;
-		}
-		public get willRender():boolean {
-			return this._willRender;
-		}
-
-		/**
-		* Controls if this Entity is input enabled or not (i.e. responds to touch/mouse events)
-		* @property _inputEnabled
-		* @type boolean
-		* @private
-		* @deprecated As of 1.2.3, nothing was found to use this.
-		*/
-		private _inputEnabled: boolean;
-
-		/**
-		* Controls if this Entity is input enabled or not (i.e. responds to touch/mouse events)
-		* This method should be over-ridden to handle specific game object implementations.
-		* @property inputEnabled
-		* @type boolean
-		* @public
-		* @deprecated As of 1.2.3, nothing was found to use this.
-		*/
-		public set inputEnabled(value: boolean) {
-			this._inputEnabled = value;
-		}
-		public get inputEnabled():boolean {
-			return this._inputEnabled;
-		}
-		
-		/**
 		* The clock that this entity use's for time based calculations. This generated by the state on instatiation.
 		* @property _clock
 		* @type Kiwi.Clock
@@ -608,27 +386,6 @@ module Kiwi {
 		}
 		public get clock(): Kiwi.Time.Clock {
 			return this._clock;
-		}
-
-		/**
-		* A value used by components to control if the Entity needs re-rendering
-		* @property _dirty
-		* @type boolean
-		* @private
-		*/
-		private _dirty: boolean;
-
-		/**
-		* A value used by components to control if the Entity needs re-rendering
-		* @property dirty
-		* @type boolean
-		* @public
-		*/
-		public set dirty(value: boolean) {
-			this._dirty = value;
-		}
-		public get dirty():boolean {
-			return this._dirty;
 		}
 
 		//  Both of these methods can and often should be over-ridden by classes extending Entity to handle specific implementations
@@ -693,7 +450,7 @@ module Kiwi {
 		* @public
 		*/
 		public destroy(immediate: boolean = false) {
-
+			super.destroy();
 			this._exists = false;
 			this._active = false;
 			this._visible = false;
@@ -703,7 +460,6 @@ module Kiwi {
 				if (this.parent !== null && typeof this.parent !== "undefined") this.parent.removeChild(this);
 				if (this.state) this.state.removeFromTrackingList(this);
 				delete this._parent;
-				delete this.transform;
 				delete this._clock;
 				delete this.state;
 				delete this.game;

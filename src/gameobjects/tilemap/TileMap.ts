@@ -448,11 +448,14 @@ module Kiwi.GameObjects.Tilemap {
 			//Create the new layer
             var layer: TileMapLayer;
 
-            if (orientation == ISOMETRIC) {
+            if (orientation == ISOMETRIC)
                 layer = new Kiwi.GameObjects.Tilemap.TileMapLayerIsometric(this, name, atlas, data, tw, th, x, y, w, h);
-            } else {
+
+			else if(orientation == ORTHOGONAL)
                 layer = new Kiwi.GameObjects.Tilemap.TileMapLayerOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
-            }
+
+            else
+				layer = new Kiwi.GameObjects.Tilemap.TileMapLayerDynamicOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
 
 			//Add the new layer to the array
 			this.layers.push(layer);
@@ -569,5 +572,6 @@ module Kiwi.GameObjects.Tilemap {
 	export var ISOMETRIC: string = "isometric";
 
 	export var ORTHOGONAL: string = "orthogonal";
+	export var DYNAMIC_ORTHOGONAL: string = "dynamicOrthogonal";
 
 }

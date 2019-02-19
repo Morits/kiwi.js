@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 				options: {
 					target: "es5",
 					module: "commonjs",
-					sourcemap: false,
+					sourcemap: true,
 					declaration: true,
 					comments: true
 				},
@@ -47,16 +47,16 @@ module.exports = function(grunt) {
 			}
 		},
 
-		concat: {
-			build: {
-				src: ["build/kiwi.js", "src/gl-matrix-min.js"],
-				dest: "build/kiwi.js"
-			},
-			buildmin: {
-				src: ["build/kiwi.min.js", "src/gl-matrix-min.js"],
-				dest: "build/kiwi.min.js"
-			}
-		},
+		// concat: {
+		// 	build: {
+		// 		src: ["build/kiwi.js", "src/gl-matrix-min.js"],
+		// 		dest: "build/kiwi.js"
+		// 	},
+		// 	buildmin: {
+		// 		src: ["build/kiwi.min.js", "src/gl-matrix-min.js"],
+		// 		dest: "build/kiwi.min.js"
+		// 	}
+		// },
 
 		tslint: {
 			options: {
@@ -86,13 +86,25 @@ module.exports = function(grunt) {
 			templateGame: {
 				src: "./build/kiwi.js",
 				dest: "./templateGame/lib/kiwi.js"
+			},
+
+			doclibsGame: {
+				src: "./build/kiwi.js",
+				dest: "../../../../docroot/lib/kiwi/kiwi.js",
+			},
+			doclibsGame2: {
+				src: "./build/kiwi.js.map",
+				dest: "../../../../docroot/lib/kiwi/kiwi.js.map",
 			}
 		}
 	});
 
+	grunt.registerTask( "min", [
+		"ts:build", "tslint",
+		"copy:doclibsGame", "copy:doclibsGame2" ] );
 	grunt.registerTask( "default", [
 		"ts:build", "tslint", "concat:build", "uglify:build",
-		"copy:templateGame" ] );
+		"copy:templateGame", "copy:doclibsGame" ] );
 	grunt.registerTask( "full", [
 		"ts:build", "tslint", "concat:build", "uglify:build",
 		"yuidoc:compile", "copy:templateGame",

@@ -50,8 +50,7 @@ module Kiwi.GameObjects {
 			//may need to add an optional other cell frame index here
 			this.width = atlas.cells[this.cellIndex].w;
 			this.height = atlas.cells[this.cellIndex].h;
-			this.transform.rotPointX = this.width / 2;
-			this.transform.rotPointY = this.height / 2;
+			this.transform.pivotPoint.setTo(this.width / 2, this.height / 2);
 				
 
 			//Create the components needed
@@ -158,7 +157,7 @@ module Kiwi.GameObjects {
 				ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
 							 
 				var cell = this.atlas.cells[this.cellIndex];
-				ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, -t.rotPointX, -t.rotPointY, cell.w, cell.h);
+				ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h); // , -t.rotPointX, -t.rotPointY, cell.w, cell.h
 				ctx.restore();
 			}
 		}

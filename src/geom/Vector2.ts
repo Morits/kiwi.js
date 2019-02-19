@@ -192,7 +192,11 @@ module Kiwi.Geom {
 		* @public
 		*/
 		public unit(): Vector2 {
-			var invLen = 1.0 / this.len();
+			var len = this.len();
+			if(len === 0)
+				return new Vector2(0, 0);
+
+			var invLen = 1.0 / len;
 			return this.multiplyScalar(invLen);
 		}
 

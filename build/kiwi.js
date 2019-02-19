@@ -1,36 +1,36 @@
 /**
-*
-* @module Kiwi
-*
-*/
+ *
+ * @module Kiwi
+ *
+ */
 var Kiwi;
 (function (Kiwi) {
     /**
-    * The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
-    *
-    * @class Game
-    * @namespace Kiwi
-    * @constructor
-    * @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
-    * @param [name='KiwiGame'] {String} The name of the game that is being created.
-    * @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
-    * @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
-    *   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
-    *   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
-    *   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
-    *   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use.
-    *   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
-    *   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
-    *   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
-    *   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
-    *   @param [options.log] {Object} Default state of the Log properties
-    *       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
-    *       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
-    *       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
-    *       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
-    * @return {Kiwi.Game}
-    *
-    */
+     * The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
+     *
+     * @class Game
+     * @namespace Kiwi
+     * @constructor
+     * @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
+     * @param [name='KiwiGame'] {String} The name of the game that is being created.
+     * @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
+     * @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
+     *   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
+     *   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
+     *   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
+     *   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use.
+     *   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
+     *   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
+     *   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
+     *   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
+     *   @param [options.log] {Object} Default state of the Log properties
+     *       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
+     *       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
+     *       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
+     *       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
+     * @return {Kiwi.Game}
+     *
+     */
     var Game = (function () {
         function Game(domParent, name, state, options) {
             var _this = this;
@@ -39,126 +39,126 @@ var Kiwi;
             if (state === void 0) { state = null; }
             if (options === void 0) { options = {}; }
             /**
-            * The object that peforms DOM and device startup operations for browsers (ie not cocoon)
-            * @property _startup
-            * @type Kiwi.System.Bootstrap
-            * @private
-            */
+             * The object that peforms DOM and device startup operations for browsers (ie not cocoon)
+             * @property _startup
+             * @type Kiwi.System.Bootstrap
+             * @private
+             */
             this._startup = null;
             /**
-            * The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
-            * @property audio
-            * @type Kiwi.Sound.AudioManager
-            * @public
-            */
+             * The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
+             * @property audio
+             * @type Kiwi.Sound.AudioManager
+             * @public
+             */
             this.audio = null;
             /**
-            * The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
-            * @property fileStore
-            * @type Kiwi.Files.FileStore
-            * @public
-            */
+             * The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
+             * @property fileStore
+             * @type Kiwi.Files.FileStore
+             * @public
+             */
             this.fileStore = null;
             /**
-            * Handles any user input with the game. These could via the users keyboard, mouse or touch events.
-            * @property input
-            * @type Kiwi.Input.InputManager
-            * @public
-            */
+             * Handles any user input with the game. These could via the users keyboard, mouse or touch events.
+             * @property input
+             * @type Kiwi.Input.InputManager
+             * @public
+             */
             this.input = null;
             /**
-            * Manages the cameras the are on the stage. Single default Camera only in this version.
-            * @property cameras
-            * @type Kiwi.CameraManager
-            * @public
-            */
+             * Manages the cameras the are on the stage. Single default Camera only in this version.
+             * @property cameras
+             * @type Kiwi.CameraManager
+             * @public
+             */
             this.cameras = null;
             /**
-            * Manages plugins registration and initialisation for the game instance.
-            * @property pluginManager
-            * @type Kiwi.PluginManager
-            * @public
-            */
+             * Manages plugins registration and initialisation for the game instance.
+             * @property pluginManager
+             * @type Kiwi.PluginManager
+             * @public
+             */
             this.pluginManager = null;
             /**
-            * Loads files from outside sources and checks to see that they have loaded correctly or not.
-            * @property loader
-            * @type Kiwi.Files.Loader
-            * @public
-            */
+             * Loads files from outside sources and checks to see that they have loaded correctly or not.
+             * @property loader
+             * @type Kiwi.Files.Loader
+             * @public
+             */
             this.loader = null;
             /**
-            * The Request Animation Frame that is being used for the update and render loops.
-            * @property raf
-            * @type Kiwi.Utils.RequestAnimationFrame
-            * @public
-            */
+             * The Request Animation Frame that is being used for the update and render loops.
+             * @property raf
+             * @type Kiwi.Utils.RequestAnimationFrame
+             * @public
+             */
             this.raf = null;
             /**
-            * The ONLY stage that is being used for this game.
-            * @property stage
-            * @type Stage
-            * @public
-            */
+             * The ONLY stage that is being used for this game.
+             * @property stage
+             * @type Stage
+             * @public
+             */
             this.stage = null;
             /**
-            * Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
-            * @property states
-            * @type Kiwi.StateManager
-            * @public
-            */
+             * Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
+             * @property states
+             * @type Kiwi.StateManager
+             * @public
+             */
             this.states = null;
             /**
-            * Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
-            * @property time
-            * @type Kiwi.Time.ClockManager
-            * @public
-            */
+             * Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
+             * @property time
+             * @type Kiwi.Time.ClockManager
+             * @public
+             */
             this.time = null;
             /**
-            * The tween manager holds a reference to all of the tweens that are created and currently being used.
-            * @property tweens
-            * @type Kiwi.Animations.Tweens.TweenManager
-            * @public
-            */
+             * The tween manager holds a reference to all of the tweens that are created and currently being used.
+             * @property tweens
+             * @type Kiwi.Animations.Tweens.TweenManager
+             * @public
+             */
             this.tweens = null;
             /**
-            * A Random Data Generator. This is useful for create unique ids and random information.
-            * @property rnd
-            * @type Kiwi.Utils.RandomDataGenerato
-            * @public
-            */
+             * A Random Data Generator. This is useful for create unique ids and random information.
+             * @property rnd
+             * @type Kiwi.Utils.RandomDataGenerato
+             * @public
+             */
             this.rnd = null;
             /**
-            * The framerate at which the game will update at.
-            * @property _framerate
-            * @type Number
-            * @default 60
-            * @private
-            */
+             * The framerate at which the game will update at.
+             * @property _framerate
+             * @type Number
+             * @default 60
+             * @private
+             */
             this._frameRate = 60;
             /**
-            * The interval between frames.
-            * @property _interval
-            * @type Number
-            * @default 1000/60
-            * @private
-            */
+             * The interval between frames.
+             * @property _interval
+             * @type Number
+             * @default 1000/60
+             * @private
+             */
             this._interval = 1000 / 60;
             /**
-            * The current interval between frames.
-            * @property _delta
-            * @type number
-            * @private
-            */
+             * The current interval between frames.
+             * @property _delta
+             * @type number
+             * @private
+             */
             this._delta = 0;
             /**
-            * The number of frames since the game was launched.
-            * @property _frame
-            * @type number
-            * @private
-            * @since 1.1.0
-            */
+             * The number of frames since the game was launched.
+             * @property _frame
+             * @type number
+             * @private
+             * @since 1.1.0
+             */
             this._frame = 0;
             Kiwi.Log.setDefaultsFromParams(options.log);
             Kiwi.Log.log('Kiwi.Game: ' + name + ' is booting using Kiwi.js ' + Kiwi.VERSION, '#version');
@@ -326,11 +326,11 @@ var Kiwi;
         }
         Object.defineProperty(Game.prototype, "renderOption", {
             /**
-            * Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
-            * @property renderOption
-            * @type number
-            * @public
-            */
+             * Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
+             * @property renderOption
+             * @type number
+             * @public
+             */
             get: function () {
                 return this._renderOption;
             },
@@ -339,11 +339,11 @@ var Kiwi;
         });
         Object.defineProperty(Game.prototype, "deviceTargetOption", {
             /**
-            * Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
-            * @property deviceTargetOption
-            * @type number
-            * @public
-            */
+             * Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
+             * @property deviceTargetOption
+             * @type number
+             * @public
+             */
             get: function () {
                 return this._deviceTargetOption;
             },
@@ -352,11 +352,11 @@ var Kiwi;
         });
         Object.defineProperty(Game.prototype, "debugOption", {
             /**
-            * Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
-            * @property debugOption
-            * @type number
-            * @public
-            */
+             * Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
+             * @property debugOption
+             * @type number
+             * @public
+             */
             get: function () {
                 return this._debugOption;
             },
@@ -365,11 +365,11 @@ var Kiwi;
         });
         Object.defineProperty(Game.prototype, "debug", {
             /**
-            * Returns true if debug option is set to Kiwi.DEBUG_ON
-            * @property debug
-            * @type boolean
-            * @public
-            */
+             * Returns true if debug option is set to Kiwi.DEBUG_ON
+             * @property debug
+             * @type boolean
+             * @public
+             */
             get: function () {
                 return this._debugOption === Kiwi.DEBUG_ON;
             },
@@ -377,26 +377,26 @@ var Kiwi;
             configurable: true
         });
         /**
-        * The type of object that the game is.
-        * @method objType
-        * @return {String} "Game"
-        * @public
-        */
+         * The type of object that the game is.
+         * @method objType
+         * @return {String} "Game"
+         * @public
+         */
         Game.prototype.objType = function () {
             return "Game";
         };
         Object.defineProperty(Game.prototype, "frame", {
             /**
-            * The number of frames since the game was launched.
-            *
-            * Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
-            *
-            * The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
-            * @property frame
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
+             * The number of frames since the game was launched.
+             *
+             * Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
+             *
+             * The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
+             * @property frame
+             * @type number
+             * @public
+             * @since 1.1.0
+             */
             get: function () {
                 return (this._frame);
             },
@@ -408,14 +408,14 @@ var Kiwi;
         });
         Object.defineProperty(Game.prototype, "idealFrame", {
             /**
-            * The number of ideal frames since the game was launched.
-            *
-            * Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
-            * @property idealFrame
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
+             * The number of ideal frames since the game was launched.
+             *
+             * Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
+             * @property idealFrame
+             * @type number
+             * @public
+             * @since 1.1.0
+             */
             get: function () {
                 return (this.time.elapsed() / (1000 / this._frameRate));
             },
@@ -424,11 +424,11 @@ var Kiwi;
         });
         Object.defineProperty(Game.prototype, "frameRate", {
             /**
-            * The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
-            * @property frameRate
-            * @return string
-            * @public
-            */
+             * The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
+             * @property frameRate
+             * @return string
+             * @public
+             */
             get: function () {
                 return this._frameRate;
             },
@@ -443,11 +443,11 @@ var Kiwi;
             configurable: true
         });
         /**
-        * The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
-        * Once the managers have started up the start loop will then begin to create the game loop.
-        * @method start
-        * @private
-        */
+         * The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
+         * Once the managers have started up the start loop will then begin to create the game loop.
+         * @method start
+         * @private
+         */
         Game.prototype._start = function () {
             var _this = this;
             this.stage.boot(this._startup);
@@ -476,10 +476,10 @@ var Kiwi;
             }
         };
         /**
-        * The game loop.
-        * @method _loop
-        * @private
-        */
+         * The game loop.
+         * @method _loop
+         * @private
+         */
         Game.prototype._loop = function () {
             // Only update non-graphical game systems if a full frame
             // has passed
@@ -1787,22 +1787,22 @@ var Kiwi;
     Kiwi.PluginManager = PluginManager;
 })(Kiwi || (Kiwi = {}));
 /**
-*
-* @module Kiwi
-*
-*/
+ *
+ * @module Kiwi
+ *
+ */
 var Kiwi;
 (function (Kiwi) {
     /**
-    * Used to handle the creation and management of Cameras on a Game. Each Game will always have created for it a CameraManager and a default Camera on the manager.
-    * Games currently only usupport the use of a single camera, the default camera. Much of this class has been written with future multiple camera support in mind.
-    *
-    * @class CameraManager
-    * @namespace Kiwi
-    * @constructor
-    * @param {Kiwi.Game} game
-    * @return {Kiwi.CameraManager}
-    */
+     * Used to handle the creation and management of Cameras on a Game. Each Game will always have created for it a CameraManager and a default Camera on the manager.
+     * Games currently only usupport the use of a single camera, the default camera. Much of this class has been written with future multiple camera support in mind.
+     *
+     * @class CameraManager
+     * @namespace Kiwi
+     * @constructor
+     * @param {Kiwi.Game} game
+     * @return {Kiwi.CameraManager}
+     */
     var CameraManager = (function () {
         function CameraManager(game) {
             this._game = game;
@@ -1810,33 +1810,33 @@ var Kiwi;
             this._nextCameraID = 0;
         }
         /**
-        * Returns the type of this object
-        * @method objType
-        * @return {String} "CameraManager"
-        * @public
-        */
+         * Returns the type of this object
+         * @method objType
+         * @return {String} "CameraManager"
+         * @public
+         */
         CameraManager.prototype.objType = function () {
             return "CameraManager";
         };
         /**
-        * Initializes the CameraManager, creates a new camera and assigns it to the defaultCamera
-        * @method boot
-        * @public
-        */
+         * Initializes the CameraManager, creates a new camera and assigns it to the defaultCamera
+         * @method boot
+         * @public
+         */
         CameraManager.prototype.boot = function () {
             this.create("defaultCamera", 0, 0, this._game.stage.width, this._game.stage.height);
             this.defaultCamera = this._cameras[0];
         };
         /**
-        * Creates a new Camera and adds it to the collection of cameras.
-        * @param {String} name. The name of the new camera.
-        * @param {Number} x. The x position of the new camera.
-        * @param {Number} y. The y position of the new camera.
-        * @param {Number} width. The width of the new camera.
-        * @param {Number} height. The height of the new camera.
-        * @return {Kiwi.Camera} The new camera object.
-        * @public
-        */
+         * Creates a new Camera and adds it to the collection of cameras.
+         * @param {String} name. The name of the new camera.
+         * @param {Number} x. The x position of the new camera.
+         * @param {Number} y. The y position of the new camera.
+         * @param {Number} width. The width of the new camera.
+         * @param {Number} height. The height of the new camera.
+         * @return {Kiwi.Camera} The new camera object.
+         * @public
+         */
         CameraManager.prototype.create = function (name, x, y, width, height) {
             var newCamera = new Kiwi.Camera(this._game, this._nextCameraID++, name, x, y, width, height);
             //newCamera.parent = state;
@@ -1844,12 +1844,12 @@ var Kiwi;
             return newCamera;
         };
         /**
-        * Removes the given camera, if it is present in the camera managers camera collection.
-        * @method remove
-        * @param camera {Kiwi.Camera}
-        * @return {boolean} True if the camera was removed, false otherwise.
-        * @public
-        */
+         * Removes the given camera, if it is present in the camera managers camera collection.
+         * @method remove
+         * @param camera {Kiwi.Camera}
+         * @return {boolean} True if the camera was removed, false otherwise.
+         * @public
+         */
         CameraManager.prototype.remove = function (camera) {
             var i = this._cameras.indexOf(camera); //what if it was the default one! :(
             if (i !== -1) {
@@ -1860,10 +1860,10 @@ var Kiwi;
             return false;
         };
         /**
-        * Calls update on all the cameras.
-        * @method update
-        * @public
-        */
+         * Calls update on all the cameras.
+         * @method update
+         * @public
+         */
         CameraManager.prototype.update = function () {
             if (this._cameras.length === 0) {
                 return false;
@@ -1873,10 +1873,10 @@ var Kiwi;
             }
         };
         /**
-        * Calls the render method on all the cameras
-        * @method render
-        * @public
-        */
+         * Calls the render method on all the cameras
+         * @method render
+         * @public
+         */
         CameraManager.prototype.render = function () {
             if (this._cameras.length === 0) {
                 return false;
@@ -1886,19 +1886,19 @@ var Kiwi;
             }
         };
         /**
-        * Removes all cameras in the camera Manager except the default camera. Does nothing if in multi camera mode.
-        * @method removeAll
-        * @public
-        */
+         * Removes all cameras in the camera Manager except the default camera. Does nothing if in multi camera mode.
+         * @method removeAll
+         * @public
+         */
         CameraManager.prototype.removeAll = function () {
             this._cameras = [];
         };
         /**
-        * Returns all cameras to origin. Called when starting a new state.
-        * @method zeroAllCameras
-        * @public
-        * @since 1.1.0
-        */
+         * Returns all cameras to origin. Called when starting a new state.
+         * @method zeroAllCameras
+         * @public
+         * @since 1.1.0
+         */
         CameraManager.prototype.zeroAllCameras = function () {
             for (var i = 0; i < this._cameras.length; i++) {
                 this.zeroCamera(this._cameras[i]);
@@ -1906,20 +1906,14 @@ var Kiwi;
             this.zeroCamera(this.defaultCamera);
         };
         /**
-        * Returns camera to origin.
-        * @method zeroCamera
-        * @param camera {Kiwi.Camera}
-        * @public
-        * @since 1.1.0
-        */
+         * Returns camera to origin.
+         * @method zeroCamera
+         * @param camera {Kiwi.Camera}
+         * @public
+         * @since 1.1.0
+         */
         CameraManager.prototype.zeroCamera = function (camera) {
-            camera.transform.x = 0;
-            camera.transform.y = 0;
-            camera.transform.rotation = 0;
-            camera.transform.scaleX = 1;
-            camera.transform.scaleY = 1;
-            camera.transform.rotPointX = camera.width / 2;
-            camera.transform.rotPointY = camera.height / 2;
+            camera.zero();
         };
         return CameraManager;
     })();
@@ -2411,6 +2405,172 @@ var Kiwi;
     Kiwi.StateManager = StateManager;
 })(Kiwi || (Kiwi = {}));
 /**
+ * @module Kiwi
+ */
+var Kiwi;
+(function (Kiwi) {
+    var Transformable = (function () {
+        function Transformable() {
+            this._dirty = true;
+            this.transform = new Kiwi.Geom.Transform(this);
+        }
+        Object.defineProperty(Transformable.prototype, "dirty", {
+            get: function () {
+                return this._dirty;
+            },
+            set: function (val) {
+                this._dirty = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "x", {
+            get: function () {
+                return this.transform.x;
+            },
+            set: function (x) {
+                this.transform.x = x;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "y", {
+            get: function () {
+                return this.transform.y;
+            },
+            set: function (y) {
+                this.transform.y = y;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "xy", {
+            set: function (pt) {
+                this.transform.xy = pt;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Transformable.prototype.setXY = function (x, y) {
+            this.transform.setXY(x, y);
+        };
+        Object.defineProperty(Transformable.prototype, "scale", {
+            get: function () {
+                return this.transform.scale;
+            },
+            set: function (pt) {
+                this.transform.scale = pt;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "scaleX", {
+            set: function (x) {
+                this.transform.scaleX = x;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "scaleY", {
+            set: function (y) {
+                this.transform.scaleY = y;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Transformable.prototype.setScale = function (w, h) {
+            this.transform.setScale(w, h);
+        };
+        Object.defineProperty(Transformable.prototype, "rotation", {
+            set: function (angle) {
+                this.transform.rotation = angle;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "rotationRad", {
+            set: function (angle) {
+                this.transform.rotationRad = angle;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "pivotPoint", {
+            // public rotate(angle: number) { this.transform.rotate(angle); }
+            // public rotateRad(angle: number) {}
+            set: function (pt) {
+                this.transform.pivotPoint = pt;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "pivotPointX", {
+            set: function (x) {
+                this.transform.pivotPointX = x;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "pivotPointY", {
+            set: function (y) {
+                this.transform.pivotPointY = y;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Transformable.prototype.setPivotPoint = function (x, y) {
+            this.transform.setPivotPoint(x, y);
+        };
+        Object.defineProperty(Transformable.prototype, "origin", {
+            get: function () {
+                return this.transform.origin;
+            },
+            set: function (pt) {
+                this.transform.origin = pt;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "originX", {
+            set: function (x) {
+                this.transform.originX = x;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Transformable.prototype, "originY", {
+            set: function (y) {
+                this.transform.originY = y;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Transformable.prototype.setOrigin = function (x, y) {
+            this.transform.setOrigin(x, y);
+        };
+        // Freeform
+        Transformable.prototype.freeformScale = function (x, y, aroundX, aroundY) {
+            this.transform.freeformScale(x, y, aroundX, aroundY);
+        };
+        /**
+         * Call this to clean up the object for deletion and garbage collection.
+         * @method destroy
+         * @param [immediate=false] {boolean} If the object should be immediately removed or if it should be removed at the end of the next update loop.
+         * @public
+         */
+        Transformable.prototype.destroy = function () {
+            var params = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                params[_i - 0] = arguments[_i];
+            }
+            this.transform.destroy();
+            delete this.transform;
+        };
+        return Transformable;
+    })();
+    Kiwi.Transformable = Transformable;
+})(Kiwi || (Kiwi = {}));
+/**
 *
 * @module Kiwi
 *
@@ -2420,6 +2580,12 @@ var Kiwi;
 * @module Kiwi
 *
 */
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var Kiwi;
 (function (Kiwi) {
     /**
@@ -2435,8 +2601,10 @@ var Kiwi;
     * @return {Kiwi.Entity} This entity.
     *
     */
-    var Entity = (function () {
+    var Entity = (function (_super) {
+        __extends(Entity, _super);
         function Entity(state, x, y) {
+            _super.call(this);
             /**
             * The group that this entity belongs to. If added onto the state then this is the state.
             * @property _parent
@@ -2520,9 +2688,7 @@ var Kiwi;
             this._active = true;
             this._visible = true;
             this.components = new Kiwi.ComponentManager(Kiwi.ENTITY, this);
-            this.transform = new Kiwi.Geom.Transform();
-            this.transform.x = x;
-            this.transform.y = y;
+            this.transform.setXY(x, y);
         }
         Object.defineProperty(Entity.prototype, "parent", {
             get: function () {
@@ -2538,194 +2704,6 @@ var Kiwi;
             set: function (val) {
                 this.transform.parent = (val !== null) ? val.transform : null;
                 this._parent = val;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "x", {
-            /**
-            * X coordinate of this Entity. This is just aliased to the transform property.
-            * @property x
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.x;
-            },
-            set: function (value) {
-                this.transform.x = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "y", {
-            /**
-            * Y coordinate of this Entity. This is just aliased to the transform property.
-            * @property y
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.y;
-            },
-            set: function (value) {
-                this.transform.y = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "worldX", {
-            /**
-            * X coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-            * @property worldX
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return (this.transform.worldX);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "worldY", {
-            /**
-            * Y coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-            * @property worldY
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return (this.transform.worldY);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "scaleX", {
-            /**
-            * Scale X of this Entity. This is just aliased to the transform property.
-            * @property scaleX
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.scaleX;
-            },
-            set: function (value) {
-                this.transform.scaleX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "scaleY", {
-            /**
-            * Scale Y coordinate of this Entity. This is just aliased to the transform property.
-            * @property scaleY
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.scaleY;
-            },
-            set: function (value) {
-                this.transform.scaleY = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "scale", {
-            /**
-            * Scale both axes of this Entity. This is just aliased to the transform property. This is WRITE-ONLY.
-            * @property scale
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            set: function (value) {
-                this.transform.scale = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "rotation", {
-            /**
-            * Rotation of this Entity. This is just aliased to the transform property.
-            * @property rotation
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.rotation;
-            },
-            set: function (value) {
-                this.transform.rotation = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "rotPointX", {
-            /**
-            * The rotation point on the x-axis. This is just aliased to the rotPointX on the transform object.
-            * @property rotPointX
-            * @type number
-            * @public
-            */
-            get: function () {
-                return this.transform.rotPointX;
-            },
-            set: function (value) {
-                this.transform.rotPointX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "rotPointY", {
-            /**
-            * The rotation point on the y-axis. This is just aliased to the rotPointY on the transform object.
-            * @property rotPointY
-            * @type number
-            * @public
-            */
-            get: function () {
-                return this.transform.rotPointY;
-            },
-            set: function (value) {
-                this.transform.rotPointY = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "anchorPointX", {
-            /**
-            * The anchor point on the x-axis. This is just aliased to the rotPointX on the transform object.
-            * @property anchorPointX
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.anchorPointX;
-            },
-            set: function (value) {
-                this.transform.anchorPointX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "anchorPointY", {
-            /**
-            * The anchor point on the y-axis. This is just aliased to the rotPointY on the transform object.
-            * @property anchorPointY
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.anchorPointY;
-            },
-            set: function (value) {
-                this.transform.anchorPointY = value;
             },
             enumerable: true,
             configurable: true
@@ -2784,7 +2762,8 @@ var Kiwi;
         * @since 1.1.0
         */
         Entity.prototype.scaleToWidth = function (value) {
-            this.scale = value / this.width;
+            var s = value / this.width;
+            this.transform.setScale(s, s);
         };
         /**
         * Scale to desired height, preserving aspect ratio. This function changes the scale, not the height. If the height changes, for example, as part of an animation sequence, the Entity will retain the new scale.
@@ -2794,17 +2773,8 @@ var Kiwi;
         * @since 1.1.0
         */
         Entity.prototype.scaleToHeight = function (value) {
-            this.scale = value / this.height;
-        };
-        /**
-        * Center the anchor point. Moves the anchor point (rotPointX and Y) to precisely halfway along the width and height properties of this Entity.
-        * @method centerAnchorPoint
-        * @public
-        * @since 1.1.0
-        */
-        Entity.prototype.centerAnchorPoint = function () {
-            this.anchorPointX = this.width * 0.5;
-            this.anchorPointY = this.height * 0.5;
+            var s = value / this.height;
+            this.transform.setScale(s, s);
         };
         Object.defineProperty(Entity.prototype, "cellIndex", {
             /**
@@ -2924,42 +2894,6 @@ var Kiwi;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Entity.prototype, "willRender", {
-            get: function () {
-                return this._willRender;
-            },
-            /**
-            * Toggles if this Entity will be rendered.
-            * @property willRender
-            * @type boolean
-            * @default true
-            * @public
-            * @deprecated Use visible instead
-            */
-            set: function (value) {
-                this._willRender = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "inputEnabled", {
-            get: function () {
-                return this._inputEnabled;
-            },
-            /**
-            * Controls if this Entity is input enabled or not (i.e. responds to touch/mouse events)
-            * This method should be over-ridden to handle specific game object implementations.
-            * @property inputEnabled
-            * @type boolean
-            * @public
-            * @deprecated As of 1.2.3, nothing was found to use this.
-            */
-            set: function (value) {
-                this._inputEnabled = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
         Object.defineProperty(Entity.prototype, "clock", {
             get: function () {
                 return this._clock;
@@ -2972,22 +2906,6 @@ var Kiwi;
             */
             set: function (value) {
                 this._clock = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Entity.prototype, "dirty", {
-            get: function () {
-                return this._dirty;
-            },
-            /**
-            * A value used by components to control if the Entity needs re-rendering
-            * @property dirty
-            * @type boolean
-            * @public
-            */
-            set: function (value) {
-                this._dirty = value;
             },
             enumerable: true,
             configurable: true
@@ -3047,6 +2965,7 @@ var Kiwi;
         */
         Entity.prototype.destroy = function (immediate) {
             if (immediate === void 0) { immediate = false; }
+            _super.prototype.destroy.call(this);
             this._exists = false;
             this._active = false;
             this._visible = false;
@@ -3056,7 +2975,6 @@ var Kiwi;
                 if (this.state)
                     this.state.removeFromTrackingList(this);
                 delete this._parent;
-                delete this.transform;
                 delete this._clock;
                 delete this.state;
                 delete this.game;
@@ -3067,7 +2985,7 @@ var Kiwi;
             }
         };
         return Entity;
-    })();
+    })(Kiwi.Transformable);
     Kiwi.Entity = Entity;
 })(Kiwi || (Kiwi = {}));
 /**
@@ -3182,9 +3100,11 @@ var Kiwi;
     * @return {Kiwi.Group}
     *
     */
-    var Group = (function () {
+    var Group = (function (_super) {
+        __extends(Group, _super);
         function Group(state, name) {
             if (name === void 0) { name = ''; }
+            _super.call(this);
             /**
             * A name for this Group. This is not checked for uniqueness within the Game, but is very useful for debugging.
             * @property name
@@ -3214,13 +3134,6 @@ var Kiwi;
             * @public
             **/
             this.state = null;
-            /**
-            * An indication of whether or not this group is 'dirty' and thus needs to be re-rendered or not.
-            * @property _dirty
-            * @type boolean
-            * @private
-            */
-            this._dirty = true;
             /**
             * ---------------
             * Tagging System
@@ -3255,7 +3168,6 @@ var Kiwi;
             this._exists = true;
             this._active = true;
             this._visible = true;
-            this.transform = new Kiwi.Geom.Transform();
             this.members = [];
         }
         /**
@@ -3296,196 +3208,6 @@ var Kiwi;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Group.prototype, "x", {
-            /**
-            * The X coordinate of this group. This is just aliased to the transform property.
-            * @property x
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.x;
-            },
-            set: function (value) {
-                this.transform.x = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "y", {
-            /**
-            * The Y coordinate of this group. This is just aliased to the transform property.
-            * @property y
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.y;
-            },
-            set: function (value) {
-                this.transform.y = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "worldX", {
-            /**
-            * The X coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-            * @property worldX
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.worldX;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "worldY", {
-            /**
-            * The Y coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-            * @property worldY
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.worldY;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "scaleX", {
-            /*
-            * The Scale X of this group. This is just aliased to the transform property.
-            * @property scaleX
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.scaleX;
-            },
-            set: function (value) {
-                this.transform.scaleX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "scaleY", {
-            /*
-            * The Scale Y coordinate of this group. This is just aliased to the transform property.
-            * @property scaleY
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.scaleY;
-            },
-            set: function (value) {
-                this.transform.scaleY = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "scale", {
-            /**
-            * The scale of this group. This is just aliased to the transform property. This is WRITE-ONLY.
-            * @property scale
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            set: function (value) {
-                this.transform.scale = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "rotation", {
-            /*
-            * The rotation of this group. This is just aliased to the transform property.
-            * @property rotation
-            * @type Number
-            * @public
-            */
-            get: function () {
-                return this.transform.rotation;
-            },
-            set: function (value) {
-                this.transform.rotation = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "rotPointX", {
-            /**
-            * The rotation offset of this group in the X axis. This is just aliased to the transform property.
-            * @property rotPointX
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.rotPointX;
-            },
-            set: function (value) {
-                this.transform.rotPointX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "rotPointY", {
-            /**
-            * The rotation offset of this group in the Y axis. This is just aliased to the transform property.
-            * @property rotPointY
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.rotPointY;
-            },
-            set: function (value) {
-                this.transform.rotPointY = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "anchorPointX", {
-            /**
-            * The anchor point offset of this group in the X axis. This is just aliased to the transform property, and is in turn an alias of rotPointX.
-            * @property anchorPointX
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.anchorPointX;
-            },
-            set: function (value) {
-                this.transform.anchorPointX = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Group.prototype, "anchorPointY", {
-            /**
-            * The anchor point offset of this group in the Y axis. This is just aliased to the transform property, and is in turn an alias of rotPointY.
-            * @property anchorPointY
-            * @type number
-            * @public
-            * @since 1.1.0
-            */
-            get: function () {
-                return this.transform.anchorPointY;
-            },
-            set: function (value) {
-                this.transform.anchorPointY = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
         /**
         * Returns the total number of children in this Group. Doesn't distinguish between alive and dead children.
         * @method numChildren
@@ -3496,9 +3218,6 @@ var Kiwi;
             return this.members.length;
         };
         Object.defineProperty(Group.prototype, "dirty", {
-            get: function () {
-                return this._dirty;
-            },
             /**
             * Sets all children of the Group to be dirty.
             * @property dirty
@@ -3506,10 +3225,10 @@ var Kiwi;
             * @public
             */
             set: function (value) {
-                if (value !== undefined) {
-                    this._dirty = value;
+                this._dirty = value;
+                if (value && this.members) {
                     for (var i = 0; i < this.members.length; i++) {
-                        this.members[i].dirty = value;
+                        this.members[i].dirty = true;
                     }
                 }
             },
@@ -4225,24 +3944,6 @@ var Kiwi;
         Group.prototype.clear = function () {
             this.members.length = 0;
         };
-        Object.defineProperty(Group.prototype, "willRender", {
-            get: function () {
-                return this._willRender;
-            },
-            /**
-            * Controls whether render is automatically called by the parent.
-            * @property willRender
-            * @type boolean
-            * @return {boolean}
-            * @public
-            * @deprecated Use visible instead
-            */
-            set: function (value) {
-                this._willRender = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
         Object.defineProperty(Group.prototype, "visible", {
             get: function () {
                 return this._visible;
@@ -4325,6 +4026,7 @@ var Kiwi;
         Group.prototype.destroy = function (immediate, destroyChildren) {
             if (immediate === void 0) { immediate = false; }
             if (destroyChildren === void 0) { destroyChildren = true; }
+            _super.prototype.destroy.call(this);
             this._exists = false;
             this._active = false;
             this._visible = false;
@@ -4343,7 +4045,6 @@ var Kiwi;
                     this.parent.removeChild(this);
                 if (this.state)
                     this.state.removeFromTrackingList(this);
-                delete this.transform;
                 if (this.components)
                     this.components.removeAll();
                 delete this.components;
@@ -4355,7 +4056,7 @@ var Kiwi;
             }
         };
         return Group;
-    })();
+    })(Kiwi.Transformable);
     Kiwi.Group = Group;
 })(Kiwi || (Kiwi = {}));
 /**
@@ -4363,12 +4064,6 @@ var Kiwi;
 * @module Kiwi
 *
 */
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var Kiwi;
 (function (Kiwi) {
     /**
@@ -4730,155 +4425,173 @@ var Kiwi;
     Kiwi.State = State;
 })(Kiwi || (Kiwi = {}));
 /**
-*
-* @module Kiwi
-*
-*/
+ * @module Kiwi
+ */
 var Kiwi;
 (function (Kiwi) {
     /**
-    * A Camera is used to render a particular section of the game world on the stage. Each Camera has a coordinates which are held in the transform property, and a width/height. Note: This class should never be directly instantiated but instead should be made through a CameraManager's 'create' method.
-    *
-    * @class Camera
-    * @namespace Kiwi
-    * @constructor
-    * @param game {Kiwi.Game} The game that this camera belongs to.
-    * @param id {Number} A unique ID for this camera
-    * @param name {String} The name this camera goes by
-    * @param x {Number} The x coordinate of the camera
-    * @param y {Number} The y coordinate of the camera
-    * @param width {Number} The width of the camera
-    * @param height {Number} The cameras height
-    * @return {Kiwi.Camera}
-    *
-    */
-    var Camera = (function () {
+     * A Camera is used to render a particular section of the game world on the stage. Each Camera has a coordinates which are held in the transform property, and a width/height. Note: This class should never be directly instantiated but instead should be made through a CameraManager's 'create' method.
+     *
+     * @class Camera
+     * @namespace Kiwi
+     * @constructor
+     * @param game {Kiwi.Game} The game that this camera belongs to.
+     * @param id {Number} A unique ID for this camera
+     * @param name {String} The name this camera goes by
+     * @param x {Number} The x coordinate of the camera
+     * @param y {Number} The y coordinate of the camera
+     * @param width {Number} The width of the camera
+     * @param height {Number} The cameras height
+     * @return {Kiwi.Camera}
+     *
+     */
+    var Camera = (function (_super) {
+        __extends(Camera, _super);
         function Camera(game, id, name, x, y, width, height) {
+            _super.call(this);
             /**
-            * If true then the camera will be resized to fit the stage when the stage is resized
-            * @property fitToStage
-            * @type boolean
-            * @default true
-            * @public
-            */
+             * If true then the camera will be resized to fit the stage when the stage is resized
+             * @property fitToStage
+             * @type boolean
+             * @default true
+             * @public
+             */
             this.fitToStage = true;
+            /**
+             * Scratch matrix used in geometry calculations
+             *
+             * @property _scratchMatrix
+             * @type Kiwi.Geom.Matrix
+             * @private
+             * @since 1.3.1
+             */
+            this._scratchMatrices = { inverted: new Kiwi.Geom.Matrix(), normal: new Kiwi.Geom.Matrix() };
+            this.transform.setXY(x, y);
             this._game = game;
             this.id = id;
             this.name = name;
-            //size could autoresize to fit stage
             this.width = width;
             this.height = height;
-            this.transform = new Kiwi.Geom.Transform(x, y);
-            this.transform.rotPointX = x + width / 2;
-            this.transform.rotPointY = y + height / 2;
+            this._updatedStageSize(width, height);
             this._game.stage.onResize.add(this._updatedStageSize, this);
-            this._scratchMatrix = new Kiwi.Geom.Matrix();
         }
+        Object.defineProperty(Camera.prototype, "enabled", {
+            get: function () {
+                return this._enabled;
+            },
+            set: function (val) {
+                this._enabled = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
-        * The type of object this is.
-        * @method objType
-        * @return {String} "Camera"
-        * @public
-        */
-        Camera.prototype.objType = function () {
-            return "Camera";
-        };
-        /**
-        * Updates the width/height of this camera. Is used when the stage resizes.
-        * @method _updatedStageSize
-        * @param width {Number} The new width of the camera.
-        * @param height {Number} The new height of the camera.
-        * @private
-        */
+         * Updates the width/height of this camera. Is used when the stage resizes.
+         * @method _updatedStageSize
+         * @param width {Number} The new width of the camera.
+         * @param height {Number} The new height of the camera.
+         * @private
+         */
         Camera.prototype._updatedStageSize = function (width, height) {
             this.width = width;
             this.height = height;
-        };
-        Object.defineProperty(Camera.prototype, "visible", {
-            /**
-            * Controls whether this Camera is rendered.
-            * @property visible
-            * @type boolean
-            * @public
-            */
-            get: function () {
-                return this._visible;
-            },
-            set: function (val) {
-                this._visible = val;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Camera.prototype, "dirty", {
-            /**
-            * A value used by components to control if the camera needs re-rendering.
-            * @property dirty
-            * @type boolean
-            * @public
-            * @deprecated As of 1.1.0, no use has been found for this property.
-            */
-            get: function () {
-                return this._dirty;
-            },
-            set: function (val) {
-                this._dirty = val;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-        * Convert from screen coordinates to world coordinates.
-        * Apply this camera's inverted matrix to an object with x and y
-        * properties representing a point and return the transformed point.
-        * Useful for calculating coordinates with the mouse.
-        * @method transformPoint
-        * @param point {Kiwi.Geom.Point}
-        * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
-        * @public
-        */
-        Camera.prototype.transformPoint = function (point) {
-            var m, np = point.clone();
-            this._scratchMatrix.copyFrom(this.transform.getConcatenatedMatrix());
-            m = this._scratchMatrix;
-            m.append(1, 0, 0, 1, -this.transform.rotPointX, -this.transform.rotPointY);
-            m.invert();
-            return m.transformPoint(np);
+            this.transform.setOrigin(-width / 2, -height / 2);
+            this.transform.setPivotPoint(-width / 2, -height / 2);
         };
         /**
-        * Convert from world coordinates to screen coordinates.
-        * Useful for assessing visibility.
-        * Similar to "transformPoint", but in reverse.
-        * @method transformPointToScreen
-        * @param point {Kiwi.Geom.Point}
-        * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
-        * @public
-        * @since 1.2.0
-        */
-        Camera.prototype.transformPointToScreen = function (point) {
-            var m, np = point.clone();
-            this._scratchMatrix.copyFrom(this.transform.getConcatenatedMatrix());
-            m = this._scratchMatrix;
-            m.append(1, 0, 0, 1, -this.transform.rotPointX, -this.transform.rotPointY);
-            return m.transformPoint(np);
+         * Convert from screen coordinates to world coordinates.
+         * Apply this camera's inverted matrix to an object with x and y
+         * properties representing a point and return the transformed point.
+         * Useful for calculating coordinates with the mouse.
+         * @method transformPoint
+         * @param pt {Kiwi.Geom.Point}
+         * @param copy boolean Return a copy or in place
+         * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
+         * @public
+         */
+        Camera.prototype.transformStageToWorld = function (pt, copy) {
+            if (copy === void 0) { copy = true; }
+            if (this.dirty)
+                this.clean();
+            if (copy)
+                return this._scratchMatrices.normal.transformPoint(pt);
+            this._scratchMatrices.normal.transformPointInPlace(pt);
+            return pt;
         };
         /**
-        * The update loop that is executed every frame.
-        * @method update
-        * @public
-        */
+         * Convert from world coordinates to screen coordinates.
+         * Useful for assessing visibility.
+         * Similar to "transformPoint", but in reverse.
+         * @method transformPointToScreen
+         * @param pt {Kiwi.Geom.Point}
+         * @param copy boolean
+         * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
+         * @public
+         * @since 1.2.0
+         */
+        Camera.prototype.transformWorldToStage = function (pt, copy) {
+            if (copy === void 0) { copy = true; }
+            if (this.dirty)
+                this.clean();
+            if (copy)
+                return this._scratchMatrices.inverted.transformPoint(pt);
+            this._scratchMatrices.inverted.transformPointInPlace(pt);
+            return pt;
+        };
+        Camera.prototype.getScratchMatrices = function () {
+            if (this.dirty)
+                this.clean();
+            return this._scratchMatrices;
+        };
+        Camera.prototype.clean = function () {
+            this._scratchMatrices.normal.setToMatrix(this.transform.getConcatenatedMatrix());
+            this._scratchMatrices.inverted.setToMatrix(this._scratchMatrices.normal).invert();
+            this.dirty = false;
+        };
+        /**
+         * The update loop that is executed every frame.
+         * @method update
+         * @public
+         */
         Camera.prototype.update = function () {
+            // Do nothing
+        };
+        Camera.prototype.zero = function () {
+            this.transform.x = 0;
+            this.transform.y = 0;
+            this.transform.rotation = 0;
+            this.transform.setScale(1, 1);
+            this._updatedStageSize(this.width, this.height);
+        };
+        Camera.prototype.destroy = function () {
+            var params = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                params[_i - 0] = arguments[_i];
+            }
+            _super.prototype.destroy.call(this, params);
+            delete this._scratchMatrices.normal;
+            delete this._scratchMatrices.inverted;
+            delete this._scratchMatrices;
         };
         /**
-        * The render loop that is executed whilst the game is playing.
-        * @method render
-        * @public
-        */
+         * The render loop that is executed whilst the game is playing.
+         * @method render
+         * @public
+         */
         Camera.prototype.render = function () {
             this._game.renderer.render(this);
         };
+        /**
+         * The type of object this is.
+         * @method objType
+         * @return {String} "Camera"
+         * @public
+         */
+        Camera.prototype.objType = function () {
+            return "Camera";
+        };
         return Camera;
-    })();
+    })(Kiwi.Transformable);
     Kiwi.Camera = Camera;
 })(Kiwi || (Kiwi = {}));
 /**
@@ -5401,8 +5114,7 @@ var Kiwi;
                 //may need to add an optional other cell frame index here
                 this.width = atlas.cells[this.cellIndex].w;
                 this.height = atlas.cells[this.cellIndex].h;
-                this.transform.rotPointX = this.width / 2;
-                this.transform.rotPointY = this.height / 2;
+                this.transform.pivotPoint.setTo(this.width / 2, this.height / 2);
                 //Create the components needed
                 this.box = this.components.add(new Kiwi.Components.Box(this, x, y, this.width, this.height));
                 this.input = this.components.add(new Kiwi.Components.Input(this, this.box, enableInput));
@@ -5457,7 +5169,7 @@ var Kiwi;
                     var m = t.getConcatenatedMatrix();
                     ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
                     var cell = this.atlas.cells[this.cellIndex];
-                    ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, -t.rotPointX, -t.rotPointY, cell.w, cell.h);
+                    ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h); // , -t.rotPointX, -t.rotPointY, cell.w, cell.h
                     ctx.restore();
                 }
             };
@@ -5525,8 +5237,7 @@ var Kiwi;
                 this.cellIndex = this.atlas.cellIndex;
                 this.width = atlas.cells[this.cellIndex].w;
                 this.height = atlas.cells[this.cellIndex].h;
-                this.transform.rotPointX = this.width / 2;
-                this.transform.rotPointY = this.height / 2;
+                this.transform.pivotPoint.setTo(this.width / 2, this.height / 2);
                 this.box = this.components.add(new Kiwi.Components.Box(this, x, y, this.width, this.height));
             }
             /**
@@ -5558,7 +5269,7 @@ var Kiwi;
                     var m = t.getConcatenatedMatrix();
                     ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
                     var cell = this.atlas.cells[this.cellIndex];
-                    ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, -t.rotPointX, -t.rotPointY, cell.w, cell.h);
+                    ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h); // , -t.rotPointX, -t.rotPointY, cell.w, cell.h
                     ctx.restore();
                 }
             };
@@ -5905,7 +5616,7 @@ var Kiwi;
                     //Draw the Image
                     var m = t.getConcatenatedMatrix();
                     ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
-                    ctx.drawImage(this._canvas, 0, 0, this._canvas.width, this._canvas.height, -t.rotPointX - x, -t.rotPointY, this._canvas.width, this._canvas.height);
+                    ctx.drawImage(this._canvas, 0, 0, this._canvas.width, this._canvas.height); // , -t.rotPointX - x, -t.rotPointY, this._canvas.width, this._canvas.height
                     ctx.restore();
                 }
             };
@@ -5941,15 +5652,19 @@ var Kiwi;
                         break;
                 }
                 //Create the Point Objects.
-                this._pt1.setTo(x - t.rotPointX, 0 - t.rotPointY);
-                this._pt2.setTo(this._canvas.width + x - t.rotPointX, 0 - t.rotPointY);
-                this._pt3.setTo(this._canvas.width + x - t.rotPointX, this._canvas.height - t.rotPointY);
-                this._pt4.setTo(x - t.rotPointX, this._canvas.height - t.rotPointY);
+                // this._pt1.setTo(x - t.pivotPoint.x, 0 - t.pivotPoint.y);
+                // this._pt2.setTo(this._canvas.width + x - t.pivotPoint.x , 0 - t.pivotPoint.y);
+                // this._pt3.setTo(this._canvas.width + x - t.pivotPoint.x , this._canvas.height - t.pivotPoint.y);
+                // this._pt4.setTo(x - t.pivotPoint.x, this._canvas.height - t.pivotPoint.y);
+                this._pt1.setTo(x, 0);
+                this._pt2.setTo(this._canvas.width, 0);
+                this._pt3.setTo(this._canvas.width, this._canvas.height);
+                this._pt4.setTo(x, this._canvas.height);
                 //Add on the matrix to the points
-                m.transformPoint(this._pt1);
-                m.transformPoint(this._pt2);
-                m.transformPoint(this._pt3);
-                m.transformPoint(this._pt4);
+                m.transformPointInPlace(this._pt1);
+                m.transformPointInPlace(this._pt2);
+                m.transformPointInPlace(this._pt3);
+                m.transformPointInPlace(this._pt4);
                 //Append to the xyuv and alpha arrays 
                 vertexItems.push(this._pt1.x, this._pt1.y, 0, 0, this.alpha, this._pt2.x, this._pt2.y, this._canvas.width, 0, this.alpha, this._pt3.x, this._pt3.y, this._canvas.width, this._canvas.height, this.alpha, this._pt4.x, this._pt4.y, 0, this._canvas.height, this.alpha);
                 //Add to the batch!
@@ -6025,7 +5740,7 @@ var Kiwi;
                     * @default NONE
                     * @public
                     */
-                    this.allowCollisions = Kiwi.Components.ArcadePhysics.NONE;
+                    // public allowCollisions: number = Kiwi.Components.ArcadePhysics.NONE;
                     /**
                     * The properties associated with this type of tile.
                     * These are set when loading a JSON file that had properties associated with a TileType.
@@ -6407,12 +6122,12 @@ var Kiwi;
                     }
                     //Create the new layer
                     var layer;
-                    if (orientation == Tilemap.ISOMETRIC) {
+                    if (orientation == Tilemap.ISOMETRIC)
                         layer = new Kiwi.GameObjects.Tilemap.TileMapLayerIsometric(this, name, atlas, data, tw, th, x, y, w, h);
-                    }
-                    else {
+                    else if (orientation == Tilemap.ORTHOGONAL)
                         layer = new Kiwi.GameObjects.Tilemap.TileMapLayerOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
-                    }
+                    else
+                        layer = new Kiwi.GameObjects.Tilemap.TileMapLayerDynamicOrthogonal(this, name, atlas, data, tw, th, x, y, w, h);
                     //Add the new layer to the array
                     this.layers.push(layer);
                     return layer;
@@ -6522,6 +6237,7 @@ var Kiwi;
             Tilemap.TileMap = TileMap;
             Tilemap.ISOMETRIC = "isometric";
             Tilemap.ORTHOGONAL = "orthogonal";
+            Tilemap.DYNAMIC_ORTHOGONAL = "dynamicOrthogonal";
         })(Tilemap = GameObjects.Tilemap || (GameObjects.Tilemap = {}));
     })(GameObjects = Kiwi.GameObjects || (Kiwi.GameObjects = {}));
 })(Kiwi || (Kiwi = {}));
@@ -6600,9 +6316,17 @@ var Kiwi;
                     this._corner2 = new Kiwi.Geom.Point(0, 0);
                     this._corner3 = new Kiwi.Geom.Point(0, 0);
                     this._corner4 = new Kiwi.Geom.Point(0, 0);
-                    this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, null));
-                    this.physics.immovable = true;
+                    // this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, null));
+                    // this.physics.immovable = true;
                 }
+                // /**
+                // * The physics component contained on the Tilemap. Use for basic collisions between People and Tiles.
+                // * Note: That tilemap layers a immovable and collisions with tiles are set on the individual TileTypes that are contained on the TileMap.
+                // * @property physics
+                // * @type ArcadePhysics
+                // * @public
+                // */
+                // public physics: Kiwi.Components.ArcadePhysics;
                 /**
                 * Returns the type of child that this is.
                 * @type Number
@@ -6667,32 +6391,31 @@ var Kiwi;
                     enumerable: true,
                     configurable: true
                 });
+                // /**
+                // * Scales the tilemap to the value passed.
+                // * @method scaleToWidth
+                // * @param value {Number}
+                // * @public
+                // */
+                // public scaleToWidth(value: number) {
+                // 	this.scale = value / this.widthInPixels;
+                // }
+                //
+                // /**
+                // * Scales the tilemaps to the value passed.
+                // * @method scaleToHeight
+                // * @param value {Number}
+                // * @public
+                // */
+                // public scaleToHeight(value: number) {
+                // 	this.scale = value / this.heightInPixels;
+                // }
                 /**
-                * Scales the tilemap to the value passed.
-                * @method scaleToWidth
-                * @param value {Number}
+                * Centers the origin to the middle of the width/height of the tilemap.
                 * @public
                 */
-                TileMapLayer.prototype.scaleToWidth = function (value) {
-                    this.scale = value / this.widthInPixels;
-                };
-                /**
-                * Scales the tilemaps to the value passed.
-                * @method scaleToHeight
-                * @param value {Number}
-                * @public
-                */
-                TileMapLayer.prototype.scaleToHeight = function (value) {
-                    this.scale = value / this.heightInPixels;
-                };
-                /**
-                * Centers the anchor point to the middle of the width/height of the tilemap.
-                * @method centerAnchorPoint
-                * @public
-                */
-                TileMapLayer.prototype.centerAnchorPoint = function () {
-                    this.anchorPointX = this.widthInPixels * 0.5;
-                    this.anchorPointY = this.heightInPixels * 0.5;
+                TileMapLayer.prototype.centerOrigin = function () {
+                    this.setOrigin(this.widthInPixels * 0.5, this.heightInPixels * 0.5);
                 };
                 Object.defineProperty(TileMapLayer.prototype, "data", {
                     /**
@@ -6993,10 +6716,9 @@ var Kiwi;
                 * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
                 * @public
                 */
-                TileMapLayer.prototype.getOverlappingTiles = function (entity, collisionType) {
-                    if (collisionType === void 0) { collisionType = Kiwi.Components.ArcadePhysics.ANY; }
-                    return [];
-                };
+                // public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
+                // 	return [];
+                // }
                 /**
                 * Returns the tiles which can collide with other objects (on ANY side unless otherwise specified) within an area provided.
                 * By default the area is the whole tilemap.
@@ -7010,45 +6732,49 @@ var Kiwi;
                 * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
                 * @public
                 */
-                TileMapLayer.prototype.getCollidableTiles = function (x, y, width, height, collisionType) {
-                    if (x === void 0) { x = 0; }
-                    if (y === void 0) { y = 0; }
-                    if (width === void 0) { width = this.width; }
-                    if (height === void 0) { height = this.height; }
-                    if (collisionType === void 0) { collisionType = Kiwi.Components.ArcadePhysics.ANY; }
-                    var tiles = [];
-                    //Make sure its within the map.
-                    if (x > this.width || y > this.height)
-                        return;
-                    if (x < 0)
-                        x = 0;
-                    if (y < 0)
-                        y = 0;
-                    if (x + width > this.width)
-                        width = this.width - x;
-                    if (y + height > this.height)
-                        height = this.height - y;
-                    for (var j = y; j < y + height; j++) {
-                        for (var i = x; i < x + width; i++) {
-                            //Get the tile index.
-                            var index = this.getIndexFromXY(i, j);
-                            //Does that index exist? Should do but just in case.
-                            if (index === -1)
-                                continue;
-                            var type = this.tileData[index];
-                            //If the collision type matches the one passed. 
-                            if ((this.tilemap.tileTypes[type].allowCollisions & collisionType) !== Kiwi.Components.ArcadePhysics.NONE) {
-                                tiles.push({
-                                    index: index,
-                                    type: type,
-                                    x: i * this.tileWidth,
-                                    y: j * this.tileHeight
-                                });
-                            }
-                        }
-                    }
-                    return tiles;
-                };
+                // public getCollidableTiles(x: number= 0, y: number= 0, width: number= this.width, height: number = this.height, collisionType: number= Kiwi.Components.ArcadePhysics.ANY): any {
+                //
+                // 	var tiles = [];
+                //
+                // 	//Make sure its within the map.
+                // 	if (x > this.width || y > this.height) return;
+                //
+                // 	if (x < 0) x = 0;
+                // 	if (y < 0) y = 0;
+                //
+                // 	if (x + width > this.width) width = this.width - x;
+                // 	if (y + height > this.height) height = this.height - y;
+                //
+                // 	//Loop through and of the tiles.
+                // 	for (var j = y; j < y + height; j++) {
+                // 		for (var i = x; i < x + width; i++) {
+                //
+                // 			//Get the tile index.
+                // 			var index = this.getIndexFromXY(i, j);
+                //
+                // 			//Does that index exist? Should do but just in case.
+                // 			if (index === -1) continue;
+                //
+                // 			var type = this.tileData[index];
+                //
+                // 			//If the collision type matches the one passed.
+                // 			if ((this.tilemap.tileTypes[type].allowCollisions & collisionType) !== Kiwi.Components.ArcadePhysics.NONE) {
+                //
+                // 				tiles.push({
+                // 					index: index,
+                // 					type: type,
+                // 					x: i * this.tileWidth,
+                // 					y: j * this.tileHeight
+                // 				});
+                //
+                //
+                // 			}
+                //
+                // 		}
+                // 	}
+                //
+                // 	return tiles;
+                // }
                 /**
                 * The update loop that is executed when this TileMapLayer is add to the Stage.
                 * @method update
@@ -7063,7 +6789,7 @@ var Kiwi;
                 *
                 * @method _calculateBoundaries
                 * @param camera {Camera}
-                * @param matrix {Matrix}
+                * @param matrix {matrix}
                 * @protected
                 */
                 TileMapLayer.prototype._calculateBoundaries = function (camera, matrix) {
@@ -7082,45 +6808,6 @@ var Kiwi;
                 };
                 TileMapLayer.prototype.renderGL = function (gl, camera, params) {
                     if (params === void 0) { params = null; }
-                };
-                /**
-                * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-                *
-                * @method chartToScreen
-                * @param chartPt {any} A Object containing x/y properties of the tile.
-                * @param [tileW] {Number} The width of the tile
-                * @param [tileH] {Number} The height of the tile
-                * @return {Object} With x/y properties of the location of the map onscreen.
-                * @deprecated
-                * @since 1.3.0
-                * @public
-                */
-                TileMapLayer.prototype.chartToScreen = function (chartPt, tileW, tileH) {
-                    if (tileW === void 0) { tileW = this.tileWidth / 2; }
-                    if (tileH === void 0) { tileH = this.tileHeight; }
-                    return {
-                        x: chartPt.x * tileW - chartPt.y * tileW,
-                        y: chartPt.x * tileH / 2 + chartPt.y * tileH / 2
-                    };
-                };
-                /**
-                * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-                *
-                * @method screenToChart
-                * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-                * @param [tileW] {Number} The width of a single tile.
-                * @param [tileH] {Number} The height of a single tile.
-                * @return {Object} With x/y properties of the location of tile on the screen.
-                * @deprecated
-                * @since 1.3.0
-                * @public
-                */
-                TileMapLayer.prototype.screenToChart = function (scrPt, tileW, tileH) {
-                    if (tileW === void 0) { tileW = this.tileWidth / 2; }
-                    if (tileH === void 0) { tileH = this.tileHeight; }
-                    var column = Math.floor(scrPt.x / tileW);
-                    var row = Math.floor((scrPt.y - column * (tileH / 2)) / tileH);
-                    return { x: column + row, y: row };
                 };
                 return TileMapLayer;
             })(Kiwi.Entity);
@@ -7199,15 +6886,20 @@ var Kiwi;
                 * @return {Number} Either the index of the tile retrieved or -1 if none was found.
                 * @public
                 */
-                TileMapLayerOrthogonal.prototype.getIndexFromCoords = function (x, y) {
-                    //Not with the bounds?
-                    if (x > this.transform.worldX + this.widthInPixels || y > this.transform.worldY + this.heightInPixels || x < this.transform.worldX || y < this.transform.worldY)
-                        return -1;
-                    //Is so get the tile
-                    var tx = Kiwi.Utils.GameMath.snapToFloor(x - this.transform.worldX, this.tileWidth) / this.tileWidth;
-                    var ty = Kiwi.Utils.GameMath.snapToFloor(y - this.transform.worldY, this.tileHeight) / this.tileHeight;
-                    return this.getIndexFromXY(tx, ty);
-                };
+                // public getIndexFromCoords(x: number, y: number): number {
+                //
+                // 	// TODO: reimplemnt this method
+                // 	// TODO: culling of tiles outside camera
+                //     //Not with the bounds?
+                //     // if (x > this.transform.worldX + this.widthInPixels || y > this.transform.worldY + this.heightInPixels || x < this.transform.worldX || y < this.transform.worldY)
+                //     //     return -1;
+                //
+                //     //Is so get the tile
+                //     var tx = Kiwi.Utils.GameMath.snapToFloor(x - this.transform.worldX, this.tileWidth) / this.tileWidth;
+                //     var ty = Kiwi.Utils.GameMath.snapToFloor(y - this.transform.worldY, this.tileHeight) / this.tileHeight;
+                //
+                //     return this.getIndexFromXY(tx, ty);
+                // }
                 /**
                 * Returns the tiles which overlap with a provided entities hitbox component.
                 * Only collidable tiles on ANY side will be returned unless you pass a particular side.
@@ -7218,43 +6910,55 @@ var Kiwi;
                 * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
                 * @public
                 */
-                TileMapLayerOrthogonal.prototype.getOverlappingTiles = function (entity, collisionType) {
-                    if (collisionType === void 0) { collisionType = Kiwi.Components.ArcadePhysics.ANY; }
-                    //Do they have a box?
-                    if (entity.components.hasComponent("Box") == false)
-                        return [];
-                    //Get the box off them
-                    var b = entity.components.getComponent('Box').worldHitbox;
-                    var worldX = this.transform.worldX;
-                    var worldY = this.transform.worldY;
-                    //Is the person within the map's bounds?    
-                    if (b.left > worldX + this.widthInPixels || b.right < worldX || b.bottom < worldY || b.top > worldY + this.heightInPixels)
-                        return [];
-                    var nx = b.x - worldX;
-                    var ny = b.y - worldY;
-                    //Get starting location and now many tiles from there we will check. 
-                    var x = Kiwi.Utils.GameMath.snapToFloor(nx, this.tileWidth) / this.tileWidth;
-                    var y = Kiwi.Utils.GameMath.snapToFloor(ny, this.tileHeight) / this.tileHeight;
-                    var w = Kiwi.Utils.GameMath.snapToCeil(b.width, this.tileWidth) / this.tileWidth;
-                    var h = Kiwi.Utils.GameMath.snapToCeil(b.height, this.tileHeight) / this.tileHeight;
-                    //Add one, because we want to include the very end tile.
-                    var tiles = this.getCollidableTiles(x, y, w + 1, h + 1, collisionType);
-                    for (var i = 0; i < tiles.length; i++) {
-                        var t = tiles[i];
-                        if (t.x + worldX > b.right || t.x + this.tileWidth + worldX < b.left || t.y + worldY > b.bottom || t.y + this.tileHeight + worldY < b.top) {
-                            tiles.splice(i, 1);
-                            i--;
-                        }
-                    }
-                    return tiles;
-                };
+                // public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number = Kiwi.Components.ArcadePhysics.ANY): any {
+                //
+                //     //Do they have a box?
+                //     if (entity.components.hasComponent("Box") == false)
+                //         return [];
+                //
+                //     //Get the box off them
+                //     var b: Kiwi.Geom.Rectangle = entity.components.getComponent('Box').worldHitbox;
+                //
+                //     var worldX = this.transform.worldX;
+                //     var worldY = this.transform.worldY;
+                //
+                //     //Is the person within the map's bounds?
+                //     if (b.left > worldX + this.widthInPixels || b.right < worldX || b.bottom < worldY || b.top > worldY + this.heightInPixels)
+                //         return [];
+                //
+                //
+                //     var nx = b.x - worldX;
+                //     var ny = b.y - worldY;
+                //
+                //     //Get starting location and now many tiles from there we will check.
+                //     var x = Kiwi.Utils.GameMath.snapToFloor(nx, this.tileWidth) / this.tileWidth;
+                //     var y = Kiwi.Utils.GameMath.snapToFloor(ny, this.tileHeight) / this.tileHeight;
+                //     var w = Kiwi.Utils.GameMath.snapToCeil(b.width, this.tileWidth) / this.tileWidth;
+                //     var h = Kiwi.Utils.GameMath.snapToCeil(b.height, this.tileHeight) / this.tileHeight;
+                //
+                //     //Add one, because we want to include the very end tile.
+                //     var tiles = this.getCollidableTiles(x, y, w + 1, h + 1, collisionType);
+                //
+                //     //Loop through the tiles and make sure they are actually overlapping with the Entity.
+                //     for (var i = 0; i < tiles.length; i++) {
+                //         var t = tiles[i];
+                //
+                //         if (t.x + worldX > b.right || t.x + this.tileWidth + worldX < b.left || t.y + worldY > b.bottom || t.y + this.tileHeight + worldY < b.top) {
+                //             tiles.splice(i, 1);
+                //             i--;
+                //         }
+                //     }
+                //
+                //     return tiles;
+                //
+                // }
                 /**
                 * Used to calculate the position of the tilemap on the stage as well as how many tiles can fit on the screen.
                 * All coordinates calculated are stored as temporary properties (maxX/Y, startX/Y).
                 *
                 * @method _calculateBoundaries
                 * @param camera {Camera}
-                * @param matrix {Matrix}
+                * @param matrix {matrix}
                 * @protected
                 */
                 TileMapLayerOrthogonal.prototype._calculateBoundaries = function (camera, matrix) {
@@ -7266,17 +6970,17 @@ var Kiwi;
                     this._corner3.setTo(this.game.stage.width, this.game.stage.height);
                     this._corner4.setTo(0, this.game.stage.height);
                     // Transform corners by camera...
-                    this._corner1 = camera.transformPoint(this._corner1);
-                    this._corner2 = camera.transformPoint(this._corner2);
-                    this._corner3 = camera.transformPoint(this._corner3);
-                    this._corner4 = camera.transformPoint(this._corner4);
+                    // camera.transformWorldToStage(this._corner1, false);
+                    // camera.transformWorldToStage(this._corner2, false);
+                    // camera.transformWorldToStage(this._corner3, false);
+                    // camera.transformWorldToStage(this._corner4, false);
                     // Transform corners by object...
                     var m = matrix.clone();
                     m.invert();
-                    this._corner1 = m.transformPoint(this._corner1);
-                    this._corner2 = m.transformPoint(this._corner2);
-                    this._corner3 = m.transformPoint(this._corner3);
-                    this._corner4 = m.transformPoint(this._corner4);
+                    m.transformPointInPlace(this._corner1);
+                    m.transformPointInPlace(this._corner2);
+                    m.transformPointInPlace(this._corner3);
+                    m.transformPointInPlace(this._corner4);
                     // Find min/max values in X and Y...
                     this._startX = Math.min(this._corner1.x, this._corner2.x, this._corner3.x, this._corner4.x);
                     this._startY = Math.min(this._corner1.y, this._corner2.y, this._corner3.y, this._corner4.y);
@@ -7355,17 +7059,17 @@ var Kiwi;
                             var tx = x * this.tileWidth + this._temptype.offset.x;
                             var ty = y * this.tileHeight + this._temptype.offset.y;
                             //Set up the points
-                            this._corner1.setTo(tx - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner2.setTo(tx + cell.w - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner3.setTo(tx + cell.w - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner4.setTo(tx - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
+                            this._corner1.setTo(tx, ty - (cell.h - this.tileHeight));
+                            this._corner2.setTo(tx + cell.w, ty - (cell.h - this.tileHeight));
+                            this._corner3.setTo(tx + cell.w, ty + cell.h - (cell.h - this.tileHeight));
+                            this._corner4.setTo(tx, ty + cell.h - (cell.h - this.tileHeight));
                             //Add on the matrix to the points
-                            m.transformPoint(this._corner1);
-                            m.transformPoint(this._corner2);
-                            m.transformPoint(this._corner3);
-                            m.transformPoint(this._corner4);
+                            m.transformPointInPlace(this._corner1);
+                            m.transformPointInPlace(this._corner2);
+                            m.transformPointInPlace(this._corner3);
+                            m.transformPointInPlace(this._corner4);
                             //Append to the xyuv array
-                            vertexItems.push(this._corner1.x + t.rotPointX, this._corner1.y + t.rotPointY, cell.x, cell.y, this.alpha, this._corner2.x + t.rotPointX, this._corner2.y + t.rotPointY, cell.x + cell.w, cell.y, this.alpha, this._corner3.x + t.rotPointX, this._corner3.y + t.rotPointY, cell.x + cell.w, cell.y + cell.h, this.alpha, this._corner4.x + t.rotPointX, this._corner4.y + t.rotPointY, cell.x, cell.y + cell.h, this.alpha);
+                            vertexItems.push(this._corner1.x, this._corner1.y, cell.x, cell.y, this.alpha, this._corner2.x, this._corner2.y, cell.x + cell.w, cell.y, this.alpha, this._corner3.x, this._corner3.y, cell.x + cell.w, cell.y + cell.h, this.alpha, this._corner4.x, this._corner4.y, cell.x, cell.y + cell.h, this.alpha);
                         }
                     }
                     //Concat points to the Renderer.
@@ -7419,182 +7123,7 @@ var Kiwi;
                     if (w === void 0) { w = 0; }
                     if (h === void 0) { h = 0; }
                     _super.call(this, tilemap, name, atlas, data, tw, th, x, y, w, h);
-                    /**
-                    * The orientation of the of tilemap.
-                    * TileMaps can be either 'orthogonal' (normal) or 'isometric'.
-                    * @property orientation
-                    * @type String
-                    * @default 'isometric'
-                    * @public
-                    */
-                    this.orientation = Tilemap.ISOMETRIC;
                 }
-                /**
-                * The type of object that it is.
-                * @method objType
-                * @return {String} "TileMapLayer"
-                * @public
-                */
-                TileMapLayerIsometric.prototype.objType = function () {
-                    return "TileMapLayer";
-                };
-                /**
-                * Returns the index of the tile based on the x and y pixel coordinates that are passed.
-                * If no tile is a the coordinates given then -1 is returned instead.
-                * Coordinates are in pixels not tiles and use the world coordinates of the tilemap.
-                *
-                * Functionality needs to be added by classes extending this class.
-                *
-                * @method getIndexFromCoords
-                * @param x {Number} The x coordinate of the Tile you would like to retrieve.
-                * @param y {Number} The y coordinate of the Tile you would like to retrieve.
-                * @return {Number} Either the index of the tile retrieved or -1 if none was found.
-                * @public
-                */
-                TileMapLayerIsometric.prototype.getIndexFromCoords = function (x, y) {
-                    //Not within the bounds?
-                    var halfWidth = this.widthInPixels * 0.5;
-                    if (x > this.x + halfWidth || x < this.x - halfWidth)
-                        return -1;
-                    if (y > this.y + this.heightInPixels || y < this.y)
-                        return -1;
-                    var point = this.screenToChart({ x: x, y: y });
-                    return this.getIndexFromXY(point.x, point.y);
-                };
-                /**
-                * ChartToScreen maps a point in the game tile coordinates into screen pixel
-                * coordinates that indicate where the tile should be drawn.
-                *
-                * @method chartToScreen
-                * @param chartPt {any} A Object containing x/y properties of the tile.
-                * @param [tileW] {Number} The width of the tile
-                * @param [tileH] {Number} The height of the tile
-                * @return {Object} With x/y properties of the location of the map onscreen.
-                * @public
-                */
-                TileMapLayerIsometric.prototype.chartToScreen = function (chartPt, tileW, tileH) {
-                    if (tileW === void 0) { tileW = this.tileWidth; }
-                    if (tileH === void 0) { tileH = this.tileHeight; }
-                    return {
-                        x: (chartPt.x - chartPt.y) * tileW * 0.5,
-                        y: (chartPt.x + chartPt.y) * tileH * 0.5
-                    };
-                };
-                /**
-                * ScreenToChart maps a point in screen coordinates into the game tile chart
-                * coordinates for the tile on which the screen point falls on.
-                *
-                * @method screenToChart
-                * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-                * @param [tileW] {Number} The width of a single tile.
-                * @param [tileH] {Number} The height of a single tile.
-                * @return {Object} With x/y properties of the location of tile on the screen.
-                * @public
-                */
-                TileMapLayerIsometric.prototype.screenToChart = function (scrPt, tileW, tileH) {
-                    if (tileW === void 0) { tileW = this.tileWidth; }
-                    if (tileH === void 0) { tileH = this.tileHeight; }
-                    var tileWH = tileW * 0.5;
-                    var tileHH = tileH * 0.5;
-                    return {
-                        x: Math.ceil((scrPt.x / tileWH + scrPt.y / tileHH) / 2),
-                        y: Math.ceil((scrPt.y / tileHH - (scrPt.x / tileWH)) / 2)
-                    };
-                    // var column = Math.floor( scrPt.x / (tileW * 0.5) );
-                    // var row = Math.floor( ( scrPt.y - column * ( tileH / 2 ) ) / tileH);
-                    // return {
-                    //     x: column + row,
-                    //     y: row
-                    // };
-                };
-                /**
-                * The render loop which is used when using the Canvas renderer.
-                * @method render
-                * @param camera {Camera}
-                * @public
-                */
-                TileMapLayerIsometric.prototype.render = function (camera) {
-                    //When not to render the map.
-                    if (this.visible === false || this.alpha < 0.1 || this.exists === false) {
-                        return;
-                    }
-                    //Get the context.
-                    var ctx = this.game.stage.ctx;
-                    ctx.save();
-                    //Make the map alphed out.
-                    if (this.alpha > 0 && this.alpha <= 1) {
-                        ctx.globalAlpha = this.alpha;
-                    }
-                    // Transform
-                    var t = this.transform;
-                    var m = t.getConcatenatedMatrix();
-                    ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
-                    this._calculateBoundaries(camera, m);
-                    for (var y = this._startY; y < this._maxY; y++) {
-                        for (var x = this._startX; x < this._maxX; x++) {
-                            if ((this._temptype = this.getTileFromXY(x, y)) && this._temptype.cellIndex !== -1) {
-                                var cell = this.atlas.cells[this._temptype.cellIndex];
-                                var offsetX = this._temptype.offset.x;
-                                var offsetY = this._temptype.offset.y;
-                                var w = this.tileWidth * (this.width * 2 - 1);
-                                var h = this.tileHeight * this.height;
-                                // We want <0,0>'s horizontal center point to be in the screen center, hence the -tileWidth/2.
-                                var shiftX = this.tileWidth / 2;
-                                var screenPos = this.chartToScreen({ x: x, y: y }, this.tileWidth, this.tileHeight);
-                                var drawX = screenPos.x + this._temptype.offset.x - shiftX;
-                                var drawY = screenPos.y - (cell.h - this.tileHeight) + this._temptype.offset.y;
-                                ctx.drawImage(this.atlas.image, cell.x, cell.y, cell.w, cell.h, drawX, drawY, cell.w, cell.h);
-                            }
-                        }
-                    }
-                    ctx.restore();
-                    return true;
-                };
-                TileMapLayerIsometric.prototype.renderGL = function (gl, camera, params) {
-                    if (params === void 0) { params = null; }
-                    //Setup
-                    var vertexItems = [];
-                    //Transform/Matrix
-                    var t = this.transform;
-                    var m = t.getConcatenatedMatrix();
-                    //Find which ones we need to render.
-                    this._calculateBoundaries(camera, m);
-                    for (var y = this._startY; y < this._maxY; y++) {
-                        for (var x = this._startX; x < this._maxX; x++) {
-                            //Get the tile type
-                            this._temptype = this.getTileFromXY(x, y);
-                            //Skip tiletypes that don't use a cellIndex.
-                            if (this._temptype.cellIndex == -1)
-                                continue;
-                            //Get the cell index
-                            var cell = this.atlas.cells[this._temptype.cellIndex];
-                            // Isometric maps
-                            var offsetX = this._temptype.offset.x;
-                            var offsetY = this._temptype.offset.y;
-                            var w = this.tileWidth * (this.width * 2 - 1);
-                            var h = this.tileHeight * this.height;
-                            // We want <0,0>'s horizontal center point to be in the screen center, hence the -tileWidth/2.
-                            var shiftX = this.tileWidth / 2;
-                            var screenPos = this.chartToScreen({ x: x, y: y }, this.tileWidth, this.tileHeight);
-                            var tx = screenPos.x + this._temptype.offset.x - shiftX;
-                            var ty = screenPos.y + this._temptype.offset.y;
-                            //Set up the points
-                            this._corner1.setTo(tx - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner2.setTo(tx + cell.w - t.rotPointX, ty - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner3.setTo(tx + cell.w - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
-                            this._corner4.setTo(tx - t.rotPointX, ty + cell.h - t.rotPointY - (cell.h - this.tileHeight));
-                            //Add on the matrix to the points
-                            m.transformPoint(this._corner1);
-                            m.transformPoint(this._corner2);
-                            m.transformPoint(this._corner3);
-                            m.transformPoint(this._corner4);
-                            //Append to the xyuv array
-                            vertexItems.push(this._corner1.x + t.rotPointX, this._corner1.y + t.rotPointY, cell.x, cell.y, this.alpha, this._corner2.x + t.rotPointX, this._corner2.y + t.rotPointY, cell.x + cell.w, cell.y, this.alpha, this._corner3.x + t.rotPointX, this._corner3.y + t.rotPointY, cell.x + cell.w, cell.y + cell.h, this.alpha, this._corner4.x + t.rotPointX, this._corner4.y + t.rotPointY, cell.x, cell.y + cell.h, this.alpha);
-                        }
-                    }
-                    //Concat points to the Renderer.
-                    this.glRenderer.concatBatch(vertexItems);
-                };
                 return TileMapLayerIsometric;
             })(Tilemap.TileMapLayer);
             Tilemap.TileMapLayerIsometric = TileMapLayerIsometric;
@@ -8036,301 +7565,19 @@ var Kiwi;
                 if (width === void 0) { width = 0; }
                 if (height === void 0) { height = 0; }
                 _super.call(this, parent, 'Box');
-                /**
-                * Controls whether the hitbox should update automatically to match the hitbox of the current cell on the entity this Box component is attached to (default behaviour).
-                * Or if the hitbox shouldn't auto update. Which will mean it will stay the same as the last value it had.
-                * This property is automatically set to 'false' when you override the hitboxes width/height, but you can set this to true afterwards.
-                *
-                * @property autoUpdate
-                * @type boolean
-                * @default true
-                * @private
-                */
-                this.autoUpdate = true;
-                this.entity = parent;
-                this._rawBounds = new Kiwi.Geom.Rectangle(x, y, width, height);
-                this._rawCenter = new Kiwi.Geom.Point(x + width / 2, y + height / 2);
-                this._rawHitbox = new Kiwi.Geom.Rectangle();
-                this._hitboxOffset = new Kiwi.Geom.Point();
-                this.hitbox = new Kiwi.Geom.Rectangle(0, 0, width, height);
-                this.autoUpdate = true;
-                this._scratchMatrix = new Kiwi.Geom.Matrix();
+                // this.entity = parent;
+                //
+                // this._rawBounds = new Kiwi.Geom.Rectangle(x,y,width,height);
+                // this._rawCenter = new Kiwi.Geom.Point(x + width / 2, y + height / 2);
+                // this._rawHitbox = new Kiwi.Geom.Rectangle();
+                //
+                // this._hitboxOffset = new Kiwi.Geom.Point();
+                //
+                // this.hitbox = new Kiwi.Geom.Rectangle(0, 0, width, height);
+                // this.autoUpdate = true;
+                //
+                // this._scratchMatrix = new Kiwi.Geom.Matrix();
             }
-            /**
-            * The type of object that this is.
-            * @method objType
-            * @return {string} "Box"
-            * @public
-            */
-            Box.prototype.objType = function () {
-                return "Box";
-            };
-            Object.defineProperty(Box.prototype, "hitboxOffset", {
-                /**
-                * Returns the offset value of the hitbox as a point for the X/Y axis for the developer to use.
-                * This is without rotation or scaling.
-                * This is a READ ONLY property.
-                * @property hitboxOffset
-                * @type Kiwi.Geom.Point
-                * @public
-                */
-                get: function () {
-                    if (this.autoUpdate == true && this.entity.atlas !== null && this.entity.atlas.cells && this.entity.atlas.cells[0].hitboxes) {
-                        this._hitboxOffset.x = this.entity.atlas.cells[this.entity.cellIndex].hitboxes[0].x || 0;
-                        this._hitboxOffset.y = this.entity.atlas.cells[this.entity.cellIndex].hitboxes[0].y || 0;
-                    }
-                    return this._hitboxOffset;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "rawHitbox", {
-                /**
-                * Returns the raw hitbox rectangle for the developer to use.
-                * 'Raw' means where it would be without rotation or scaling.
-                * This is READ ONLY.
-                * @property rawHitbox
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._rawHitbox.x = this.rawBounds.x + this.hitboxOffset.x;
-                    this._rawHitbox.y = this.rawBounds.y + this.hitboxOffset.y;
-                    //If the hitbox has not already been set, then update the width/height based upon the current cell that the entity has.
-                    if (this.autoUpdate == true) {
-                        var atlas = this.entity.atlas;
-                        if (atlas !== null && atlas.cells && atlas.cells[0].hitboxes) {
-                            this._rawHitbox.width = atlas.cells[this.entity.cellIndex].hitboxes[0].w;
-                            this._rawHitbox.height = atlas.cells[this.entity.cellIndex].hitboxes[0].h;
-                        }
-                        else {
-                            this._rawHitbox.width = this.entity.width;
-                            this._rawHitbox.height = this.entity.height;
-                        }
-                    }
-                    return this._rawHitbox;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "hitbox", {
-                /**
-                * The 'normal' or transformed hitbox for the entity. This is its box after rotation/Kiwi.Geom.Rectangle.
-                * @property hitbox
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._transformedHitbox = this._rotateHitbox(this.rawHitbox.clone());
-                    return this._transformedHitbox;
-                },
-                set: function (value) {
-                    //Use custom hitbox defined by user.
-                    this._hitboxOffset.x = value.x;
-                    this._hitboxOffset.y = value.y;
-                    this._rawHitbox = value;
-                    this._rawHitbox.x += this._rawBounds.x;
-                    this._rawHitbox.y += this._rawBounds.y;
-                    this.autoUpdate = false;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "worldHitbox", {
-                /**
-                * Returns the transformed hitbox for the entity using its 'world' coordinates.
-                * This is READ ONLY.
-                * @property worldHitbox
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._worldHitbox = this._rotateHitbox(this.rawHitbox.clone(), true);
-                    return this._worldHitbox;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "rawBounds", {
-                /**
-                * Returns the 'raw' bounds for this entity.
-                * This is READ ONLY.
-                * @property rawBounds
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._rawBounds.x = this.entity.x;
-                    this._rawBounds.y = this.entity.y;
-                    this._rawBounds.width = this.entity.width;
-                    this._rawBounds.height = this.entity.height;
-                    return this._rawBounds;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "rawCenter", {
-                /**
-                * Returns the raw center point of the box.
-                * This is READ ONLY.
-                * @property rawCenter
-                * @type Kiwi.Geom.Point
-                * @public
-                */
-                get: function () {
-                    this._rawCenter.x = this.rawBounds.x + this.rawBounds.width / 2;
-                    this._rawCenter.y = this.rawBounds.y + this.rawBounds.height / 2;
-                    return this._rawCenter;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "center", {
-                /**
-                * Returns the center point for the box after it has been transformed.
-                * World coordinates.
-                * This is READ ONLY.
-                * @property center
-                * @type Kiwi.Geom.Point
-                * @public
-                */
-                get: function () {
-                    var m = this.entity.transform.getConcatenatedMatrix();
-                    this._transformedCenter = m.transformPoint(new Kiwi.Geom.Point(this.entity.width / 2 - this.entity.anchorPointX, this.entity.height / 2 - this.entity.anchorPointY));
-                    return this._transformedCenter;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "bounds", {
-                /**
-                * Returns the 'transformed' or 'normal' bounds for this box.
-                * This is READ ONLY.
-                * @property bounds
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._transformedBounds = this._rotateRect(this.rawBounds.clone());
-                    return this._transformedBounds;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Box.prototype, "worldBounds", {
-                /**
-                * Returns the 'transformed' bounds for this entity using the world coodinates.
-                * This is READ ONLY.
-                * @property worldBounds
-                * @type Kiwi.Geom.Rectangle
-                * @public
-                */
-                get: function () {
-                    this._worldBounds = this._rotateRect(this.rawBounds.clone(), true);
-                    return this._worldBounds;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-            * Private internal method only. Used to calculate the transformed bounds after rotation/scale.
-            * @method _rotateRect
-            * @param rect {Kiwi.Geom.Rectangle}
-            * @param [useWorldCoords=false] {Boolean}
-            * @return {Kiwi.Geom.Rectangle}
-            * @private
-            */
-            Box.prototype._rotateRect = function (rect, useWorldCoords) {
-                if (useWorldCoords === void 0) { useWorldCoords = false; }
-                var out = new Kiwi.Geom.Rectangle();
-                var t = this.entity.transform;
-                var m = this._scratchMatrix.copyFrom(t.getConcatenatedMatrix());
-                // Use world coordinates?
-                if (!useWorldCoords) {
-                    m.setTo(m.a, m.b, m.c, m.d, t.x + t.rotPointX, t.y + t.rotPointY);
-                }
-                out = this.extents(m.transformPoint({ x: -t.rotPointX, y: -t.rotPointY }), m.transformPoint({ x: -t.rotPointX + rect.width, y: -t.rotPointY }), m.transformPoint({ x: -t.rotPointX + rect.width, y: -t.rotPointY + rect.height }), m.transformPoint({ x: -t.rotPointX, y: -t.rotPointY + rect.height }));
-                return out;
-            };
-            /**
-            * A private method that is used to calculate the transformed hitbox's coordinates after rotation.
-            * @method _rotateHitbox
-            * @param rect {Kiwi.Geom.Rectangle}
-            * @param [useWorldCoords=false] {Boolean}
-            * @return {Kiwi.Geom.Rectangle}
-            * @private
-            */
-            Box.prototype._rotateHitbox = function (rect, useWorldCoords) {
-                if (useWorldCoords === void 0) { useWorldCoords = false; }
-                var out = new Kiwi.Geom.Rectangle();
-                var t = this.entity.transform;
-                var m = this._scratchMatrix.copyFrom(t.getConcatenatedMatrix());
-                //Use world coordinates?
-                if (!useWorldCoords) {
-                    m.setTo(m.a, m.b, m.c, m.d, t.x + t.rotPointX, t.y + t.rotPointY);
-                }
-                out = this.extents(m.transformPoint({ x: -t.rotPointX + this._hitboxOffset.x, y: -t.rotPointY + this._hitboxOffset.y }), m.transformPoint({ x: -t.rotPointX + rect.width + this._hitboxOffset.x, y: -t.rotPointY + this._hitboxOffset.y }), m.transformPoint({ x: -t.rotPointX + rect.width + this._hitboxOffset.x, y: -t.rotPointY + rect.height + this._hitboxOffset.y }), m.transformPoint({ x: -t.rotPointX + this._hitboxOffset.x, y: -t.rotPointY + rect.height + this._hitboxOffset.y }));
-                return out;
-            };
-            /**
-            * Draws the various bounds on a context that is passed. Useful for debugging and using in combination with the debug canvas.
-            * @method draw
-            * @param ctx {CanvasRenderingContext2D} Context of the canvas that this box component is to be rendered on top of.
-            * @param [camera] {Kiwi.Camera} A camera that should be taken into account before rendered. This is the default camera by default.
-            * @public
-            */
-            Box.prototype.draw = function (ctx, camera) {
-                if (camera === void 0) { camera = this.game.cameras.defaultCamera; }
-                var t = this.entity.transform;
-                var ct = camera.transform;
-                // Draw raw bounds and raw center
-                ctx.strokeStyle = "red";
-                ctx.fillRect(this.rawCenter.x + ct.x - 1, this.rawCenter.y + ct.y - 1, 3, 3);
-                ctx.strokeRect(t.x + ct.x + t.rotPointX - 3, t.y + ct.y + t.rotPointY - 3, 7, 7);
-                // Draw bounds
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.bounds.x + ct.x, this.bounds.y + ct.y, this.bounds.width, this.bounds.height);
-                // Draw hitbox
-                ctx.strokeStyle = "green";
-                ctx.strokeRect(this.hitbox.x + ct.x, this.hitbox.y + ct.y, this.hitbox.width, this.hitbox.height);
-                // Draw raw hitbox
-                ctx.strokeStyle = "white";
-                ctx.strokeRect(this.rawHitbox.x + ct.x, this.rawHitbox.y + ct.y, this.rawHitbox.width, this.rawHitbox.height);
-                // Draw world bounds
-                ctx.strokeStyle = "purple";
-                ctx.strokeRect(this.worldBounds.x, this.worldBounds.y, this.worldBounds.width, this.worldBounds.height);
-                // Draw world hitbox
-                ctx.strokeStyle = "cyan";
-                ctx.strokeRect(this.worldHitbox.x, this.worldHitbox.y, this.worldHitbox.width, this.worldHitbox.height);
-            };
-            /**
-            * Method which takes four Points and then converts it into a Rectangle, which represents the area those points covered.
-            * The points passed can be maybe in any order, as the are checked for validity first.
-            *
-            * @method extents
-            * @param topLeftPoint {Kiwi.Geom.Point} The top left Point that the Rectangle should have.
-            * @param topRightPoint {Kiwi.Geom.Point} The top right Point that the Rectangle should have.
-            * @param bottomRightPoint {Kiwi.Geom.Point} The bottom right Point that the Rectangle should have.
-            * @param bottomLeftPoint {Kiwi.Geom.Point} The bottom left Point that the Rectangle should have.
-            * @return {Kiwi.Geom.Rectangle} The new Rectangle that represents the area the points covered.
-            * @return Rectangle
-            */
-            Box.prototype.extents = function (topLeftPoint, topRightPoint, bottomRightPoint, bottomLeftPoint) {
-                var left = Math.min(topLeftPoint.x, topRightPoint.x, bottomRightPoint.x, bottomLeftPoint.x);
-                var right = Math.max(topLeftPoint.x, topRightPoint.x, bottomRightPoint.x, bottomLeftPoint.x);
-                var top = Math.min(topLeftPoint.y, topRightPoint.y, bottomRightPoint.y, bottomLeftPoint.y);
-                var bottom = Math.max(topLeftPoint.y, topRightPoint.y, bottomRightPoint.y, bottomLeftPoint.y);
-                return new Kiwi.Geom.Rectangle(left, top, right - left, bottom - top);
-            };
-            /**
-            * Destroys this component and all of the links it may have to other objects.
-            * @method destroy
-            * @public
-            */
-            Box.prototype.destroy = function () {
-                _super.prototype.destroy.call(this);
-                delete this.entity;
-            };
             return Box;
         })(Kiwi.Component);
         Components.Box = Box;
@@ -8367,599 +7614,33 @@ var Kiwi;
             function Input(owner, box, enabled) {
                 if (enabled === void 0) { enabled = false; }
                 _super.call(this, owner, 'Input');
-                /**
-                * A reference to the pointer that is currently 'dragging' this Object.
-                * If not dragging then this is null.
-                * @property _isDragging
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._isDragging = null;
-                /**
-                * Indicates if dragging is currently enabled.
-                * @property _dragEnabled
-                * @type boolean
-                * @default false
-                * @private
-                */
-                this._dragEnabled = false;
-                /**
-                * If when dragging, the IChild should snap to the center of the pointer it is being dragged by.
-                * @property _dragSnapToCenter
-                * @type boolean
-                * @default false
-                * @private
-                */
-                this._dragSnapToCenter = false;
-                /**
-                * Temporary property that gets updated everyframe with the pointer that is currently 'down' on this entity.
-                * @property _nowDown
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._nowDown = null;
-                /**
-                * Temporary property that gets updated everyframe with the pointer that was just 'released' from being down on this entity
-                * @property _nowUp
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._nowUp = null;
-                /**
-                * Temporary property of the pointer that is now within the bounds of the entity
-                * @property _nowEntered
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._nowEntered = null;
-                /**
-                * Temporary property of the pointer that just left the bounds of the entity.
-                * @property _nowLeft
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._nowLeft = null;
-                /**
-                * Temporary property of the pointer that just started draggging the entity.
-                * @property _nowDragging
-                * @type Kiwi.Input.Pointer
-                * @default null
-                * @private
-                */
-                this._nowDragging = null;
                 //  Signals
-                this._onEntered = new Kiwi.Signal();
-                this._onLeft = new Kiwi.Signal();
-                this._onDown = new Kiwi.Signal();
-                this._onUp = new Kiwi.Signal();
-                this._onDragStarted = new Kiwi.Signal();
-                this._onDragStopped = new Kiwi.Signal();
-                //  Properties
-                this._box = box;
-                this._distance = new Kiwi.Geom.Point();
-                this._withinBounds = null;
-                this._outsideBounds = true;
-                this._isUp = true;
-                this._isDown = null;
-                this._isDragging = null;
-                this._justEntered = false;
-                this._tempDragDisabled = false;
-                this._tempPoint = new Kiwi.Geom.Point();
-                this._tempCircle = new Kiwi.Geom.Circle(0, 0, 0);
-                this.enabled = enabled;
+                // this._onEntered = new Kiwi.Signal();
+                // this._onLeft = new Kiwi.Signal();
+                // this._onDown = new Kiwi.Signal();
+                // this._onUp = new Kiwi.Signal();
+                // this._onDragStarted = new Kiwi.Signal();
+                // this._onDragStopped = new Kiwi.Signal();
+                //
+                // //  Properties
+                // this._box = box;
+                //
+                // this._distance = new Kiwi.Geom.Point();
+                //
+                // this._withinBounds = null;
+                // this._outsideBounds = true;
+                //
+                // this._isUp = true;
+                // this._isDown = null;
+                // this._isDragging = null;
+                // this._justEntered = false;
+                // this._tempDragDisabled = false;
+                //
+                // this._tempPoint = new Kiwi.Geom.Point();
+                // this._tempCircle = new Kiwi.Geom.Circle(0, 0, 0);
+                //
+                // this.enabled = enabled;
             }
-            /**
-            * The type of object this input is.
-            * @method objType
-            * @return {string} "Input"
-            * @public
-            */
-            Input.prototype.objType = function () {
-                return "Input";
-            };
-            Object.defineProperty(Input.prototype, "onEntered", {
-                /**
-                * Returns the onEntered Signal, that fires events when a pointer enters the hitbox of a entity.
-                * Note: Accessing this signal enables the input.
-                * This is READ ONLY.
-                * @property onEntered
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    if (this.enabled == false)
-                        this.enabled = true;
-                    return this._onEntered;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onLeft", {
-                /**
-                * Returns the onLeft Signal, that fires events when a pointer leaves the hitbox of a entity.
-                * Note: Accessing this signal enables the input.
-                * This is READ ONLY.
-                * @property onLeft
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    if (this.enabled == false)
-                        this.enabled = true;
-                    return this._onLeft;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onDown", {
-                /**
-                * Returns the onDown Signal, that fires events when a pointer is pressed within the bounds of the signal.
-                * Note: Accessing this signal enables the input.
-                * This is READ ONLY.
-                * @property onDown
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    if (this.enabled == false)
-                        this.enabled = true;
-                    return this._onDown;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onUp", {
-                /**
-                * Returns the onUp Signal, that fires events when a pointer is released either within the bounds or was pressed initially within the bounds..
-                * Note: Accessing this signal enables the input.
-                * This is READ ONLY.
-                * @property onUp
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    if (this.enabled == false)
-                        this.enabled = true;
-                    return this._onUp;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onDragStarted", {
-                /**
-                * Returns the onDragStarted Signal.
-                * This is READ ONLY.
-                * @property onDragStarted
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    return this._onDragStarted;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onDragStopped", {
-                /**
-                * Returns the onDragStopped Signal.
-                * This is READ ONLY.
-                * @property onDragStopped
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    return this._onDragStopped;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onRelease", {
-                /**
-                * A alias for the on release signal.
-                * This is READ ONLY.
-                * @property onRelease
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    return this.onUp;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "onPress", {
-                /**
-                * A alias for the on press signal.
-                * This is READ ONLY.
-                * @property onPress
-                * @type Kiwi.Signal
-                * @public
-                */
-                get: function () {
-                    return this.onDown;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "enabled", {
-                /**
-                * Get if the input is enabled or not. Note: Inputs should only be enabled when needed, otherwise unnecessary processing does occur which can result in a slower game.
-                * @property enabled
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return this._enabled;
-                },
-                set: function (val) {
-                    this._enabled = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "isDown", {
-                /**
-                * Used to see if a pointer is currently on this input. Returns a boolean indicating either true or false.
-                * This is READ ONLY.
-                * @property isDown
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return (this._isDown !== null);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "isUp", {
-                /**
-                * Used to see if no pointer is on this input (so it is up).
-                * This is READ ONLY.
-                * @property isUp
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return this._isUp;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "withinBounds", {
-                /**
-                * Check to see if any pointer is within the bounds of this input.
-                * This is READ ONLY.
-                * @property withinBounds
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return (this._withinBounds !== null);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "outsideBounds", {
-                /**
-                * See if no pointers are within the bounds of this entity.
-                * This is READ ONLY.
-                * @property outsideBounds
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return this._outsideBounds;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "isDragging", {
-                /**
-                * Returns a boolean indicating if this is currently dragging something.
-                * This is READ ONLY.
-                * @property isDragging
-                * @type boolean
-                * @public
-                */
-                get: function () {
-                    return (this._isDragging !== null);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Input.prototype, "dragDistance", {
-                /**
-                * The drag distance that is used when dragging this object. See _dragDistance for more information.
-                * @property dragDistance
-                * @type number
-                * @public
-                */
-                get: function () {
-                    return this._dragDistance;
-                },
-                set: function (val) {
-                    this._dragDistance = val;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-            * Enables the dragging of this entity.
-            * @method enableDrag
-            * @param [snapToCenter=false] {boolean} If when dragging the Entity should snap to the center of the pointer.
-            * @param [distance=1] {number} If when dragging the Entity should snap to numbers divisible by this amount.
-            * @public
-            */
-            Input.prototype.enableDrag = function (snapToCenter, distance) {
-                if (snapToCenter === void 0) { snapToCenter = false; }
-                if (distance === void 0) { distance = 1; }
-                if (this.enabled == false)
-                    this.enabled = true;
-                this._dragEnabled = true;
-                this._dragSnapToCenter = snapToCenter;
-                this._dragDistance = distance;
-                this._isDragging = null;
-            };
-            /**
-            * Disables the dragging of this entity.
-            * @method disableDrag
-            * @public
-            */
-            Input.prototype.disableDrag = function () {
-                this._dragEnabled = false;
-                this._isDragging = null;
-            };
-            /**
-            * The update loop for the input.
-            * @method update
-            * @protected
-            */
-            Input.prototype.update = function () {
-                if (this.enabled === false || !this.game || this.owner.active === false) {
-                    return;
-                }
-                // Reset the temporary properties
-                this._nowDown = null;
-                this._nowUp = null;
-                this._nowEntered = null;
-                this._nowLeft = null;
-                this._nowDragging = null;
-                //Use the appropriate method of checking.
-                if (Kiwi.DEVICE.touch) {
-                    this._updateTouch();
-                }
-                else {
-                    this._updateMouse();
-                }
-                //If the entity is dragging.
-                if (this.isDragging) {
-                    this._tempPoint = this.game.cameras.defaultCamera.transformPoint(this._isDragging.point);
-                    if (this._dragSnapToCenter === false) {
-                        this.owner.transform.x = Kiwi.Utils.GameMath.snapTo((this._tempPoint.x - this._box.hitboxOffset.x - this._distance.x), this._dragDistance);
-                        this.owner.transform.y = Kiwi.Utils.GameMath.snapTo((this._tempPoint.y - this._box.hitboxOffset.y - this._distance.y), this._dragDistance);
-                    }
-                    else {
-                        this.owner.transform.x = Kiwi.Utils.GameMath.snapTo((this._tempPoint.x - this._box.hitboxOffset.x - this._box.worldHitbox.width / 2), this._dragDistance);
-                        this.owner.transform.y = Kiwi.Utils.GameMath.snapTo((this._tempPoint.y - this._box.hitboxOffset.y - this._box.worldHitbox.height / 2), this._dragDistance);
-                    }
-                }
-            };
-            /**
-            * The update loop that gets executed when the game is using the touch manager.
-            * @method _updateTouch
-            * @private
-            */
-            Input.prototype._updateTouch = function () {
-                for (var i = 0; i < this.game.input.touch.maximumPointers; i++) {
-                    //if that pointer is active then see where it is
-                    if (this.game.input.touch.fingers[i].active === true) {
-                        this._evaluateTouchPointer(this.game.input.touch.fingers[i]);
-                    }
-                    else if (this.isDown === true && this._isDown.id === this.game.input.touch.fingers[i].id) {
-                        this._nowUp = this.game.input.touch.fingers[i];
-                    }
-                    else if (this.isDown === false && this._nowUp === null && this.withinBounds === true && this._withinBounds.id === this.game.input.touch.fingers[i].id) {
-                        this._nowUp = this.game.input.touch.fingers[i];
-                    }
-                }
-                //Fire the events. LOTS OF CONDITIONS
-                if (this._nowEntered !== null && this.withinBounds === false) {
-                    this._withinBounds = this._nowEntered;
-                    this._outsideBounds = false;
-                    this._onEntered.dispatch(this.owner, this._nowEntered);
-                }
-                if (this._nowLeft !== null && this.withinBounds === true) {
-                    this._withinBounds = null;
-                    this._outsideBounds = true;
-                    this._onLeft.dispatch(this.owner, this._nowLeft);
-                }
-                if (this._nowDown !== null && this.isDown === false) {
-                    this._onDown.dispatch(this.owner, this._nowDown);
-                    this._isDown = this._nowDown;
-                    this._isUp = false;
-                    this._withinBounds = this._nowDown;
-                    this._outsideBounds = false;
-                }
-                if (this._dragEnabled == true && this.isDragging === false && this._nowDragging !== null) {
-                    this._onDragStarted.dispatch(this.owner, this._nowDragging);
-                    this._isDragging = this._nowDragging;
-                }
-                if (this._nowUp !== null) {
-                    this._onUp.dispatch(this.owner, this._nowUp);
-                    this._isDown = null;
-                    this._isUp = true;
-                    this._withinBounds = null;
-                    this._outsideBounds = true;
-                    //dispatch drag event
-                    if (this.isDragging === true && this._isDragging.id == this._nowUp.id) {
-                        this._isDragging = null;
-                        this._onDragStopped.dispatch(this.owner, this._nowUp);
-                    }
-                }
-            };
-            /**
-            * A private method for checking to see if a touch pointer should activate any events.
-            * @method _evaluateTouchPointer
-            * @param pointer {Kiwi.Input.Finger} The pointer you are checking against.
-            * @private
-            */
-            Input.prototype._evaluateTouchPointer = function (pointer) {
-                //if nothing isdown or what is down is the current pointer
-                if (this.isDown === false || this._isDown.id === pointer.id) {
-                    this._tempPoint = this.game.cameras.defaultCamera.transformPoint(pointer.point);
-                    this._tempCircle.setTo(this._tempPoint.x, this._tempPoint.y, pointer.circle.diameter);
-                    if (Kiwi.Geom.Intersect.circleToRectangle(this._tempCircle, this._box.worldHitbox).result) {
-                        if (this.isDown === true && this._isDown.id === pointer.id || this.isDown === false && pointer.duration > 1) {
-                            this._nowEntered = pointer;
-                        }
-                        if (this.isDown === false && pointer.frameDuration < 2) {
-                            this._nowDown = pointer;
-                        }
-                        if (this._dragEnabled && this.isDragging == false && this.isDown == true) {
-                            this._distance.x = this._tempPoint.x - this._box.worldHitbox.left;
-                            this._distance.y = this._tempPoint.y - this._box.worldHitbox.top;
-                            this._nowDragging = pointer;
-                        }
-                    }
-                    else {
-                        if (this.isDown === true) {
-                            this._nowLeft = pointer;
-                        }
-                        else if (this.withinBounds === true && this._withinBounds.id == pointer.id) {
-                            this._nowLeft = pointer;
-                        }
-                    }
-                }
-            };
-            /**
-            * The update loop that runs when the mouse manager is the method for interacting with the screen.
-            * @method _updateMouse
-            * @private
-            */
-            Input.prototype._updateMouse = function () {
-                this._evaluateMousePointer(this.game.input.mouse.cursor);
-                //dispatch the events
-                if (this._nowLeft !== null) {
-                    this._onLeft.dispatch(this.owner, this._nowLeft);
-                }
-                if (this._nowEntered !== null) {
-                    this._onEntered.dispatch(this.owner, this._nowEntered);
-                }
-                if (this._nowDown !== null && this.isDown === false) {
-                    this._onDown.dispatch(this.owner, this._nowDown);
-                    this._isDown = this._nowDown;
-                    this._isUp = false;
-                }
-                if (this._dragEnabled == true && this.isDragging === false && this._nowDragging !== null) {
-                    this._onDragStarted.dispatch(this.owner, this._nowDragging);
-                    this._isDragging = this._nowDragging;
-                }
-                if (this.isDown === true && this._nowUp !== null && this._isDown.id === this._nowUp.id) {
-                    this._onUp.dispatch(this.owner, this._nowUp);
-                    // Dispatch drag event
-                    if (this.isDragging === true && this._isDragging.id == this._nowUp.id) {
-                        this._isDragging = null;
-                        this._onDragStopped.dispatch(this.owner, this._nowUp);
-                    }
-                    this._isDown = null;
-                    this._isUp = true;
-                }
-            };
-            /**
-            * Evaluates where and what the mouse cursor is doing in relation to this box. Needs a little bit more love.
-            * @method _evaluateMousePointer
-            * @param pointer {Kiwi.Input.MouseCursor}
-            * @private
-            */
-            Input.prototype._evaluateMousePointer = function (pointer) {
-                this._tempPoint = this.game.cameras.defaultCamera.transformPoint(pointer.point);
-                if (Kiwi.Geom.Intersect.pointToRectangle(this._tempPoint, this._box.worldHitbox).result) {
-                    if (this._dragEnabled && this.isDragging === false) {
-                        this._distance.x = this._tempPoint.x - this._box.worldHitbox.left;
-                        this._distance.y = this._tempPoint.y - this._box.worldHitbox.top;
-                    }
-                    //  Has it just moved inside?
-                    if (this.withinBounds === false) {
-                        this._nowEntered = pointer;
-                        this._withinBounds = pointer;
-                        this._outsideBounds = false;
-                        this._justEntered = true;
-                    }
-                }
-                else {
-                    //  It's outside the bounds now, was it previously in?
-                    if (this.withinBounds === true && this.isDragging === false) {
-                        this._nowLeft = pointer;
-                        this._withinBounds = null;
-                        this._outsideBounds = true;
-                    }
-                }
-                //  Input is down (click/touch)
-                if (pointer.isDown === true) {
-                    //if is was a mouse, did it just enter?
-                    if (this._justEntered) {
-                        this._isDown = pointer;
-                        this._isUp = false;
-                        this._tempDragDisabled = true;
-                    }
-                    //  Within bounds? 
-                    if (this.withinBounds === true && this.isDown === false && this._nowDown === null) {
-                        this._nowDown = pointer;
-                    }
-                    if (this._dragEnabled === true && this.isDragging == false && this._tempDragDisabled === false) {
-                        if (this.isDown == true) {
-                            this._nowDragging = pointer;
-                        }
-                    }
-                }
-                else {
-                    if (this._tempDragDisabled === true)
-                        this._tempDragDisabled = false;
-                    if (this.isDown === true) {
-                        this._nowUp = pointer;
-                    }
-                }
-                if (this._justEntered)
-                    this._justEntered = false;
-            };
-            /**
-            * Destroys the input.
-            * @method destory
-            * @public
-            */
-            Input.prototype.destroy = function () {
-                _super.prototype.destroy.call(this);
-                this.enabled = false;
-                delete this._box;
-                delete this._isDown;
-                delete this._isUp;
-                delete this._isDragging;
-                delete this._dragEnabled;
-                if (this._onDown)
-                    this._onDown.dispose();
-                delete this._onDown;
-                if (this._onDragStarted)
-                    this._onDragStarted.dispose();
-                delete this._onDragStarted;
-                if (this._onUp)
-                    this._onUp.dispose();
-                delete this._onUp;
-                if (this._onLeft)
-                    this._onLeft.dispose();
-                delete this._onLeft;
-                if (this._onEntered)
-                    this._onEntered.dispose();
-                delete this._onEntered;
-                if (this._onDragStopped)
-                    this._onDragStopped.dispose();
-                delete this._onDragStopped;
-                delete this._dragDistance;
-            };
             return Input;
         })(Kiwi.Component);
         Components.Input = Input;
@@ -9164,937 +7845,30 @@ var Kiwi;
             __extends(ArcadePhysics, _super);
             function ArcadePhysics(entity, box) {
                 _super.call(this, entity, 'ArcadePhysics');
-                /**
-                * A function that is to execute when this object overlaps with another.
-                * @property _callbackFunction
-                * @type Function
-                * @default null
-                * @private
-                */
-                this._callbackFunction = null;
-                /**
-                * The context that the callback method should have when it executes.
-                * @property _callbackContext
-                * @type Any
-                * @private
-                */
-                this._callbackContext = null;
-                this.parent = entity;
-                this.box = box;
-                this.transform = this.parent.transform;
-                this.last = new Kiwi.Geom.Point(this.transform.worldX, this.transform.worldY);
-                this.mass = 1.0;
-                this.elasticity = 0.0;
-                this.immovable = false;
-                this.moves = true;
-                this.touching = ArcadePhysics.NONE;
-                this.wasTouching = ArcadePhysics.NONE;
-                this.allowCollisions = ArcadePhysics.ANY;
-                this.velocity = new Kiwi.Geom.Point();
-                this.acceleration = new Kiwi.Geom.Point();
-                this.drag = new Kiwi.Geom.Point();
-                this.maxVelocity = new Kiwi.Geom.Point(10000, 10000);
-                this.angularVelocity = 0;
-                this.angularAcceleration = 0;
-                this.angularDrag = 0;
-                this.maxAngular = 10000;
+                // this.parent = entity;
+                // this.box = box;
+                // this.transform = this.parent.transform;
+                // this.last = new Kiwi.Geom.Point(this.transform.worldX, this.transform.worldY);
+                // this.mass = 1.0;
+                // this.elasticity = 0.0;
+                //
+                // this.immovable = false;
+                // this.moves = true;
+                //
+                // this.touching = ArcadePhysics.NONE;
+                // this.wasTouching = ArcadePhysics.NONE;
+                // this.allowCollisions = ArcadePhysics.ANY;
+                //
+                // this.velocity = new Kiwi.Geom.Point();
+                // this.acceleration = new Kiwi.Geom.Point();
+                // this.drag = new Kiwi.Geom.Point();
+                // this.maxVelocity = new Kiwi.Geom.Point(10000, 10000);
+                //
+                // this.angularVelocity = 0;
+                // this.angularAcceleration = 0;
+                // this.angularDrag = 0;
+                // this.maxAngular = 10000;
             }
-            /**
-            * Returns a boolean indicating whether the or not the object is currently colliding on a particular side that is passed.
-            * Use the collision constants (like LEFT, FLOOR, e.t.c) when passing sides.
-            * @method isTouching
-            * @param value [number] The collision constant of the side you want to check against.
-            * @return {boolean} If the Object is currently colliding on that side or not.
-            * @public
-            */
-            ArcadePhysics.prototype.isTouching = function (value) {
-                return (this.touching & value) == value;
-            };
-            /**
-            * Whether the object should collide with other objects or not.
-            * For more control over what directions the object will collide from, use collision constants (like LEFT, FLOOR, etc)
-            * and set the value of allowCollisions directly.
-            * @method solid
-            * @param [value] {boolean} If left empty, this will then just toggle between ANY and NONE.
-            * @return {boolean} If Object is currently solid or not.
-            * @public
-            */
-            ArcadePhysics.prototype.solid = function (value) {
-                if (value !== undefined) {
-                    if (value)
-                        this.allowCollisions = ArcadePhysics.ANY;
-                    else
-                        this.allowCollisions = ArcadePhysics.NONE;
-                }
-                return (this.allowCollisions & ArcadePhysics.ANY) > ArcadePhysics.NONE;
-            };
-            /**
-            * Sets up a callback function that will run when this object overlaps with another.
-            * When the method is dispatched it will have TWO arguments.
-            * One - The parent / entity of this ArcadePhysics.
-            * Two - The GameObject that the collision occured with.
-            *
-            * @method setCallback
-            * @param callbackFunction {Function} The method that is to be executed whe a overlap occurs.
-            * @param callbackContext {Any} The context that the method is to be called in.
-            * @public
-            */
-            ArcadePhysics.prototype.setCallback = function (callbackFunction, callbackContext) {
-                this._callbackFunction = callbackFunction;
-                this._callbackContext = callbackContext;
-            };
-            /**
-            * Sets the parent's rotation to be equal to the trajectory of the
-            * velocity of the physics component. Note that rotation 0 corresponds
-            * to pointing directly to the right.
-            * @method rotateToVelocity
-            * @return {number} New rotation value
-            * @public
-            * @since 1.3.0
-            */
-            ArcadePhysics.prototype.rotateToVelocity = function () {
-                var result = Math.atan2(this.velocity.y, this.velocity.x);
-                this.transform.rotation = result;
-                return result;
-            };
-            /*
-            *---------------
-            * Seperation Code
-            *---------------
-            */
-            /**
-            * A static method for seperating two normal GameObjects on both the X and Y Axis's.
-            * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-            * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-            *
-            * @method seperate
-            * @static
-            * @param object1 {Kiwi.Entity} The first GameObject you would like to seperate.
-            * @param object2 {Kiwi.Entity} The second GameObject you would like to seperate from the first.
-            * @return {boolean}
-            * @public
-            */
-            ArcadePhysics.separate = function (object1, object2) {
-                var separatedX = this.separateX(object1, object2);
-                var separatedY = this.separateY(object1, object2);
-                return separatedX || separatedY;
-            };
-            /**
-            * Separates two passed GameObjects on the x-axis.
-            * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-            * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-            *
-            * @method seperateX
-            * @param object1 {Kiwi.Entity} The first GameObject.
-            * @param object2 {Kiwi.Entity} The second GameObject.
-            * @return {boolean} Whether the objects in fact touched and were separated along the X axis.
-            * @static
-            * @public
-            */
-            ArcadePhysics.separateX = function (object1, object2) {
-                //Get the Physics Components.
-                var phys1 = object1.components.getComponent("ArcadePhysics");
-                var phys2 = object2.components.getComponent("ArcadePhysics");
-                //Can they even be sseparatated? two immovable objects
-                if (phys1.immovable && phys2.immovable)
-                    return false;
-                //First, get the two object deltas
-                var overlap = 0;
-                var obj1delta = phys1.transform.worldX - phys1.last.x;
-                var obj2delta = phys2.transform.worldX - phys2.last.x;
-                //Are they the same?
-                if (obj1delta == obj2delta)
-                    return false;
-                //Check if the X hulls actually overlap
-                var obj1deltaAbs = (obj1delta > 0) ? obj1delta : -obj1delta;
-                var obj2deltaAbs = (obj2delta > 0) ? obj2delta : -obj2delta;
-                //Get the world hitboxes.
-                var box1 = phys1.box.worldHitbox;
-                var box2 = phys2.box.worldHitbox;
-                //Where they are now using previous y axis's.
-                var obj1rect = new Kiwi.Geom.Rectangle(box1.x - ((obj1delta > 0) ? obj1delta : 0), phys1.last.y + phys1.box.hitboxOffset.y, box1.width + ((obj1delta > 0) ? obj1delta : -obj1delta), box1.height);
-                var obj2rect = new Kiwi.Geom.Rectangle(box2.x - ((obj2delta > 0) ? obj2delta : 0), phys2.last.y + phys2.box.hitboxOffset.y, box2.width + ((obj2delta > 0) ? obj2delta : -obj2delta), box2.height);
-                //Could also use Kiwi.Geom.Intersect.rectangleToRectangle here...
-                if ((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y + obj1rect.height > obj2rect.y) && (obj1rect.y < obj2rect.y + obj2rect.height)) {
-                    var maxOverlap = obj1deltaAbs + obj2deltaAbs + ArcadePhysics.OVERLAP_BIAS;
-                    if (obj1delta > obj2delta) {
-                        overlap = box1.x + box1.width - box2.x;
-                        if ((overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.RIGHT) || !(phys2.allowCollisions & ArcadePhysics.LEFT)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.RIGHT;
-                            phys2.touching |= ArcadePhysics.LEFT;
-                        }
-                    }
-                    else {
-                        overlap = box1.x - box2.width - box2.x;
-                        if ((-overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.LEFT) || !(phys2.allowCollisions & ArcadePhysics.RIGHT)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.LEFT;
-                            phys2.touching |= ArcadePhysics.RIGHT;
-                        }
-                    }
-                }
-                if (overlap != 0) {
-                    //Get the average velocity
-                    var obj1v = phys1.velocity.x;
-                    var obj2v = phys2.velocity.x;
-                    if (!phys1.immovable && !phys2.immovable) {
-                        overlap *= 0.5;
-                        phys1.transform.x = phys1.transform.x - overlap;
-                        phys2.transform.x = phys2.transform.x + overlap;
-                        var obj1velocity = Math.sqrt((obj2v * obj2v * phys2.mass) / phys1.mass) * ((obj2v > 0) ? 1 : -1);
-                        var obj2velocity = Math.sqrt((obj1v * obj1v * phys1.mass) / phys2.mass) * ((obj1v > 0) ? 1 : -1);
-                        var average = (obj1velocity + obj2velocity) * 0.5;
-                        obj1velocity -= average;
-                        obj2velocity -= average;
-                        phys1.velocity.x = average + obj1velocity * phys1.elasticity;
-                        phys2.velocity.x = average + obj2velocity * phys2.elasticity;
-                    }
-                    else if (!phys1.immovable) {
-                        phys1.transform.x = phys1.transform.x - overlap;
-                        phys1.velocity.x = obj2v - obj1v * phys1.elasticity;
-                    }
-                    else if (!phys2.immovable) {
-                        phys2.transform.x = phys2.transform.x + overlap;
-                        phys2.velocity.x = obj1v - obj2v * phys2.elasticity;
-                    }
-                    return true;
-                }
-                return false;
-            };
-            /**
-            * Separates two GameObject on the y-axis. This method is executed from the 'separate' method.
-            * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-            * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-            *
-            * @method seperateY
-            * @param object1 {Kiwi.Entity} The first GameObject.
-            * @param object2 {Kiwi.Entity} The second GameObject.
-            * @return {boolean} Whether the objects in fact touched and were separated along the Y axis.
-            * @static
-            * @public
-            */
-            ArcadePhysics.separateY = function (object1, object2) {
-                //Get the Arcade Physics Components
-                var phys1 = object1.components.getComponent("ArcadePhysics");
-                var phys2 = object2.components.getComponent("ArcadePhysics");
-                //Can't separate two immovable objects
-                if (phys1.immovable && phys2.immovable)
-                    return false;
-                var overlap = 0;
-                var obj1delta = phys1.transform.worldY - phys1.last.y;
-                var obj2delta = phys2.transform.worldY - phys2.last.y;
-                //Do the deltas match?
-                if (obj1delta == obj2delta)
-                    return false;
-                //Absolute Deltas
-                var obj1deltaAbs = (obj1delta > 0) ? obj1delta : -obj1delta;
-                var obj2deltaAbs = (obj2delta > 0) ? obj2delta : -obj2delta;
-                //Hitboxes
-                var box1 = phys1.box.worldHitbox;
-                var box2 = phys2.box.worldHitbox;
-                //Rectangles
-                var obj1rect = new Kiwi.Geom.Rectangle(box1.x, box1.y - ((obj1delta > 0) ? obj1delta : 0), box1.width, box1.height + obj1deltaAbs);
-                var obj2rect = new Kiwi.Geom.Rectangle(box2.x, box2.y - ((obj2delta > 0) ? obj2delta : 0), box2.width, box2.height + obj2deltaAbs);
-                //Check for overlap
-                if ((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y + obj1rect.height > obj2rect.y) && (obj1rect.y < obj2rect.y + obj2rect.height)) {
-                    var maxOverlap = obj1deltaAbs + obj2deltaAbs + ArcadePhysics.OVERLAP_BIAS;
-                    if (obj1delta > obj2delta) {
-                        overlap = box1.y + box1.height - box2.y;
-                        if ((overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.DOWN) || !(phys2.allowCollisions & ArcadePhysics.UP)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.DOWN;
-                            phys2.touching |= ArcadePhysics.UP;
-                        }
-                    }
-                    else {
-                        overlap = box1.y - box2.height - box2.y;
-                        if ((-overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.UP) || !(phys2.allowCollisions & ArcadePhysics.DOWN)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.UP;
-                            phys2.touching |= ArcadePhysics.DOWN;
-                        }
-                    }
-                    //Then adjust their positions and velocities accordingly (if there was any overlap)
-                    if (overlap != 0) {
-                        var obj1v = phys1.velocity.y;
-                        var obj2v = phys2.velocity.y;
-                        if (!phys1.immovable && !phys2.immovable) {
-                            overlap *= 0.5;
-                            phys1.transform.y = phys1.transform.y - overlap;
-                            phys2.transform.y = phys2.transform.y + overlap;
-                            var obj1velocity = Math.sqrt((obj2v * obj2v * phys2.mass) / phys1.mass) * ((obj2v > 0) ? 1 : -1);
-                            var obj2velocity = Math.sqrt((obj1v * obj1v * phys1.mass) / phys2.mass) * ((obj1v > 0) ? 1 : -1);
-                            var average = (obj1velocity + obj2velocity) * 0.5;
-                            obj1velocity -= average;
-                            obj2velocity -= average;
-                            phys1.velocity.y = average + obj1velocity * phys1.elasticity;
-                            phys2.velocity.y = average + obj2velocity * phys2.elasticity;
-                        }
-                        else if (!phys1.immovable) {
-                            phys1.transform.y = phys1.transform.y - overlap;
-                            phys1.velocity.y = obj2v - obj1v * phys1.elasticity;
-                            //This is special case code that handles cases like horizontal moving platforms you can ride
-                            if (object2.active && phys2.moves && (obj1delta > obj2delta))
-                                phys1.transform.x = phys1.transform.worldX + object2.transform.worldX - phys2.last.x;
-                        }
-                        else if (!phys2.immovable) {
-                            phys2.transform.y = phys2.transform.y + overlap;
-                            phys2.velocity.y = obj1v - obj2v * phys2.elasticity;
-                            //This is special case code that handles cases like horizontal moving platforms you can ride
-                            if (object1.active && phys1.moves && (obj1delta < obj2delta))
-                                phys2.transform.x = phys2.transform.worldX + object1.transform.worldX - phys1.last.x;
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            };
-            /*
-            *---------------
-            * Seperation of Tiles Methods
-            *---------------
-            */
-            /**
-            * Separates a GameObject from a series of passed Tiles that lie on a TileMapLayer.
-            * The gameobject needs to have a Box Component and an ArcadePhysics Component.
-            * This method is not recommended to be directly used but instead use the 'overlapsTiles' method instead.
-            *
-            * @method separateTiles
-            * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-            * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-            * @param tiles {Array}
-            * @return {Boolean} If any separation occured.
-            * @public
-            * @static
-            */
-            ArcadePhysics.separateTiles = function (object, layer, tiles) {
-                //Physics Component Found?
-                if (object.components.hasComponent("ArcadePhysics") == false)
-                    return false;
-                //Immovable?
-                if (object.components.getComponent("ArcadePhysics").immovable)
-                    return false;
-                var sepX = false;
-                var sepY = false;
-                for (var i = 0; i < tiles.length; i++) {
-                    var tile = tiles[i];
-                    if (!sepX)
-                        sepX = this.separateTilesX(object, layer, tile);
-                    if (!sepY)
-                        sepY = this.separateTilesY(object, layer, tile);
-                }
-                return sepX || sepY;
-            };
-            /**
-            * Separates a GameObjects from an Array of Tiles on the x-axis.
-            * @method separateTilesX
-            * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-            * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-            * @param tile {Object} An Object containing the information (x/y/tiletypr) about the tile that is being overlapped.
-            * @return {Boolean} If any separation occured.
-            * @public
-            * @static
-            */
-            ArcadePhysics.separateTilesX = function (object, layer, tile) {
-                //Get Physics
-                var phys1 = object.components.getComponent("ArcadePhysics");
-                var phys2 = layer.components.getComponent("ArcadePhysics");
-                //First, get the two object deltas
-                var obj1delta = phys1.transform.worldX - phys1.last.x;
-                var obj2delta = phys2.transform.worldX - phys2.last.x;
-                //If they moved the same amount.
-                if (obj1delta == obj2delta)
-                    return false;
-                //Absolute Delta and Overlap
-                var obj1deltaAbs = (obj1delta > 0) ? obj1delta : -obj1delta;
-                var obj2deltaAbs = (obj2delta > 0) ? obj2delta : -obj2delta;
-                var overlap = 0;
-                var maxOverlap = obj1deltaAbs + obj2deltaAbs + ArcadePhysics.OVERLAP_BIAS;
-                //Quick References
-                var box1 = phys1.box.worldHitbox;
-                var tileTypes = layer.tilemap.tileTypes;
-                var tData = layer.tileData;
-                //Box of the GameObject
-                var x = phys2.transform.worldX + tile.x;
-                var obj1rect = new Kiwi.Geom.Rectangle(box1.x - ((obj1delta > 0) ? obj1delta : 0), phys1.last.y + phys1.box.hitboxOffset.y, box1.width + ((obj1delta > 0) ? obj1delta : -obj1delta), box1.height);
-                var obj2rect = new Kiwi.Geom.Rectangle(x - ((obj2delta > 0) ? obj2delta : 0), phys2.last.y + tile.y, layer.tileWidth + ((obj2delta > 0) ? obj2delta : -obj2delta), layer.tileHeight);
-                //Check to see if they overlap
-                if ((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y - 1 + obj1rect.height > obj2rect.y) && (obj1rect.y - 1 < obj2rect.y + obj2rect.height)) {
-                    //Which way the delta is going
-                    if (obj1delta > obj2delta) {
-                        overlap = box1.x + box1.width - x;
-                        if ((overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.RIGHT) || !(tileTypes[tData[tile.index]].allowCollisions & ArcadePhysics.LEFT)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.RIGHT;
-                        }
-                    }
-                    else {
-                        overlap = box1.x - layer.tileWidth - x;
-                        if ((-overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.LEFT) || !(tileTypes[tData[tile.index]].allowCollisions & ArcadePhysics.RIGHT)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.LEFT;
-                        }
-                    }
-                    //Resolve the Collision
-                    if (overlap != 0) {
-                        var obj1v = phys1.velocity.x;
-                        var obj2v = phys2.velocity.x;
-                        phys1.transform.x = phys1.transform.x - overlap;
-                        phys1.velocity.x = obj2v - obj1v * phys1.elasticity;
-                        return true;
-                    }
-                }
-                return false;
-            };
-            /**
-            * Separates a GameObject from a tiles on the y-axis.
-            * @method separateTilesY
-            * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-            * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-            * @param tiles {Object} An Object representing the Tile which we are checking to see any overlaps occurs.
-            * @return {Boolean} If any separation occured.
-            * @public
-            * @static
-            */
-            ArcadePhysics.separateTilesY = function (object, layer, tile) {
-                //Get the physics.
-                var phys1 = object.components.getComponent("ArcadePhysics");
-                var phys2 = layer.components.getComponent("ArcadePhysics");
-                //First, get the two object deltas
-                var obj1delta = phys1.transform.worldY - phys1.last.y;
-                var obj2delta = phys2.transform.worldY - phys2.last.y;
-                //Have they moved the same amount?
-                if (obj1delta == obj2delta)
-                    return false;
-                //Absolute Delta and Max Overlap
-                var obj1deltaAbs = (obj1delta > 0) ? obj1delta : -obj1delta;
-                var obj2deltaAbs = (obj2delta > 0) ? obj2delta : -obj2delta;
-                var overlap = 0;
-                var maxOverlap = obj1deltaAbs + obj2deltaAbs + ArcadePhysics.OVERLAP_BIAS;
-                var box1 = phys1.box.worldHitbox;
-                var tileTypes = layer.tilemap.tileTypes;
-                var tData = layer.tileData;
-                var y = layer.transform.worldY + tile.y;
-                //Rectangles 
-                var obj1rect = new Kiwi.Geom.Rectangle(box1.x, box1.y - ((obj1delta > 0) ? obj1delta : 0), box1.width, box1.height + obj1deltaAbs);
-                var obj2rect = new Kiwi.Geom.Rectangle(phys2.transform.worldX + tile.x, y - ((obj2delta > 0) ? obj2delta : 0), layer.tileWidth, layer.tileHeight + obj2deltaAbs);
-                //Check if they overlap
-                if ((obj1rect.x + obj1rect.width > obj2rect.x) && (obj1rect.x < obj2rect.x + obj2rect.width) && (obj1rect.y + obj1rect.height > obj2rect.y) && (obj1rect.y < obj2rect.y + obj2rect.height)) {
-                    if (obj1delta > obj2delta) {
-                        overlap = box1.y + box1.height - y;
-                        if ((overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.DOWN) || !(tileTypes[tData[tile.index]].allowCollisions & ArcadePhysics.UP)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.DOWN;
-                        }
-                    }
-                    else {
-                        overlap = box1.y - layer.tileHeight - y;
-                        if ((-overlap > maxOverlap) || !(phys1.allowCollisions & ArcadePhysics.UP) || !(tileTypes[tData[tile.index]].allowCollisions & ArcadePhysics.DOWN)) {
-                            overlap = 0;
-                        }
-                        else {
-                            phys1.touching |= ArcadePhysics.UP;
-                        }
-                    }
-                    //Resolve the Collision
-                    if (overlap != 0) {
-                        var obj1v = phys1.velocity.y;
-                        var obj2v = phys2.velocity.y;
-                        phys1.transform.y = phys1.transform.y - overlap;
-                        phys1.velocity.y = obj2v - obj1v * phys1.elasticity;
-                        return true;
-                    }
-                }
-                return false;
-            };
-            /*
-            *---------------
-            * Instance Functions
-            *---------------
-            */
-            /**
-            * A method to check to see if any Tiles with in this parent TileMapLayer overlaps with a GameObject passed.
-            * If seperateObjects is true it will seperate the two entities based on their bounding box.
-            * ONLY works if the parent of the ArcadePhysics component which is calling this method is a TileMapLayer.
-            * Note: The GameObject passed must contain a box component and only if you want to separate the two objects must is ALSO contain an ArcadePhysics component.
-            *
-            * @method overlapsTiles
-            * @param gameObject {Kiwi.Entity} The GameObject you would like to separate with this one.
-            * @param [separateObjects=false] {Boolean} If you want the GameObject to be separated from any tile it collides with.
-            * @param [collisionType=ANY] {Number} If you want the GameObject to only check for collisions from a particular side of tiles. ANY by default.
-            * @return {Boolean} If any gameobject overlapped.
-            * @public
-            */
-            ArcadePhysics.prototype.overlapsTiles = function (gameObject, separateObjects, collisionType) {
-                if (separateObjects === void 0) { separateObjects = false; }
-                if (collisionType === void 0) { collisionType = Kiwi.Components.ArcadePhysics.ANY; }
-                //Are we a tilemaplayer?
-                if (this.parent.childType() !== Kiwi.TILE_LAYER)
-                    return false;
-                var tiles = this.parent.getOverlappingTiles(gameObject, collisionType);
-                if (tiles.length > 0) {
-                    if (separateObjects)
-                        ArcadePhysics.separateTiles(gameObject, this.parent, tiles);
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            };
-            /**
-            * A method to check to see if the parent of this physics component overlaps with another Kiwi.Entity.
-            * If seperateObjects is true it will seperate the two entities based on their bounding box.
-            * Note: The GameObject passed must contain a box component and only if you want to separate the two objects must is ALSO contain an ArcadePhysics component.
-            * Also: Not to be used for separation from tiles.
-            *
-            * @method overlaps
-            * @param gameObject {Kiwi.Entity}
-            * @param [seperateObjects=false] {boolean}
-            * @return {boolean}
-            * @public
-            */
-            ArcadePhysics.prototype.overlaps = function (gameObject, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = false; }
-                if (gameObject.components.hasComponent('Box') == false)
-                    return;
-                var box = gameObject.components.getComponent('Box');
-                var result = (box.worldHitbox.x + box.worldHitbox.width > this.box.worldHitbox.x) && (box.worldHitbox.x < this.box.worldHitbox.x + this.box.worldHitbox.width) && (box.worldHitbox.y + box.worldHitbox.height > this.box.worldHitbox.y) && (box.worldHitbox.y < this.box.worldHitbox.y + this.box.worldHitbox.height);
-                if (result) {
-                    if (separateObjects)
-                        ArcadePhysics.separate(this.owner, gameObject);
-                    if (this._callbackFunction !== null && this._callbackContext !== null) {
-                        this._callbackFunction.call(this._callbackContext, this.owner, gameObject);
-                    }
-                }
-                return result;
-            };
-            /**
-            * A method to check to see if the parent of this physics component overlaps with another individual in a Kiwi Group.
-            *
-            * @method overlapsGroup
-            * @param group {Kiwi.Group}
-            * @param [seperateObjects=false] {boolean}
-            * @return { boolean } If any object in the group overlapped with the GameObject or not.
-            * @public
-            */
-            ArcadePhysics.prototype.overlapsGroup = function (group, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = false; }
-                var results = false;
-                for (var i = 0; i < group.members.length; i++) {
-                    if (group.members[i].childType() === Kiwi.GROUP) {
-                        //recursively check overlap
-                        this.overlapsGroup(group.members[i], separateObjects);
-                    }
-                    else {
-                        //otherwise its an entity
-                        if (this.overlaps(group.members[i], separateObjects)) {
-                            if (this._callbackContext !== null && this._callbackFunction !== null)
-                                this._callbackFunction.call(this._callbackContext, this.owner, group.members[i]);
-                            results = true;
-                        }
-                    }
-                }
-                return results;
-            };
-            /**
-            * A method to check to see if the parent of this physics component overlaps with any Entities that are held in an Array which is passed.
-            *
-            * @method overlapsArray
-            * @param array {Array} The array of GameObjects you want to check.
-            * @param [separateObjects=false] {boolean} If when the objects collide you want them to seperate outwards.
-            * @return {boolean} If any overlapping occured or not.
-            * @public
-            */
-            ArcadePhysics.prototype.overlapsArray = function (array, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = false; }
-                var results = false;
-                for (var i = 0; i < array.length; i++) {
-                    if (typeof array[i].childType !== "undefined") {
-                        if (array[i].childType() == Kiwi.GROUP) {
-                            this.overlapsGroup(array[i], separateObjects);
-                        }
-                        else {
-                            if (this.overlaps(array[i], separateObjects)) {
-                                if (this._callbackFunction !== null && this._callbackContext !== null) {
-                                    this._callbackFunction.call(this._callbackContext, this.owner, array[i]);
-                                }
-                                results = true;
-                            }
-                        }
-                    }
-                }
-                return results;
-            };
-            /*
-            *-------------
-            * Motion Methods
-            *-------------
-            */
-            /**
-            * Computes the velocity based on the parameters passed.
-            * @method computeVelocity
-            * @static
-            * @param velocity {number} The currently velocity.
-            * @param [acceleration=0] {number} The acceleration of the item.
-            * @param [drag=0] {number} The amount of drag effecting the item.
-            * @param [max=10000] {number} The maximum velocity.
-            * @return {Number} The new velocity
-            * @public
-            */
-            ArcadePhysics.computeVelocity = function (velocity, acceleration, drag, max) {
-                if (acceleration === void 0) { acceleration = 0; }
-                if (drag === void 0) { drag = 0; }
-                if (max === void 0) { max = 10000; }
-                if (acceleration != 0)
-                    velocity += acceleration * ArcadePhysics.updateInterval;
-                else if (drag != 0) {
-                    drag = drag * ArcadePhysics.updateInterval;
-                    if (velocity - drag > 0)
-                        velocity = velocity - drag;
-                    else if (velocity + drag < 0)
-                        velocity += drag;
-                    else
-                        velocity = 0;
-                }
-                if ((velocity != 0) && (max != 10000)) {
-                    if (velocity > max)
-                        velocity = max;
-                    else if (velocity < -max)
-                        velocity = -max;
-                }
-                return velocity;
-            };
-            /**
-            * Updates the position of this object. Automatically called if the 'moves' parameter is true.
-            * This called each frame during the update method.
-            *
-            * @method updateMotion
-            * @private
-            */
-            ArcadePhysics.prototype.updateMotion = function () {
-                var delta;
-                var velocityDelta;
-                //Update the motion calculated from rotation.
-                velocityDelta = (ArcadePhysics.computeVelocity(this.angularVelocity, this.angularAcceleration, this.angularDrag, this.maxAngular) - this.angularVelocity) / 2;
-                this.angularVelocity += velocityDelta;
-                this.transform.rotation += this.angularVelocity * ArcadePhysics.updateInterval;
-                this.angularVelocity += velocityDelta;
-                //Update the motion on the x-axis.
-                velocityDelta = (ArcadePhysics.computeVelocity(this.velocity.x, this.acceleration.x, this.drag.x, this.maxVelocity.x) - this.velocity.x) / 2;
-                this.velocity.x += velocityDelta;
-                delta = this.velocity.x * ArcadePhysics.updateInterval;
-                this.velocity.x += velocityDelta;
-                this.transform.x = this.transform.x + delta;
-                //Update the motion on the y-axis.
-                velocityDelta = (ArcadePhysics.computeVelocity(this.velocity.y, this.acceleration.y, this.drag.y, this.maxVelocity.y) - this.velocity.y) / 2;
-                this.velocity.y += velocityDelta;
-                delta = this.velocity.y * ArcadePhysics.updateInterval;
-                this.velocity.y += velocityDelta;
-                this.transform.y = this.transform.y + delta;
-            };
-            /**
-            * The Update loop of the physics component
-            * @method update
-            * @public
-            */
-            ArcadePhysics.prototype.update = function () {
-                //Flixel preupdate
-                this.last.x = this.transform.worldX;
-                this.last.y = this.transform.worldY;
-                //Flixel postupdate
-                if (this.moves)
-                    this.updateMotion();
-                this.wasTouching = this.touching;
-                this.touching = ArcadePhysics.NONE;
-            };
-            /**
-            * Removes all properties that refer to other objects or outside of this class in order to flag this object for garbage collection.
-            * @method destroy
-            * @public
-            */
-            ArcadePhysics.prototype.destroy = function () {
-                _super.prototype.destroy.call(this);
-                delete this.transform;
-                delete this.owner;
-                delete this._callbackContext;
-                delete this._callbackFunction;
-            };
-            /**
-            * The type of object that this is.
-            * @method objType
-            * @return {string} "ArcadePhysics"
-            * @public
-            */
-            ArcadePhysics.prototype.objType = function () {
-                return "ArcadePhysics";
-            };
-            /*
-            *----------------
-            * Static Functions
-            *----------------
-            */
-            /*
-            *----------------
-            * Collide Functions - Maps to Overlaps
-            *----------------
-            */
-            /**
-            * A Static method to check to see if two objects collide or not. Returns a boolean indicating whether they overlaped or not.
-            *
-            * @method collide
-            * @static
-            * @public
-            * @param gameObject1 {Kiwi.Entity} The first game object.
-            * @param gameObject2 {Kiwi.Entity} The second game object.
-            * @param [seperate=true] {boolean} If the two gameobjects should seperated when they collide.
-            * @return {boolean}
-            */
-            ArcadePhysics.collide = function (gameObject1, gameObject2, seperate) {
-                if (seperate === void 0) { seperate = true; }
-                return ArcadePhysics.overlaps(gameObject1, gameObject2, seperate);
-            };
-            /**
-            * A Static method to check to see if a single entity collides with a group of entities. Returns a boolean indicating whether they overlaped or not.
-            *
-            * @method collideGroup
-            * @static
-            * @public
-            * @param gameObject {Kiwi.Entity} The entity you would like to check against.
-            * @param group {Kiwi.Group} The Kiwi Group that you want to check the entity against.
-            * @param [seperate=true] {boolean}
-            * @return {boolean}
-            * @public
-            */
-            ArcadePhysics.collideGroup = function (gameObject, group, seperate) {
-                if (seperate === void 0) { seperate = true; }
-                return ArcadePhysics.overlapsObjectGroup(gameObject, group, seperate);
-            };
-            /**
-            * A Static method to check to see if a group of entities overlap with another group of entities. Returns a boolean indicating whether they overlaped or not.
-            *
-            * @method collideGroupGroup
-            * @static
-            * @public
-            * @param group1 {Kiwi.Group} The first Kiwi Group that you want to check the entity against.
-            * @param group2 {Kiwi.Group} The second Kiwi Group that you want to check the entity against.
-            * @param [seperate=true] {boolean}
-            * @return {boolean}
-            */
-            ArcadePhysics.collideGroupGroup = function (group1, group2, seperate) {
-                if (seperate === void 0) { seperate = true; }
-                return ArcadePhysics.overlapsGroupGroup(group1, group2, seperate);
-            };
-            /*
-            *-------------
-            * Overlap Static Method - Use's the Arcade Physics of one of the gameobjects passed.
-            *-------------
-            */
-            /**
-            * A Static method to that checks to see if two objects overlap. Returns a boolean indicating whether they did or not.
-            *
-            * @method overlaps
-            * @static
-            * @public
-            * @param gameObject1 {Kiwi.Entity} The first game object.
-            * @param gameObject2 {Kiwi.Entity} The second gameobject you are testing the first against.
-            * @param [separateObjects=true] {boolean}
-            * @return {boolean}
-            */
-            ArcadePhysics.overlaps = function (gameObject1, gameObject2, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = true; }
-                var obj1Physics = gameObject1.components.getComponent("ArcadePhysics");
-                return obj1Physics.overlaps(gameObject2, separateObjects);
-            };
-            /**
-            * A Static method to that checks to see if a single object overlaps with a group of entities. Returns a boolean indicating whether they did or not.
-            *
-            * @method overlapsObjectGroup
-            * @static
-            * @param gameObject {Kiwi.Entity}
-            * @param group {Kiwi.Group}
-            * @param [seperateObjects=true] {boolean} If they overlap should the seperate or not
-            * @return {boolean}
-            * @public
-            */
-            ArcadePhysics.overlapsObjectGroup = function (gameObject, group, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = true; }
-                var objPhysics = gameObject.components.getComponent("ArcadePhysics");
-                return objPhysics.overlapsGroup(group, separateObjects);
-            };
-            /**
-            * A Static method that checks to see if any objects in one group overlap with objects in another group.
-            *
-            * @method overlaps
-            * @static
-            * @param group1 {Kiwi.Group} The first group you would like to check against.
-            * @param group2 {Kiwi.Group} The second group you would like to check against.
-            * @param [seperate=true] {boolean} If they overlap should the seperate or not
-            * @return {boolean}
-            * @public
-            */
-            ArcadePhysics.overlapsGroupGroup = function (group1, group2, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = true; }
-                var result = false;
-                var members = group1.members;
-                var i = 0;
-                while (i < group1.members.length) {
-                    if (members[i].childType() == Kiwi.GROUP) {
-                        if (ArcadePhysics.overlapsGroupGroup(members[i++], group2, separateObjects))
-                            result = true;
-                    }
-                    else {
-                        if (ArcadePhysics.overlapsObjectGroup(members[i++], group2, separateObjects))
-                            result = true;
-                    }
-                }
-                return result;
-            };
-            /**
-            * A Static method that checks to see if any objects from an Array collide with a Kiwi Group members.
-            *
-            * @method overlapsArrayGroup
-            * @param array {Array} An array you want to check collide.
-            * @param group {Kiwi.Group} A group of objects you want to check overlaps.
-            * @param [seperateObjects=true] {Boolean} If when a collision is found the objects should seperate out.
-            * @return {Boolean}
-            * @static
-            */
-            ArcadePhysics.overlapsArrayGroup = function (array, group, separateObjects) {
-                if (separateObjects === void 0) { separateObjects = true; }
-                var result = false;
-                for (var i = 0; i < array.length; i++) {
-                    if (typeof array[i].childType !== "undefined") {
-                        if (array[i].childType() === Kiwi.GROUP) {
-                            if (ArcadePhysics.overlapsGroupGroup(array[i], group, separateObjects))
-                                result = true;
-                        }
-                        else {
-                            if (ArcadePhysics.overlapsObjectGroup(array[i], group, separateObjects))
-                                result = true;
-                        }
-                    }
-                }
-                return result;
-            };
-            /*
-            *---------------
-            * Static Constants
-            *---------------
-            */
-            /**
-            * How often the motion should be updated.
-            * @property updateInterval
-            * @static
-            * @default 1 / 10
-            * @type number
-            * @public
-            */
-            ArcadePhysics.updateInterval = 1 / 10;
-            /**
-            * Generic value for "left" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-            * @property LEFT
-            * @type number
-            * @default 0x0001
-            * @public
-            * @static
-            */
-            ArcadePhysics.LEFT = 0x0001;
-            /**
-            * Generic value for "right" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-            * @property RIGHT
-            * @type number
-            * @default 0x0010
-            * @public
-            * @static
-            */
-            ArcadePhysics.RIGHT = 0x0010;
-            /**
-            * Generic value for "up" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-            * @property UP
-            * @type number
-            * @default 0x0100
-            * @public
-            * @static
-            */
-            ArcadePhysics.UP = 0x0100;
-            /**
-            * Generic value for "down" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-            * @property DOWN
-            * @type number
-            * @default 0x1000
-            * @public
-            * @static
-            */
-            ArcadePhysics.DOWN = 0x1000;
-            /**
-            * Special-case constant meaning no collisions, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-            * @property NONE
-            * @type number
-            * @default 0
-            * @public
-            * @static
-            */
-            ArcadePhysics.NONE = 0;
-            /**
-            * Special-case constant meaning up, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-            * @property CEILING
-            * @type number
-            * @default 0x0100
-            * @public
-            * @static
-            */
-            ArcadePhysics.CEILING = ArcadePhysics.UP;
-            /**
-            * Special-case constant meaning down, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-            * @property FLOOR
-            * @type number
-            * @default 0x1000
-            * @public
-            * @static
-            */
-            ArcadePhysics.FLOOR = ArcadePhysics.DOWN;
-            /**
-            * Special-case constant meaning only the left and right sides, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-            * @property WALL
-            * @type number
-            * @default 0x0011
-            * @public
-            * @static
-            */
-            ArcadePhysics.WALL = ArcadePhysics.LEFT | ArcadePhysics.RIGHT;
-            /**
-            * Special-case constant meaning any direction, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-            * @property ANY
-            * @type number
-            * @default 0x1111
-            * @public
-            * @static
-            */
-            ArcadePhysics.ANY = ArcadePhysics.LEFT | ArcadePhysics.RIGHT | ArcadePhysics.UP | ArcadePhysics.DOWN;
-            /**
-            * Handy constant used during collision resolution (see <code>separateX()</code> and <code>separateY()</code>).
-            * @property OVERLAP_BIAS
-            * @type number
-            * @default 4
-            * @public
-            * @static
-            */
-            ArcadePhysics.OVERLAP_BIAS = 4;
             return ArcadePhysics;
         })(Kiwi.Component);
         Components.ArcadePhysics = ArcadePhysics;
@@ -15384,7 +13158,6 @@ var Kiwi;
                 var ct = camera.transform;
                 this._game.stage.ctx.save();
                 this._game.stage.ctx.setTransform(cm.a, cm.b, cm.c, cm.d, cm.tx, cm.ty);
-                this._game.stage.ctx.transform(1, 0, 0, 1, -ct.rotPointX, -ct.rotPointY);
                 for (var i = 0; i < root.length; i++) {
                     this._recurse(root[i]);
                 }
@@ -15396,99 +13169,99 @@ var Kiwi;
     })(Renderers = Kiwi.Renderers || (Kiwi.Renderers = {}));
 })(Kiwi || (Kiwi = {}));
 /**
-* @module Kiwi
-* @submodule Renderers
-* @main Renderers
-* @namespace Kiwi.Renderers
-*/
+ * @module Kiwi
+ * @submodule Renderers
+ * @main Renderers
+ * @namespace Kiwi.Renderers
+ */
 var Kiwi;
 (function (Kiwi) {
     var Renderers;
     (function (Renderers) {
         /**
-        * Manages all rendering using WebGL.
-        * Directly manages renderer objects, including factory methods
-        * for their creation.
-        * Creates manager objects for shaders and textures.
-        * Manages gl state at game initialisation, at state start and end,
-        * and per frame.
-        * Runs the recursive scene graph rendering sequence every frame.
-        * @class GLRenderManager
-        * @extends IRenderer
-        * @constructor
-        * @param game {Kiwi.Game} The game that this renderer belongs to.
-        * @return {Kiwi.Renderers.GLRenderManager}
-        */
+         * Manages all rendering using WebGL.
+         * Directly manages renderer objects, including factory methods
+         * for their creation.
+         * Creates manager objects for shaders and textures.
+         * Manages gl state at game initialisation, at state start and end,
+         * and per frame.
+         * Runs the recursive scene graph rendering sequence every frame.
+         * @class GLRenderManager
+         * @extends IRenderer
+         * @constructor
+         * @param game {Kiwi.Game} The game that this renderer belongs to.
+         * @return {Kiwi.Renderers.GLRenderManager}
+         */
         var GLRenderManager = (function () {
             function GLRenderManager(game) {
                 /**
-                * The renderer object that is in use during a rendering batch.
-                * @property _currentRenderer
-                * @type Kiwi.Renderers.Renderer
-                * @private
-                */
+                 * The renderer object that is in use during a rendering batch.
+                 * @property _currentRenderer
+                 * @type Kiwi.Renderers.Renderer
+                 * @private
+                 */
                 this._currentRenderer = null;
                 /**
-                * Tally of number of entities rendered per frame
-                * @property _entityCount
-                * @type number
-                * @default 0
-                * @private
-                */
+                 * Tally of number of entities rendered per frame
+                 * @property _entityCount
+                 * @type number
+                 * @default 0
+                 * @private
+                 */
                 this._entityCount = 0;
                 /**
-                * Tally of number of draw calls per frame
-                * @property numDrawCalls
-                * @type number
-                * @default 0
-                * @public
-                */
+                 * Tally of number of draw calls per frame
+                 * @property numDrawCalls
+                 * @type number
+                 * @default 0
+                 * @public
+                 */
                 this.numDrawCalls = 0;
                 /**
-                * Maximum allowable sprites to render per frame.
-                * Note: Not currently used  - candidate for deletion
-                * @property _maxItems
-                * @type number
-                * @default 1000
-                * @private
-                */
+                 * Maximum allowable sprites to render per frame.
+                 * Note: Not currently used  - candidate for deletion
+                 * @property _maxItems
+                 * @type number
+                 * @default 1000
+                 * @private
+                 */
                 this._maxItems = 1000;
                 /**
-                * The most recently bound texture atlas.
-                * @property _currentTextureAtlas
-                * @type TextureAtlas
-                * @private
-                */
+                 * The most recently bound texture atlas.
+                 * @property _currentTextureAtlas
+                 * @type TextureAtlas
+                 * @private
+                 */
                 this._currentTextureAtlas = null;
                 /**
-                * An array of renderers.
-                *
-                * Shared renderers are used for batch rendering.
-                * Multiple gameobjects can use the same renderer instance and add
-                * rendering info to a batch rather than rendering individually.
-                * This means only one draw call is necessary to render a number of
-                * objects. The most common use of this is standard 2d sprite rendering,
-                * and the TextureAtlasRenderer is added by default as a shared
-                * renderer. Sprites, StaticImages and Tilemaps (core gameobjects)
-                * can all use the same renderer/shader combination and be drawn as
-                * part of the same batch.
-                *
-                * Custom gameobjects can also choose to use a shared renderer, fo example in the case that a custom gameobject's rendering requirements matched the TextureAtlasRenderer
-                * capabilities.
-                *
-                * @property _sharedRenderers
-                * @type Array
-                * @private
-                */
+                 * An array of renderers.
+                 *
+                 * Shared renderers are used for batch rendering.
+                 * Multiple gameobjects can use the same renderer instance and add
+                 * rendering info to a batch rather than rendering individually.
+                 * This means only one draw call is necessary to render a number of
+                 * objects. The most common use of this is standard 2d sprite rendering,
+                 * and the TextureAtlasRenderer is added by default as a shared
+                 * renderer. Sprites, StaticImages and Tilemaps (core gameobjects)
+                 * can all use the same renderer/shader combination and be drawn as
+                 * part of the same batch.
+                 *
+                 * Custom gameobjects can also choose to use a shared renderer, fo example in the case that a custom gameobject's rendering requirements matched the TextureAtlasRenderer
+                 * capabilities.
+                 *
+                 * @property _sharedRenderers
+                 * @type Array
+                 * @private
+                 */
                 this._sharedRenderers = {};
                 this._game = game;
                 this._currentBlendMode = new Kiwi.Renderers.GLBlendMode(this._game.stage.gl, { mode: "DEFAULT" });
             }
             /**
-            * Initialises all WebGL rendering services
-            * @method boot
-            * @public
-            */
+             * Initialises all WebGL rendering services
+             * @method boot
+             * @public
+             */
             GLRenderManager.prototype.boot = function () {
                 this._textureManager = new Renderers.GLTextureManager();
                 this._shaderManager = new Kiwi.Shaders.ShaderManager();
@@ -15496,37 +13269,37 @@ var Kiwi;
                 this._init();
             };
             /**
-            * The type of object that this is.
-            * @method objType
-            * @return {string} "GLRenderManager"
-            * @public
-            */
+             * The type of object that this is.
+             * @method objType
+             * @return {string} "GLRenderManager"
+             * @public
+             */
             GLRenderManager.prototype.objType = function () {
                 return "GLRenderManager";
             };
             /**
-            * Adds a texture to the Texture Manager.
-            * @method addTexture
-            * @param {WebGLRenderingContext} gl
-            * @param {Kiwi.Textures.TextureAtlas} atlas
-            * @public
-            */
+             * Adds a texture to the Texture Manager.
+             * @method addTexture
+             * @param {WebGLRenderingContext} gl
+             * @param {Kiwi.Textures.TextureAtlas} atlas
+             * @public
+             */
             GLRenderManager.prototype.addTexture = function (gl, atlas) {
                 this._textureManager.uploadTexture(gl, atlas);
             };
             /**
-            * Adds a renderer to the sharedRenderer array.
-            *
-            * The rendererID is a string that must match a renderer property
-            * of the Kiwi.Renderers object. If a match is found and an instance
-            * does not already exist, then a renderer is instantiated and added
-            * to the array.
-            * @method addSharedRenderer
-            * @param {string} rendererID
-            * @param {object} params
-            * @return {boolean} success
-            * @public
-            */
+             * Adds a renderer to the sharedRenderer array.
+             *
+             * The rendererID is a string that must match a renderer property
+             * of the Kiwi.Renderers object. If a match is found and an instance
+             * does not already exist, then a renderer is instantiated and added
+             * to the array.
+             * @method addSharedRenderer
+             * @param {string} rendererID
+             * @param {object} params
+             * @return {boolean} success
+             * @public
+             */
             GLRenderManager.prototype.addSharedRenderer = function (rendererID, params) {
                 if (params === void 0) { params = null; }
                 //does renderer exist?
@@ -15540,29 +13313,29 @@ var Kiwi;
                 return false;
             };
             /**
-            * Adds a cloned renderer to the sharedRenderer array.
-            * The rendererID is a string that must match a renderer property of
-            * the Kiwi.Renderers object. The cloneID is the name for the
-            * cloned renderer.
-            *
-            * If a match is found and an instance does not already exist,
-            * then a renderer is instantiated and added to the array.
-            *
-            * Cloned shared renderers are useful if some items in your scene
-            * will use a special shader or blend mode, but others will not.
-            * You can subsequently access the clones with a normal
-            * `requestSharedRenderer()` call. You should use this instead of
-            * `requestRendererInstance()` whenever possible, because shared
-            * renderers are more efficient than instances.
-            *
-            * @method addSharedRendererClone
-            * @param {string} rendererID
-            * @param {string} cloneID
-            * @param {object} params
-            * @return {boolean} success
-            * @public
-            * @since 1.1.0
-            */
+             * Adds a cloned renderer to the sharedRenderer array.
+             * The rendererID is a string that must match a renderer property of
+             * the Kiwi.Renderers object. The cloneID is the name for the
+             * cloned renderer.
+             *
+             * If a match is found and an instance does not already exist,
+             * then a renderer is instantiated and added to the array.
+             *
+             * Cloned shared renderers are useful if some items in your scene
+             * will use a special shader or blend mode, but others will not.
+             * You can subsequently access the clones with a normal
+             * `requestSharedRenderer()` call. You should use this instead of
+             * `requestRendererInstance()` whenever possible, because shared
+             * renderers are more efficient than instances.
+             *
+             * @method addSharedRendererClone
+             * @param {string} rendererID
+             * @param {string} cloneID
+             * @param {object} params
+             * @return {boolean} success
+             * @public
+             * @since 1.1.0
+             */
             GLRenderManager.prototype.addSharedRendererClone = function (rendererID, cloneID, params) {
                 if (params === void 0) { params = null; }
                 if (typeof params === "undefined") {
@@ -15579,16 +13352,16 @@ var Kiwi;
                 return false;
             };
             /**
-            * Requests a shared renderer. A game object that wants to use a shared
-            * renderer uses this method to obtain a reference to the shared
-            * renderer instance.
-            * @method requestSharedRenderer
-            * @param {string} rendererID
-            * @param {object} params
-            * @return {Kiwi.Renderers.Renderer} A shared renderer
-            *	or null if none found.
-            * @public
-            */
+             * Requests a shared renderer. A game object that wants to use a shared
+             * renderer uses this method to obtain a reference to the shared
+             * renderer instance.
+             * @method requestSharedRenderer
+             * @param {string} rendererID
+             * @param {object} params
+             * @return {Kiwi.Renderers.Renderer} A shared renderer
+             *	or null if none found.
+             * @public
+             */
             GLRenderManager.prototype.requestSharedRenderer = function (rendererID, params) {
                 if (params === void 0) { params = null; }
                 var renderer = this._sharedRenderers[rendererID];
@@ -15607,19 +13380,19 @@ var Kiwi;
                 return null;
             };
             /**
-            * Requests a new renderer instance. This factory method is the only
-            * way gameobjects should instantiate their own renderer.
-            *
-            * The rendererID is a string that must match a renderer property
-            * of the Kiwi.Renderers object. If a match is found then a renderer
-            * is instantiated and returned. Gameobjects which have rendering
-            * requirements that do not suit batch rendering use this technique.
-            * @method requestRendererInstance
-            * @param {string} rendererID The name of the requested renderer
-            * @param {object} params
-            * @return {Kiwi.Renderers.Renderer} A renderer or null if none found.
-            * @public
-            */
+             * Requests a new renderer instance. This factory method is the only
+             * way gameobjects should instantiate their own renderer.
+             *
+             * The rendererID is a string that must match a renderer property
+             * of the Kiwi.Renderers object. If a match is found then a renderer
+             * is instantiated and returned. Gameobjects which have rendering
+             * requirements that do not suit batch rendering use this technique.
+             * @method requestRendererInstance
+             * @param {string} rendererID The name of the requested renderer
+             * @param {object} params
+             * @return {Kiwi.Renderers.Renderer} A renderer or null if none found.
+             * @public
+             */
             GLRenderManager.prototype.requestRendererInstance = function (rendererID, params) {
                 if (params === void 0) { params = null; }
                 if (rendererID in Kiwi.Renderers) {
@@ -15641,7 +13414,7 @@ var Kiwi;
             }
     
             private _filtersEnabled: boolean = false;
-            
+    
             /**
             * Performs initialisation required for single game instance -
             * happens once, at bootup. Sets global GL state.
@@ -15669,7 +13442,6 @@ var Kiwi;
                 this._shaderManager.init(gl, "TextureAtlasShader");
                 //camera matrix
                 this.camMatrix = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
-                this._camMatrixOffset = new Kiwi.Geom.Matrix();
                 //stage res needs update on stage resize
                 this._game.stage.onResize.add(function (width, height) {
                     this._stageResolution = new Float32Array([width, height]);
@@ -15689,19 +13461,19 @@ var Kiwi;
                 }*/
             };
             /**
-            * Scales the viewport according to a scale mode and space dimensions.
-            *
-            * This is used internally for compatibility with CocoonJS and should not be called.
-            * @method scaleViewport
-            * @param gl {WebGLRenderingContext}
-            * @param mode {number} Scale mode; should be either
-            *	Kiwi.Stage.SCALE_FIT, Kiwi.Stage.SCALE_STRETCH, or
-            *	Kiwi.Stage.SCALE_NONE. Defaults to Kiwi.Stage.SCALE_NONE
-            * @param width {number} Width of the target space
-            * @param height {number} Height of the target space
-            * @public
-            * @since 1.1.1
-            */
+             * Scales the viewport according to a scale mode and space dimensions.
+             *
+             * This is used internally for compatibility with CocoonJS and should not be called.
+             * @method scaleViewport
+             * @param gl {WebGLRenderingContext}
+             * @param mode {number} Scale mode; should be either
+             *	Kiwi.Stage.SCALE_FIT, Kiwi.Stage.SCALE_STRETCH, or
+             *	Kiwi.Stage.SCALE_NONE. Defaults to Kiwi.Stage.SCALE_NONE
+             * @param width {number} Width of the target space
+             * @param height {number} Height of the target space
+             * @public
+             * @since 1.1.1
+             */
             GLRenderManager.prototype.scaleViewport = function (gl, mode, width, height) {
                 var offset = new Kiwi.Geom.Point(0, 0);
                 switch (mode) {
@@ -15736,38 +13508,38 @@ var Kiwi;
                 gl.viewport(offset.x, offset.y, width, height);
             };
             /**
-            * Performs initialisation required when switching to a different state.
-            * Called when a state has been switched to.
-            * The textureManager is told to clear its contents from video memory,
-            * then rebuild its cache of textures from the state's texture library.
-            * @method initState
-            * @public
-            */
+             * Performs initialisation required when switching to a different state.
+             * Called when a state has been switched to.
+             * The textureManager is told to clear its contents from video memory,
+             * then rebuild its cache of textures from the state's texture library.
+             * @method initState
+             * @public
+             */
             GLRenderManager.prototype.initState = function (state) {
                 this._textureManager.clearTextures(this._game.stage.gl);
                 this._textureManager.uploadTextureLibrary(this._game.stage.gl, state.textureLibrary);
             };
             /**
-            * Performs cleanup required before switching to a different state.
-            * Called whwn a state is about to be switched from.
-            * The textureManager is told to empty its cache.
-            * @method endState
-            * @param state {Kiwi.State}
-            * @public
-            */
+             * Performs cleanup required before switching to a different state.
+             * Called whwn a state is about to be switched from.
+             * The textureManager is told to empty its cache.
+             * @method endState
+             * @param state {Kiwi.State}
+             * @public
+             */
             GLRenderManager.prototype.endState = function (state) {
                 this._textureManager.clearTextures(this._game.stage.gl);
                 Kiwi.Log.log("Ending WebGL on State", '#renderer', '#webgl');
             };
             /**
-            * Manages rendering of the scene graph - called once per frame.
-            * Sets up per frame gl uniforms such as the view matrix and
-            * camera offset. Clears the current renderer ready for a new batch.
-            * Initiates recursive render of scene graph starting at the root.
-            * @method render
-            * @param camera {Camera}
-            * @public
-            */
+             * Manages rendering of the scene graph - called once per frame.
+             * Sets up per frame gl uniforms such as the view matrix and
+             * camera offset. Clears the current renderer ready for a new batch.
+             * Initiates recursive render of scene graph starting at the root.
+             * @method render
+             * @param camera {Camera}
+             * @public
+             */
             GLRenderManager.prototype.render = function (camera) {
                 var gl = this._game.stage.gl;
                 //clear stage every frame
@@ -15794,23 +13566,28 @@ var Kiwi;
                 this.numDrawCalls = 0;
                 this._textureManager.numTextureWrites = 0;
                 this._entityCount = 0;
+                // TODO: update this {{{
                 // Set cam matrix uniform
-                var cm = camera.transform.getConcatenatedMatrix();
-                var ct = camera.transform;
-                this._camMatrixOffset.identity();
-                this._camMatrixOffset.translate(-ct.anchorPointX, -ct.anchorPointY);
-                this._camMatrixOffset.prependMatrix(cm);
+                // var cm: Kiwi.Geom.Matrix = camera.transform.getConcatenatedMatrix();
+                // var ct: Kiwi.Geom.Transform = camera.transform;
+                // this._camMatrixOffset.identity();
+                // this._camMatrixOffset.translate(
+                // 	-ct.anchorPointX, -ct.anchorPointY );
+                // this._camMatrixOffset.prependMatrix( cm );
                 // Overwrite cam matrix properties rather than recreating matrix.
                 // This is necessary to keep the cam matrix synchronised
                 // with other renderers: if there is only one render batch,
                 // then `enable` will only pass the cam matrix on the first frame,
                 // and subsequent camera movements will not be passed to the shader.
-                this.camMatrix[0] = this._camMatrixOffset.a;
-                this.camMatrix[1] = this._camMatrixOffset.b;
-                this.camMatrix[3] = this._camMatrixOffset.c;
-                this.camMatrix[4] = this._camMatrixOffset.d;
-                this.camMatrix[6] = this._camMatrixOffset.tx;
-                this.camMatrix[7] = this._camMatrixOffset.ty;
+                // this.camScratchMatrix.setToMatrix(camera.transform.getConcatenatedMatrix()).invert();
+                var cm = camera.getScratchMatrices().inverted;
+                this.camMatrix[0] = cm.a;
+                this.camMatrix[1] = cm.b;
+                this.camMatrix[3] = cm.c;
+                this.camMatrix[4] = cm.d;
+                this.camMatrix[6] = cm.tx;
+                this.camMatrix[7] = cm.ty;
+                // TODO: update this }}}
                 // Mandate blend mode in CocoonJS
                 // This must be called per-frame, because CocoonJS seems to
                 // interfere with blend modes on a per-frame basis.
@@ -15827,21 +13604,21 @@ var Kiwi;
                 }*/
             };
             /**
-            * Creates a new render sequence
-            * @method collateRenderSequence
-            * @public
-            */
+             * Creates a new render sequence
+             * @method collateRenderSequence
+             * @public
+             */
             GLRenderManager.prototype.collateRenderSequence = function () {
                 this._sequence = [];
                 var root = this._game.states.current;
                 this.collateChild(root);
             };
             /**
-            * Adds a child to the render sequence
-            * (may be a group with children of its own).
-            * @method collateChild
-            * @public
-            */
+             * Adds a child to the render sequence
+             * (may be a group with children of its own).
+             * @method collateChild
+             * @public
+             */
             GLRenderManager.prototype.collateChild = function (child) {
                 // Do not render non-visible objects or their children
                 if (!child.visible)
@@ -15863,11 +13640,11 @@ var Kiwi;
                 }
             };
             /**
-            * Sorts the render sequence into batches.
-            * Each batch requires the same renderer/shader/texture combination.
-            * @method collateBatches
-            * @public
-            */
+             * Sorts the render sequence into batches.
+             * Each batch requires the same renderer/shader/texture combination.
+             * @method collateBatches
+             * @public
+             */
             GLRenderManager.prototype.collateBatches = function () {
                 var currentRenderer = null;
                 var currentShader = null;
@@ -15886,24 +13663,24 @@ var Kiwi;
                 }
             };
             /**
-            * Renders all the batches
-            * @method renderBatches
-            * @param {WebGLRenderingContext} gl
-            * @param {Kiwi.Camera} camera
-            * @public
-            */
+             * Renders all the batches
+             * @method renderBatches
+             * @param {WebGLRenderingContext} gl
+             * @param {Kiwi.Camera} camera
+             * @public
+             */
             GLRenderManager.prototype.renderBatches = function (gl, camera) {
                 for (var i = 0; i < this._batches.length; i++)
                     this.renderBatch(gl, this._batches[i], camera);
             };
             /**
-            * Renders a single batch
-            * @method renderBatch
-            * @param {WebGLRenderingContext} gl
-            * @param {object} batch
-            * @param {Kiwi.Camera} camera
-            * @public
-            */
+             * Renders a single batch
+             * @method renderBatch
+             * @param {WebGLRenderingContext} gl
+             * @param {object} batch
+             * @param {Kiwi.Camera} camera
+             * @public
+             */
             GLRenderManager.prototype.renderBatch = function (gl, batch, camera) {
                 // Acquire renderer
                 var rendererSwitched = false;
@@ -15926,24 +13703,24 @@ var Kiwi;
                 this._currentRenderer.draw(gl);
             };
             /**
-            * Calls the render function on a single entity
-            * @method renderEntity
-            * @param {WebGLRenderingContext} gl
-            * @param {Kiwi.Entity} entity
-            * @param {Kiwi.Camera} camera
-            * @public
-            * @deprecated Used internally; should not be called from external functions
-            */
+             * Calls the render function on a single entity
+             * @method renderEntity
+             * @param {WebGLRenderingContext} gl
+             * @param {Kiwi.Entity} entity
+             * @param {Kiwi.Camera} camera
+             * @public
+             * @deprecated Used internally; should not be called from external functions
+             */
             GLRenderManager.prototype.renderEntity = function (gl, entity, camera) {
                 this.renderBatch(gl, [entity], camera);
             };
             /**
-            * Ensures the atlas and renderer needed for a batch is setup
-            * @method setupGLState
-            * @param {WebGLRenderingContext} gl
-            * @public
-            * @deprecated Used internally; should not be called from external functions.
-            */
+             * Ensures the atlas and renderer needed for a batch is setup
+             * @method setupGLState
+             * @param {WebGLRenderingContext} gl
+             * @public
+             * @deprecated Used internally; should not be called from external functions.
+             */
             GLRenderManager.prototype.setupGLState = function (gl, entity) {
                 if (entity.atlas !== this._currentTextureAtlas)
                     this._switchTexture(gl, entity);
@@ -15951,12 +13728,12 @@ var Kiwi;
                     this._switchRenderer(gl, entity);
             };
             /**
-            * Switch renderer to the one needed by the entity that needs rendering
-            * @method _switchRenderer
-            * @param gl {WebGLRenderingContext}
-            * @param entity {Kiwi.Entity}
-            * @private
-            */
+             * Switch renderer to the one needed by the entity that needs rendering
+             * @method _switchRenderer
+             * @param gl {WebGLRenderingContext}
+             * @param entity {Kiwi.Entity}
+             * @private
+             */
             GLRenderManager.prototype._switchRenderer = function (gl, entity) {
                 if (this._currentRenderer)
                     this._currentRenderer.disable(gl);
@@ -15964,24 +13741,24 @@ var Kiwi;
                 this._currentRenderer.enable(gl, { camMatrix: this.camMatrix, stageResolution: this._stageResolution });
             };
             /**
-            * Switch texture to the one needed by the entity that needs rendering
-            * @method _switchTexture
-            * @param gl {WebGLRenderingContext}
-            * @param entity {Kiwi.Entity}
-            * @private
-            */
+             * Switch texture to the one needed by the entity that needs rendering
+             * @method _switchTexture
+             * @param gl {WebGLRenderingContext}
+             * @param entity {Kiwi.Entity}
+             * @private
+             */
             GLRenderManager.prototype._switchTexture = function (gl, entity) {
                 this._currentTextureAtlas = entity.atlas;
                 entity.atlas.enableGL(gl, this._currentRenderer, this._textureManager);
             };
             /**
-            * Switch blend mode to a new set of constants
-            * @method _switchBlendMode
-            * @param gl {WebGLRenderingContext}
-            * @param blendMode {Kiwi.Renderers.GLBlendMode}
-            * @private
-            * @since 1.1.0
-            */
+             * Switch blend mode to a new set of constants
+             * @method _switchBlendMode
+             * @param gl {WebGLRenderingContext}
+             * @param blendMode {Kiwi.Renderers.GLBlendMode}
+             * @private
+             * @since 1.1.0
+             */
             GLRenderManager.prototype._switchBlendMode = function (gl, blendMode) {
                 this._currentBlendMode = blendMode;
                 this._currentBlendMode.apply(gl);
@@ -17280,6 +15057,7 @@ var Kiwi;
             */
             TextureAtlasRenderer.prototype.draw = function (gl) {
                 this._vertexBuffer.uploadBuffer(gl, this._vertexBuffer.items);
+                // The vertex buffer is packet like this: xyuva. xyuv = 4* 32 bit (16 byte) a = 1 32 bit: 4 byte. stride = 20 byte
                 gl.enableVertexAttribArray(this.shaderPair.attributes.aXYUV);
                 gl.vertexAttribPointer(this.shaderPair.attributes.aXYUV, 4, gl.FLOAT, false, 20, 0);
                 gl.enableVertexAttribArray(this.shaderPair.attributes.aAlpha);
@@ -17347,14 +15125,14 @@ var Kiwi;
                 var t = entity.transform;
                 var m = t.getConcatenatedMatrix();
                 var cell = entity.atlas.cells[entity.cellIndex];
-                this._pt1.setTo(0 - t.rotPointX, 0 - t.rotPointY);
-                this._pt2.setTo(cell.w - t.rotPointX, 0 - t.rotPointY);
-                this._pt3.setTo(cell.w - t.rotPointX, cell.h - t.rotPointY);
-                this._pt4.setTo(0 - t.rotPointX, cell.h - t.rotPointY);
-                m.transformPoint(this._pt1);
-                m.transformPoint(this._pt2);
-                m.transformPoint(this._pt3);
-                m.transformPoint(this._pt4);
+                this._pt1.setTo(0, 0);
+                this._pt2.setTo(cell.w, 0);
+                this._pt3.setTo(cell.w, cell.h);
+                this._pt4.setTo(0, cell.h);
+                m.transformPointInPlace(this._pt1);
+                m.transformPointInPlace(this._pt2);
+                m.transformPointInPlace(this._pt3);
+                m.transformPointInPlace(this._pt4);
                 this._vertexBuffer.items.push(this._pt1.x, this._pt1.y, cell.x, cell.y, entity.alpha, this._pt2.x, this._pt2.y, cell.x + cell.w, cell.y, entity.alpha, this._pt3.x, this._pt3.y, cell.x + cell.w, cell.y + cell.h, entity.alpha, this._pt4.x, this._pt4.y, cell.x, cell.y + cell.h, entity.alpha);
             };
             /**
@@ -17414,8 +15192,8 @@ var Kiwi;
             * @public
             */
             ShaderPair.prototype.init = function (gl) {
-                this.vertShader = this.compile(gl, this.vertSource.join("\n"), gl.VERTEX_SHADER);
-                this.fragShader = this.compile(gl, this.fragSource.join("\n"), gl.FRAGMENT_SHADER);
+                this.vertShader = this.compile(gl, this.vertSource, gl.VERTEX_SHADER);
+                this.fragShader = this.compile(gl, this.fragSource, gl.FRAGMENT_SHADER);
                 this.shaderProgram = this.attach(gl, this.vertShader, this.fragShader);
                 this.loaded = true;
             };
@@ -17517,23 +15295,23 @@ var Kiwi;
     })(Shaders = Kiwi.Shaders || (Kiwi.Shaders = {}));
 })(Kiwi || (Kiwi = {}));
 /**
-*
-* @module Kiwi
-* @submodule Shaders
-* @namespace Kiwi.Shaders
-*/
+ *
+ * @module Kiwi
+ * @submodule Shaders
+ * @namespace Kiwi.Shaders
+ */
 var Kiwi;
 (function (Kiwi) {
     var Shaders;
     (function (Shaders) {
         /**
-        * Shader wrapper for rendering Texture Atlases
-        * @class TextureAtlasShader
-        * @extends Kiwi.Shaders.ShaderPair
-        * @constructor
-        * @namespace Kiwi.Shaders
-        * @return {Kiwi.Shaders.TextureAtlasShader}
-        */
+         * Shader wrapper for rendering Texture Atlases
+         * @class TextureAtlasShader
+         * @extends Kiwi.Shaders.ShaderPair
+         * @constructor
+         * @namespace Kiwi.Shaders
+         * @return {Kiwi.Shaders.TextureAtlasShader}
+         */
         var TextureAtlasShader = (function (_super) {
             __extends(TextureAtlasShader, _super);
             function TextureAtlasShader() {
@@ -17574,37 +15352,16 @@ var Kiwi;
                 * @type Array
                 * @public
                 */
-                this.fragSource = [
-                    "precision mediump float;",
-                    "varying vec2 vTextureCoord;",
-                    "varying float vAlpha;",
-                    "uniform sampler2D uSampler;",
-                    "void main(void) {",
-                    "gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x, vTextureCoord.y));",
-                    "gl_FragColor.a *= vAlpha;",
-                    "}"
-                ];
+                // language=GLSL
+                this.fragSource = "\n\t\t\tprecision mediump float;\n\t\t\tvarying vec2 vTextureCoord;\n\t\t\tvarying float vAlpha;\n\t\t\tuniform sampler2D uSampler;\n\t\t\tvoid main(void) {\n\t\t\t\tgl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x, vTextureCoord.y));\n\t\t\t\tgl_FragColor.a *= vAlpha;\n\t\t\t}\n\t\t";
                 /**
-                * The source for the GLSL vertex shader
-                * @property vertSource
-                * @type Array
-                * @public
-                */
-                this.vertSource = [
-                    "attribute vec4 aXYUV;",
-                    "attribute float aAlpha;",
-                    "uniform mat3 uCamMatrix;",
-                    "uniform vec2 uResolution;",
-                    "uniform vec2 uTextureSize;",
-                    "varying vec2 vTextureCoord;",
-                    "varying float vAlpha;",
-                    "void main(void) {",
-                    "   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy; ",
-                    "   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);",
-                    "   vTextureCoord = aXYUV.zw / uTextureSize;",
-                    "   vAlpha = aAlpha;",
-                    "}"
-                ];
+                 * The source for the GLSL vertex shader
+                 * @property vertSource
+                 * @type Array
+                 * @public
+                 */
+                // language=GLSL
+                this.vertSource = "\n\t\t\tattribute vec4 aXYUV;\n\t\t\tattribute float aAlpha;\n\t\t\tuniform mat3 uCamMatrix;\n\t\t\tuniform vec2 uResolution;\n\t\t\tuniform vec2 uTextureSize;\n\t\t\tvarying vec2 vTextureCoord;\n\t\t\tvarying float vAlpha;\n\t\t\tvoid main(void) {\n\t\t\t   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy;\n//\t\t\t   vec2 pos = aXYUV.xy; \n\t\t\t   // pos / resolution = 0 => 1 : * 2 = 0 => 2 : - 1 = -1 => 1. vec2(2, -1) to flip y\n\t\t\t   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);\n\t\t\t   vTextureCoord = aXYUV.zw / uTextureSize;\n\t\t\t   vAlpha = aAlpha;\n\t\t\t}\n\t\t";
             }
             /**
             * Initialise the shaderPair
@@ -19992,7 +17749,7 @@ var Kiwi;
             */
             Mouse.prototype.onMouseWheel = function (event) {
                 this._cursor.wheel(event);
-                this.onWheel.dispatch(this._cursor.wheelDeltaX, this._cursor.wheelDeltaY, this._cursor);
+                this.onWheel.dispatch(this._cursor.wheelDeltaX, this._cursor.wheelDeltaY, this._cursor, event);
             };
             /**
             * Returns a boolean indicating if the mouse was 'justPressed' within a certain timeframe. The default timeframe is 200 milliseconds.
@@ -21157,17 +18914,17 @@ var Kiwi;
             MouseCursor.prototype.wheel = function (event) {
                 if (this.preventWheel)
                     event.preventDefault();
-                if (event['wheelDeltaX']) {
-                    this.wheelDeltaX = event['wheelDeltaX'];
+                if (event['wheelDeltaX'] && Math.abs(event['wheelDeltaX']) !== 120) {
+                    this.wheelDeltaX = -event['wheelDeltaX'] / 1000;
                 }
                 else {
-                    this.wheelDeltaX = event.deltaX;
+                    this.wheelDeltaX = event.deltaX / 100;
                 }
-                if (event['wheelDeltaY']) {
-                    this.wheelDeltaY = event['wheelDeltaY'];
+                if (event['wheelDeltaY'] && Math.abs(event['wheelDeltaY']) !== 120) {
+                    this.wheelDeltaY = -event['wheelDeltaY'] / 1000;
                 }
                 else {
-                    this.wheelDeltaY = event.deltaY;
+                    this.wheelDeltaY = event.deltaY / 100;
                 }
             };
             return MouseCursor;
@@ -22956,46 +20713,52 @@ var Kiwi;
     })(Geom = Kiwi.Geom || (Kiwi.Geom = {}));
 })(Kiwi || (Kiwi = {}));
 /**
-*
-* @module Kiwi
-* @submodule Geom
-*/
+ *
+ * @module Kiwi
+ * @submodule Geom
+ */
 var Kiwi;
 (function (Kiwi) {
     var Geom;
     (function (Geom) {
         /**
-        * Represents a 2d transformation matrix. This can be used to map points
-        * between different coordinate spaces. Matrices are used by Transform
-        * objects to represent translation, scale and rotation transformations,
-        * and to determine where objects are in world space or camera space.
-        * Objects such as entities and groups may be nested, and their associated
-        * transforms may represent how they are scaled, translated and rotated
-        * relative to a parent transform. By concatenating an object's
-        * transformation matrix with its ancestors matrices, it is possible to
-        * determine the absolute position of the object in world space.
-        * See
-        * http://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_2D_graphics
-        * for an in depth discussion of 2d tranformation matrices.
-        *
-        * @class Matrix
-        * @namespace Kiwi.Geom
-        * @constructor
-        * @param [a=1] {Number}  position 0,0 of the matrix,
-        *	affects scaling and rotation.
-        * @param [b=0] {Number}  position 0,1 of the matrix,
-        *	affects scaling and rotation.
-        * @param [c=0] {Number}  position 1,0 of the matrix,
-        *	affects scaling and rotation.
-        * @param [d=1] {Number}  position 1,1 of the matrix,
-        *	affects scaling and rotation.
-        * @param [tx=0] {Number}  position 2,0 of the matrix,
-        *	affects translation on x axis.
-        * @param [ty=0] {Number}  position 2,1 of the matrix,
-        *	affects translation on y axis.
-        * @return (Object) This object.
-        *
-        */
+         * Represents a 2d transformation Matrix. This can be used to map points
+         * between different coordinate spaces. Matrices are used by Transform
+         * objects to represent translation, scale and rotation transformations,
+         * and to determine where objects are in world space or camera space.
+         * Objects such as entities and groups may be nested, and their associated
+         * transforms may represent how they are scaled, translated and rotated
+         * relative to a parent transform. By concatenating an object's
+         * transformation Matrix with its ancestors matrices, it is possible to
+         * determine the absolute position of the object in world space.
+         * See
+         * http://en.wikipedia.org/wiki/Transformation_Matrix#Examples_in_2D_graphics
+         * for an in depth discussion of 2d tranformation matrices.
+         *
+         * <pre>
+         *  a c tx
+         *  b d ty
+         *  0 0 1
+         * </pre>
+         *
+         * @class Matrix
+         * @namespace Kiwi.Geom
+         * @constructor
+         * @param [a=1] {Number}  position 0,0 of the Matrix,
+         *	affects scaling and rotation.
+         * @param [b=0] {Number}  position 0,1 of the Matrix,
+         *	affects scaling and rotation.
+         * @param [c=0] {Number}  position 1,0 of the Matrix,
+         *	affects scaling and rotation.
+         * @param [d=1] {Number}  position 1,1 of the Matrix,
+         *	affects scaling and rotation.
+         * @param [tx=0] {Number}  position 2,0 of the Matrix,
+         *	affects translation on x axis.
+         * @param [ty=0] {Number}  position 2,1 of the Matrix,
+         *	affects translation on y axis.
+         * @return (Object) This object.
+         *
+         */
         var Matrix = (function () {
             function Matrix(a, b, c, d, tx, ty) {
                 if (a === void 0) { a = 1; }
@@ -23005,76 +20768,87 @@ var Kiwi;
                 if (tx === void 0) { tx = 0; }
                 if (ty === void 0) { ty = 0; }
                 /**
-                * Position 0,0 of the matrix, affects scaling and rotation
-                * @property a
-                * @type Number
-                * @default 1
-                * @public
-                */
+                 * Position 0,0 of the Matrix, affects scaling and rotation
+                 * @property a
+                 * @type Number
+                 * @default 1
+                 * @public
+                 */
                 this.a = 1;
                 /**
-                * Position 0,1 of the matrix, affects scaling and rotation.
-                * @property b
-                * @type Number
-                * @default 0
-                * @public
-                */
+                 * Position 0,1 of the Matrix, affects scaling and rotation.
+                 * @property b
+                 * @type Number
+                 * @default 0
+                 * @public
+                 */
                 this.b = 0;
                 /**
-                * Position 1,0 of the matrix, affects scaling and rotation.
-                * @property c
-                * @type Number
-                * @default 0
-                * @public
-                */
+                 * Position 1,0 of the Matrix, affects scaling and rotation.
+                 * @property c
+                 * @type Number
+                 * @default 0
+                 * @public
+                 */
                 this.c = 0;
                 /**
-                * Position 1,1 of the matrix, affects scaling and rotation.
-                * @property d
-                * @type Number
-                * @default 1
-                * @public
-                */
+                 * Position 1,1 of the Matrix, affects scaling and rotation.
+                 * @property d
+                 * @type Number
+                 * @default 1
+                 * @public
+                 */
                 this.d = 1;
                 /**
-                * Position 2,0 of the matrix, affects translation on x axis.
-                * @property tx
-                * @type Number
-                * @default 0
-                * @public
-                */
+                 * Position 2,0 of the Matrix, affects translation on x axis.
+                 * @property tx
+                 * @type Number
+                 * @default 0
+                 * @public
+                 */
                 this.tx = 0;
                 /**
-                * Position 2,1 of the matrix, affects translation on y axis.
-                * @property ty
-                * @type Number
-                * @default 0
-                * @public
-                */
+                 * Position 2,1 of the Matrix, affects translation on y axis.
+                 * @property ty
+                 * @type Number
+                 * @default 0
+                 * @public
+                 */
                 this.ty = 0;
                 this.setTo(a, b, c, d, tx, ty);
             }
             /**
-            * The type of object this is.
-            * @method objType
-            * @return {String} "Matrix"
-            * @public
-            */
+             * The type of object this is.
+             * @method objType
+             * @return {String} "Matrix"
+             * @public
+             */
             Matrix.prototype.objType = function () {
                 return "Matrix";
             };
+            Object.defineProperty(Matrix.prototype, "xy", {
+                get: function () {
+                    return new Geom.Point(this.tx, this.ty);
+                },
+                set: function (pt) {
+                    this.tx = pt.x;
+                    this.ty = pt.y;
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
-            * Set all matrix values
-            * @method setTo
-            * @param [a=1] {Number} position 0,0 of the matrix, affects scaling and rotation.
-            * @param [b=0] {Number} position 0,1 of the matrix, affects scaling and rotation.
-            * @param [c=0] {Number} position 1,0 of the matrix, affects scaling and rotation.
-            * @param [d=1] {Number} position 1,1 of the matrix, affects scaling and rotation.
-            * @param [tx=0] {Number} position 2,0 of the matrix, affects translation on x axis.
-            * @param [ty=0] {Number} position 2,1 of the matrix, affects translation on y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
+             * Set all Matrix values
+             * @method setTo
+             * @param [a=1] {Number} position 0,0 of the Matrix, affects scaling and rotation.
+             * @param [b=0] {Number} position 0,1 of the Matrix, affects scaling and rotation.
+             * @param [c=0] {Number} position 1,0 of the Matrix, affects scaling and rotation.
+             * @param [d=1] {Number} position 1,1 of the Matrix, affects scaling and rotation.
+             * @param [tx=0] {Number} position 2,0 of the Matrix, affects translation on x axis.
+             * @param [ty=0] {Number} position 2,1 of the Matrix, affects translation on y axis.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
             Matrix.prototype.setTo = function (a, b, c, d, tx, ty) {
                 if (a === void 0) { a = 1; }
                 if (b === void 0) { b = 0; }
@@ -23091,186 +20865,84 @@ var Kiwi;
                 return this;
             };
             /**
-            * Set matrix values from transform values
-            * @method setFromTransform
-            * @param tx {Number} Translation on x axis.
-            * @param ty {Number} Translation on y axis.
-            * @param scaleX {Number} scaleX. Scale on x axis.
-            * @param scaleY {Number} scaleY. Scale on y axis.
-            * @param rotation {Number} rotation.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.setFromTransform = function (tx, ty, scaleX, scaleY, rotation) {
-                this.identity();
-                var cos = Math.cos(rotation);
-                var sin = Math.sin(rotation);
-                this.append(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, tx, ty);
+             * Set all Matrix values
+             * @method setTo
+             * @param [a=1] {Number} position 0,0 of the Matrix, affects scaling and rotation.
+             * @param [b=0] {Number} position 0,1 of the Matrix, affects scaling and rotation.
+             * @param [c=0] {Number} position 1,0 of the Matrix, affects scaling and rotation.
+             * @param [d=1] {Number} position 1,1 of the Matrix, affects scaling and rotation.
+             * @param [tx=0] {Number} position 2,0 of the Matrix, affects translation on x axis.
+             * @param [ty=0] {Number} position 2,1 of the Matrix, affects translation on y axis.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.setToMatrix = function (m) {
+                this.a = m.a;
+                this.b = m.b;
+                this.c = m.c;
+                this.d = m.d;
+                this.tx = m.tx;
+                this.ty = m.ty;
                 return this;
             };
             /**
-            * Set matrix values from transform values, with rotation point data included
-            * @method setFromOffsetTransform
-            * @param tx {Number} tx. Translation on x axis.
-            * @param ty {Number} ty. Translation on y axis.
-            * @param scaleX {Number} scaleX. Scale on x axis.
-            * @param scaleY {Number} scaleY. Scale on y axis.
-            * @param rotation {Number} rotation.
-            * @param rotPointX {Number} Rotation point offset on x axis.
-            * @param rotPointY {Number} Rotation point offset on y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            * @since 1.0.1
-            */
-            Matrix.prototype.setFromOffsetTransform = function (tx, ty, scaleX, scaleY, rotation, rotPointX, rotPointY) {
-                this.identity();
-                var cos = Math.cos(rotation);
-                var sin = Math.sin(rotation);
-                this.append(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, tx + rotPointX, ty + rotPointY);
+             * Alias for append for people used to Matrix calculations
+             * @param m {Kiwi.Geom.Matrix} The Matrix to append.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.multiplyMatrix = function (b) {
+                var ret = new Matrix();
+                ret.a = this.a * b.a + this.c * b.b;
+                ret.b = this.b * b.a + this.d * b.b;
+                ret.c = this.a * b.c + this.c * b.d;
+                ret.d = this.b * b.c + this.d * b.d;
+                ret.tx = this.a * b.tx + this.c * b.ty + this.tx;
+                ret.ty = this.b * b.tx + this.d * b.ty + this.ty;
+                return ret;
+            };
+            /**
+             * Alias for append for people used to Matrix calculations
+             * @param m {Kiwi.Geom.Matrix} The Matrix to append.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.multiplyMatrixInPlace = function (b) {
+                var aA = this.a;
+                var aB = this.b;
+                var aC = this.c;
+                var aD = this.d;
+                var aX = this.tx;
+                this.a = aA * b.a + aC * b.b;
+                this.b = aB * b.a + aD * b.b;
+                this.c = aA * b.c + aC * b.d;
+                this.d = aB * b.c + aD * b.d;
+                this.tx = aA * b.tx + aC * b.ty + aX;
+                this.ty = aB * b.tx + aD * b.ty + this.ty;
                 return this;
             };
-            /**
-            * Prepend values to this matrix, paramters supplied individually.
-            * @method prepend
-            * @param [a=1]{Number} position 0,0 of the matrix, affects scaling and rotation.
-            * @param [b=0]{Number} position 0,1 of the matrix, affects scaling and rotation.
-            * @param [c=0]{Number} position 1,0 of the matrix, affects scaling and rotation.
-            * @param [d=0]{Number} position 1,1 of the matrix, affects scaling and rotation.
-            * @param [tx=0]{Number} position 2,0 of the matrix, affects translation on x axis.
-            * @param [ty=0]{Number} position 2,1 of the matrix, affects translation on y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.prepend = function (a, b, c, d, tx, ty) {
-                if (a === void 0) { a = 1; }
-                if (b === void 0) { b = 0; }
-                if (c === void 0) { c = 0; }
-                if (d === void 0) { d = 1; }
-                if (tx === void 0) { tx = 0; }
-                if (ty === void 0) { ty = 0; }
-                var tx1 = this.tx;
-                var a1 = this.a;
-                var c1 = this.c;
-                this.a = a1 * a + this.b * c;
-                this.b = a1 * b + this.b * d;
-                this.c = c1 * a + this.d * c;
-                this.d = c1 * b + this.d * d;
-                this.tx = tx1 * a + this.ty * c + tx;
-                this.ty = tx1 * b + this.ty * d + ty;
-                return this;
+            Matrix.prototype.preMultiplyMatrixInPlace = function (b) {
+                this.setToMatrix(b.multiplyMatrix(this));
+            };
+            Matrix.prototype.postMultiply = function (b) {
+                this.multiplyMatrix(b);
             };
             /**
-            * Prepend a matrix to this matrix.
-            * @method prependMatrix
-            * @param m {Kiwi.Geom.Matrix} The matrix to prepend.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.prependMatrix = function (m) {
-                var tx1 = this.tx;
-                var a1 = this.a;
-                var c1 = this.c;
-                this.a = a1 * m.a + this.b * m.c;
-                this.b = a1 * m.b + this.b * m.d;
-                this.c = c1 * m.a + this.d * m.c;
-                this.d = c1 * m.b + this.d * m.d;
-                this.tx = tx1 * m.a + this.ty * m.c + m.tx;
-                this.ty = tx1 * m.b + this.ty * m.d + m.ty;
-                return this;
+             * Set the Matrix to the identity Matrix - when appending or prepending this Matrix to another there will be no change in the resulting Matrix
+             * @method identity
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.identity = function () {
+                return new Matrix();
             };
             /**
-            * Append values to this matrix, parameters supplied individually.
-            * @method append
-            * @param [a=1]{Number} position 0,0 of the matrix, affects scaling and rotation.
-            * @param [b=0]{Number} position 0,1 of the matrix, affects scaling and rotation.
-            * @param [c=0]{Number} position 1,0 of the matrix, affects scaling and rotation.
-            * @param [d=1]{Number} position 1,1 of the matrix, affects scaling and rotation.
-            * @param [tx=0]{Number} position 2,0 of the matrix, affects translation on x axis.
-            * @param [ty=0]{Number} position 2,1 of the matrix, affects translation on y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.append = function (a, b, c, d, tx, ty) {
-                if (a === void 0) { a = 1; }
-                if (b === void 0) { b = 0; }
-                if (c === void 0) { c = 0; }
-                if (d === void 0) { d = 1; }
-                if (tx === void 0) { tx = 0; }
-                if (ty === void 0) { ty = 0; }
-                var a1 = this.a;
-                var b1 = this.b;
-                var c1 = this.c;
-                var d1 = this.d;
-                this.a = a * a1 + b * c1;
-                this.b = a * b1 + b * d1;
-                this.c = c * a1 + d * c1;
-                this.d = c * b1 + d * d1;
-                this.tx = tx * a1 + ty * c1 + this.tx;
-                this.ty = tx * b1 + ty * d1 + this.ty;
-                return this;
-            };
-            /**
-            * Append a matrix to this matrix.
-            * @method appendMatrix
-            * @param m {Kiwi.Geom.Matrix} The matrix to append.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.appendMatrix = function (m) {
-                var a1 = this.a;
-                var b1 = this.b;
-                var c1 = this.c;
-                var d1 = this.d;
-                this.a = m.a * a1 + m.b * c1;
-                this.b = m.a * b1 + m.b * d1;
-                this.c = m.c * a1 + m.d * c1;
-                this.d = m.c * b1 + m.d * d1;
-                this.tx = m.tx * a1 + m.ty * c1 + this.tx;
-                this.ty = m.tx * b1 + m.ty * d1 + this.ty;
-                return this;
-            };
-            /**
-            * Set the tx and ty elements of the matrix.
-            * @method setPosition
-            * @param x {Number} Translation on x axis.
-            * @param y {Number} Translation on y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.setPosition = function (x, y) {
-                this.tx = x;
-                this.ty = y;
-                return this;
-            };
-            /**
-            * Set the tx and ty elements of the matrix from an object with x and y properties.
-            * @method setPositionPoint
-            * @param p {Number} The object from which to copy the x and y properties from.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.setPositionPoint = function (p) {
-                this.tx = p.x;
-                this.ty = p.y;
-                return this;
-            };
-            /**
-            * Get the x and y position of the matrix as an object with x and y properties
-            * @method getPosition
-            * @return {Kiwi.Geom.Point} An object constructed from a literal with x and y properties.
-            * @public
-            */
-            Matrix.prototype.getPosition = function (output) {
-                if (output === void 0) { output = new Kiwi.Geom.Point; }
-                return output.setTo(this.tx, this.ty);
-            };
-            /**
-            * Set the matrix to the identity matrix - when appending or prepending this matrix to another there will be no change in the resulting matrix
-            * @method identity
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.identity = function () {
+             * Set the Matrix to the identity Matrix - when appending or prepending this Matrix to another there will be no change in the resulting Matrix
+             * @method identity
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.setIdentity = function () {
                 this.a = 1;
                 this.b = 0;
                 this.c = 0;
@@ -23280,74 +20952,34 @@ var Kiwi;
                 return this;
             };
             /**
-            * Rotate the matrix by "radians" degrees
-            * @method rotate
-            * @param radians {Number} The angle (in radians) to rotate this matrix by.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.rotate = function (radians) {
-                var cos = Math.cos(radians);
-                var sin = Math.sin(radians);
-                var a1 = this.a;
-                var c1 = this.c;
-                var tx1 = this.tx;
-                this.a = a1 * cos - this.b * sin;
-                this.b = a1 * sin + this.b * cos;
-                this.c = c1 * cos - this.d * sin;
-                this.d = c1 * sin + this.d * cos;
-                this.tx = tx1 * cos - this.ty * sin;
-                this.ty = tx1 * sin + this.ty * cos;
-                return this;
-            };
-            /**
-            * Translate the matrix by the amount passed.
-            *
-            * @method translate
-            * @param tx {Number} The amount to translate on the x axis.
-            * @param ty {Number} The amount to translate on the y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.translate = function (tx, ty) {
-                this.tx += tx;
-                this.ty += ty;
-                return this;
-            };
-            /**
-            * Scales the matrix by the amount passed.
-            *
-            * @method scale
-            * @param scaleX {Number} The amount to scale on the x axis.
-            * @param scaleY {Number} The amount to scale on the y axis.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.scale = function (scaleX, scaleY) {
-                this.a *= scaleX;
-                this.d *= scaleY;
-                return this;
-            };
-            /**
-            * Apply this matrix to a an object with x and y properties representing a point and return the transformed point.
-            * @method transformPoint
-            * @param pt {Object} The point to be translated.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
+             * Apply this Matrix to a an object with x and y properties representing a point and return the transformed point.
+             * @method transformPoint
+             * @param pt {Object} The point to be translated.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
             Matrix.prototype.transformPoint = function (pt) {
+                return new Geom.Point(this.a * pt.x + this.c * pt.y + this.tx, this.b * pt.x + this.d * pt.y + this.ty);
+            };
+            /**
+             * Apply this Matrix to a an object with x and y properties representing a point and return the transformed point.
+             * @method transformPoint
+             * @param pt {Object} The point to be translated.
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.transformPointInPlace = function (pt) {
                 var x = pt.x;
                 var y = pt.y;
                 pt.x = this.a * x + this.c * y + this.tx;
                 pt.y = this.b * x + this.d * y + this.ty;
-                return pt;
             };
             /**
-            * Invert this matrix so that it represents the opposite of its orginal tranformaation.
-            * @method invert
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
+             * Invert this Matrix so that it represents the opposite of its orginal tranformaation.
+             * @method invert
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
             Matrix.prototype.invert = function () {
                 var a1 = this.a;
                 var b1 = this.b;
@@ -23364,53 +20996,30 @@ var Kiwi;
                 return this;
             };
             /**
-            * Copy another matrix to this matrix.
-            * @method copyFrom
-            * @param m {Kiwi.Geom.Matrix} The matrixto be copied from.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.copyFrom = function (m) {
-                this.a = m.a;
-                this.b = m.b;
-                this.c = m.c;
-                this.d = m.d;
-                this.tx = m.tx;
-                this.ty = m.ty;
-                return this;
+             * Invert this Matrix so that it represents the opposite of its orginal tranformaation.
+             * @method invert
+             * @return {Kiwi.Geom.Matrix} This object.
+             * @public
+             */
+            Matrix.prototype.invertCopy = function () {
+                return this.clone().invert();
             };
             /**
-            * Copy this matrix to another matrix.
-            * @method copyTo
-            * @param m {Kiwi.Geom.Matrix} The matrix to copy to.
-            * @return {Kiwi.Geom.Matrix} This object.
-            * @public
-            */
-            Matrix.prototype.copyTo = function (m) {
-                m.a = this.a;
-                m.b = this.b;
-                m.c = this.c;
-                m.d = this.d;
-                m.tx = this.tx;
-                m.ty = this.ty;
-                return this;
-            };
-            /**
-            * Clone this matrix and returns a new Matrix object.
-            * @method clone
-            * @return {Kiwi.Geom.Matrix}
-            * @public
-            */
+             * Clone this Matrix and returns a new Matrix object.
+             * @method clone
+             * @return {Kiwi.Geom.Matrix}
+             * @public
+             */
             Matrix.prototype.clone = function () {
                 return new Kiwi.Geom.Matrix(this.a, this.b, this.c, this.d, this.tx, this.ty);
             };
             Object.defineProperty(Matrix.prototype, "toString", {
                 /**
-                * Returns a string representation of this object.
-                * @method toString
-                * @return {string} A string representation of the instance.
-                * @public
-                */
+                 * Returns a string representation of this object.
+                 * @method toString
+                 * @return {string} A string representation of the instance.
+                 * @public
+                 */
                 get: function () {
                     return "[{Matrix (a=" + this.a + " b=" + this.b + " c=" + this.c + " d=" + this.d + " tx=" + this.tx + " ty=" + this.ty + ")}]";
                 },
@@ -23418,15 +21027,15 @@ var Kiwi;
                 configurable: true
             });
             /**
-            * Check whether this matrix equals another matrix.
-            *
-            * @method equals
-            * @param matrix {Kiwi.Geom.Matrix}
-            * @return boolean
-            * @public
-            */
-            Matrix.prototype.equals = function (matrix) {
-                return (this.a === matrix.a && this.b === matrix.b && this.c === matrix.c && this.d === matrix.d && this.tx === matrix.tx && this.ty === matrix.ty);
+             * Check whether this Matrix equals another Matrix.
+             *
+             * @method equals
+             * @param Matrix {Kiwi.Geom.Matrix}
+             * @return boolean
+             * @public
+             */
+            Matrix.prototype.equals = function (Matrix) {
+                return (this.a === Matrix.a && this.b === Matrix.b && this.c === Matrix.c && this.d === Matrix.d && this.tx === Matrix.tx && this.ty === Matrix.ty);
             };
             return Matrix;
         })();
@@ -23458,6 +21067,14 @@ var Kiwi;
                 if (y === void 0) { y = 0; }
                 this.setTo(x, y);
             }
+            Object.defineProperty(Point.prototype, "xy", {
+                set: function (val) {
+                    this.x = val.x;
+                    this.y = val.y;
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
             * The type of this object.
             * @method objType
@@ -23620,163 +21237,163 @@ var Kiwi;
                 return Math.atan2(y - this.y, x - this.x);
             };
             /**
-            * Returns the distance from this Point object to the given Point object.
-            * @method distanceTo
-            * @param target {Kiwi.Geom.Point} The destination Point object.
-            * @param round {boolean} Round the distance to the nearest integer (default false)
-            * @return {Number} The distance between this Point object and the destination Point object.
-            * @public
-            */
+             * Returns the distance from this Point object to the given Point object.
+             * @method distanceTo
+             * @param target {Kiwi.Geom.Point} The destination Point object.
+             * @param round {boolean} Round the distance to the nearest integer (default false)
+             * @return {Number} The distance between this Point object and the destination Point object.
+             * @public
+             */
             Point.prototype.distanceTo = function (target, round) {
                 if (round === void 0) { round = false; }
                 var dx = this.x - target.x;
                 var dy = this.y - target.y;
-                if (round === true) {
+                if (round === true)
                     return Math.round(Math.sqrt(dx * dx + dy * dy));
-                }
-                else {
+                else
                     return Math.sqrt(dx * dx + dy * dy);
-                }
             };
             /**
-            * Returns the distance from this Point object to the given Point object.
-            * @method distanceToXY
-            * @param x {Number} The x value.
-            * @param y {Number} The y value.
-            * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-            * @return {Number} The distance between this Point object and the x/y values.
-            * @public
-            */
+             * Returns the distance from this Point object to the given Point object.
+             * @method distanceToXY
+             * @param x {Number} The x value.
+             * @param y {Number} The y value.
+             * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+             * @return {Number} The distance between this Point object and the x/y values.
+             * @public
+             */
             Point.prototype.distanceToXY = function (x, y, round) {
                 if (round === void 0) { round = false; }
                 var dx = this.x - x;
                 var dy = this.y - y;
-                if (round === true) {
+                if (round === true)
                     return Math.round(Math.sqrt(dx * dx + dy * dy));
-                }
-                else {
+                else
                     return Math.sqrt(dx * dx + dy * dy);
-                }
             };
             /**
-            * Returns the distance between the two Point objects.
-            * @method distanceBetween
-            * @param pointA {Kiwi.Geom.Point} The first Point object.
-            * @param pointB {Kiwi.Geom.Point} The second Point object.
-            * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-            * @return {Number} The distance between the two Point objects.
-            * @public
-            */
+             * Returns the distance between the two Point objects.
+             * @method distanceBetween
+             * @param pointA {Kiwi.Geom.Point} The first Point object.
+             * @param pointB {Kiwi.Geom.Point} The second Point object.
+             * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+             * @return {Number} The distance between the two Point objects.
+             * @public
+             */
             Point.distanceBetween = function (pointA, pointB, round) {
                 if (round === void 0) { round = false; }
                 var dx = pointA.x - pointB.x;
                 var dy = pointA.y - pointB.y;
-                if (round === true) {
+                if (round === true)
                     return Math.round(Math.sqrt(dx * dx + dy * dy));
-                }
-                else {
+                else
                     return Math.sqrt(dx * dx + dy * dy);
-                }
             };
             /**
-            * Creates a new point with cartesian coordinates from a pair of polar coordinates
-            * @method polar
-            * @param length {Number} The length coordinate of the polar pair.
-            * @param angle {Number} The angle, in radians, of the polar pair.
-            * @return {Kiwi.Geom.Point} The new Cartesian Point object.
-            * @public
-            */
+             * Creates a new point with cartesian coordinates from a pair of polar coordinates
+             * @method polar
+             * @param length {Number} The length coordinate of the polar pair.
+             * @param angle {Number} The angle, in radians, of the polar pair.
+             * @return {Kiwi.Geom.Point} The new Cartesian Point object.
+             * @public
+             */
             Point.polar = function (length, angle) {
                 return new Point(length * Math.cos(angle), length * Math.sin(angle));
             };
             /**
-            * Returns true if the distance between this point and a target point is greater than or equal a specified distance.
-            * This avoids using a costly square root operation
-            * @method distanceCompare
-            * @param target {Kiwi.Geom.Point} The Point object to use for comparison.
-            * @param distance {Number} The distance to use for comparison.
-            * @return {Boolean} True if distance is >= specified distance.
-            * @public
-            */
+             * Returns true if the distance between this point and a target point is greater than or equal a specified distance.
+             * This avoids using a costly square root operation
+             * @method distanceCompare
+             * @param target {Kiwi.Geom.Point} The Point object to use for comparison.
+             * @param distance {Number} The distance to use for comparison.
+             * @return {Boolean} True if distance is >= specified distance.
+             * @public
+             */
             Point.prototype.distanceCompare = function (target, distance) {
-                if (this.distanceTo(target) >= distance) {
+                if (this.distanceTo(target) >= distance)
                     return true;
-                }
-                else {
+                else
                     return false;
-                }
             };
             /**
-            * Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
-            * @method equals
-            * @param point {Kiwi.Geom.Point} The point to compare against.
-            * @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
-            * @public
-            */
+             * Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
+             * @method equals
+             * @param point {Kiwi.Geom.Point} The point to compare against.
+             * @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
+             * @public
+             */
             Point.prototype.equals = function (toCompare) {
-                if (this.x === toCompare.x && this.y === toCompare.y) {
+                if (this.x === toCompare.x && this.y === toCompare.y)
                     return true;
-                }
-                else {
+                else
                     return false;
-                }
             };
             /**
-            * Determines a point between two specified points.
-            * The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
-            *
-            * The closer the value of the parameter f is to 1.0,
-            * the closer the interpolated point is to the first point (parameter pt1).
-            * The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
-            *
-            * @method interpolate
-            * @param pointA{Kiwi.Geom.Point} The first Point object.
-            * @param pointB {Kiwi.Geom.Point} The second Point object.
-            * @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
-            * @return {Kiwi.Geom.Point} The new interpolated Point object.
-            * @public
-            */
+             * Determines a point between two specified points.
+             * The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
+             *
+             * The closer the value of the parameter f is to 1.0,
+             * the closer the interpolated point is to the first point (parameter pt1).
+             * The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
+             *
+             * @method interpolate
+             * @param pointA{Kiwi.Geom.Point} The first Point object.
+             * @param pointB {Kiwi.Geom.Point} The second Point object.
+             * @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
+             * @return {Kiwi.Geom.Point} The new interpolated Point object.
+             * @public
+             */
             Point.interpolate = function (pointA, pointB, f) {
                 var xDiff = pointB.x - pointA.x;
                 var yDiff = pointB.y - pointA.y;
                 return new Point(pointB.x - xDiff * f, pointB.y - yDiff * f);
             };
             /**
-            * Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
-            * The value of dy is added to the original value of y to create the new y value.
-            *
-            * @method offset
-            * @param dx {Number} The amount by which to offset the horizontal coordinate, x.
-            * @param dy {Number} The amount by which to offset the vertical coordinate, y.
-            * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-            * @public
-            */
+             * Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
+             * The value of dy is added to the original value of y to create the new y value.
+             *
+             * @method offset
+             * @param dx {Number} The amount by which to offset the horizontal coordinate, x.
+             * @param dy {Number} The amount by which to offset the vertical coordinate, y.
+             * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+             * @public
+             */
             Point.prototype.offset = function (dx, dy) {
                 this.x += dx;
                 this.y += dy;
                 return this;
             };
             /**
-            * Sets the x and y values of this Point object to the given coordinates.
-            * @method setTo
-            * @param x {Number} The horizontal position of this point.
-            * @param y {Number} The vertical position of this point.
-            * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-            * @public
-            */
+             * Sets the x and y values of this Point object to the given coordinates.
+             * @method setTo
+             * @param x {Number} The horizontal position of this point.
+             * @param y {Number} The vertical position of this point.
+             * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+             * @public
+             */
             Point.prototype.setTo = function (x, y) {
                 this.x = x;
                 this.y = y;
                 return this;
             };
             /**
-            * Subtracts the coordinates of another point from the coordinates of this point to create a new point.
-            * @method subtract
-            * @param point {Kiwi.Geom.Point} The point to be subtracted.
-            * @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
-            * @return {Kiwi.Geom.Point} The new Point object.
-            * @public
-            */
+             * Sets the x and y values of this Point object to the given point.
+             * @method setTo
+             * @param pt {Point} the point which to set.
+             * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+             * @public
+             */
+            Point.prototype.setToPoint = function (pt) {
+                return this.setTo(pt.x, pt.y);
+            };
+            /**
+             * Subtracts the coordinates of another point from the coordinates of this point to create a new point.
+             * @method subtract
+             * @param point {Kiwi.Geom.Point} The point to be subtracted.
+             * @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
+             * @return {Kiwi.Geom.Point} The new Point object.
+             * @public
+             */
             Point.prototype.subtract = function (point, output) {
                 if (output === void 0) { output = new Point; }
                 return output.setTo(this.x - point.x, this.y - point.y);
@@ -23785,11 +21402,11 @@ var Kiwi;
                 return this.x + 'px ' + this.y + 'px';
             };
             /**
-            * Returns a string representation of this object.
-            * @method toString
-            * @return {String} a string representation of the instance.
-            * @public
-            */
+             * Returns a string representation of this object.
+             * @method toString
+             * @return {String} a string representation of the instance.
+             * @public
+             */
             Point.prototype.toString = function () {
                 return '[{Point (x=' + this.x + ' y=' + this.y + ')}]';
             };
@@ -24374,13 +21991,9 @@ var Kiwi;
             * @public
             */
             Rectangle.prototype.scale = function (x, y, translation) {
-                var trans = new Kiwi.Geom.Transform;
-                trans.scaleX = x;
-                trans.scaleY = y;
-                trans.x = translation.x;
-                trans.y = translation.y;
+                var m = new Kiwi.Geom.Matrix(x, 0, 0, y, translation.x, translation.x);
                 var tl = this.topLeft;
-                trans.transformPoint(tl);
+                m.transformPointInPlace(tl);
                 this.topLeft = tl;
                 this.width *= x;
                 this.height *= y;
@@ -24400,368 +22013,265 @@ var Kiwi;
     })(Geom = Kiwi.Geom || (Kiwi.Geom = {}));
 })(Kiwi || (Kiwi = {}));
 /**
-*
-* @module Kiwi
-* @submodule Geom
-*/
+ *
+ * @module Kiwi
+ * @submodule Geom
+ */
 var Kiwi;
 (function (Kiwi) {
     var Geom;
     (function (Geom) {
         /**
-        * Represents position, scale, rotation and rotationPoint of an Entity.
-        * - Values can be transformed with a 3x3 affine transformation matrix, which each transform is assigned.
-        * - A tranform can be assigned a parent, which may in turn have it's own parent, thereby creating a tranform inheritence heirarchy
-        * - A concatenated transformation matrix, representing the combined matrices of the transform and its ancestors.
-        *
-        * @class Transform
-        * @namespace Kiwi.Geom
-        * @constructor
-        * @param [x=0] {Number} X position of the transform.
-        * @param [y=0] {Number} Y position of the transform.
-        * @param [scaleX=1] {Number} X scaling of the transform.
-        * @param [scaleY=1] {Number} Y scaling of the transform.
-        * @param [rotation=0] {Number} Rotation of the transform in radians.
-        * @param [rotX=0] {Number} rotationPoint offset on X axis.
-        * @param [rotY=0] {Number} rotationPoint offset on Y axis.
-        * @return {Transform} This object.
-        *
-        */
+         * Represents position, scale, rotation and pivotPoint of an Entity.
+         * - Values can be transformed with a 3x3 affine transformation Matrix, which each Transform is assigned.
+         * - A tranform can be assigned a parent, which may in turn have it's own parent, thereby creating a tranform inheritence heirarchy
+         * - A concatenated transformation Matrix, representing the combined matrices of the Transform and its ancestors.
+         *
+         * @class Transform
+         * @namespace Kiwi.Geom
+         * @constructor
+         * @param [x=0] {Number} X position of the Transform.
+         * @param [y=0] {Number} Y position of the Transform.
+         * @param [scaleX=1] {Number} X scaling of the Transform.
+         * @param [scaleY=1] {Number} Y scaling of the Transform.
+         * @param [rotation=0] {Number} Rotation of the Transform in radians.
+         * @param [rotX=0] {Number} pivotPoint offset on X axis.
+         * @param [rotY=0] {Number} pivotPoint offset on Y axis.
+         * @return {Transform} This object.
+         *
+         */
         var Transform = (function () {
-            function Transform(x, y, scaleX, scaleY, rotation, rotPointX, rotPointY) {
-                if (x === void 0) { x = 0; }
-                if (y === void 0) { y = 0; }
-                if (scaleX === void 0) { scaleX = 1; }
-                if (scaleY === void 0) { scaleY = 1; }
-                if (rotation === void 0) { rotation = 0; }
-                if (rotPointX === void 0) { rotPointX = 0; }
-                if (rotPointY === void 0) { rotPointY = 0; }
+            function Transform(owner) {
                 /**
-                * X position of the transform
-                * @property _x
-                * @type Number
-                * @default 0
-                * @private
-                */
-                this._x = 0;
-                /**
-                * Y position of the transform
-                * @property _y
-                * @type Number
-                * @default 0
-                * @private
-                */
-                this._y = 0;
-                /**
-                * X scaleof the transform
-                * @property _scaleX
-                * @type Number
-                * @default 1
-                * @private
-                */
-                this._scaleX = 1;
-                /**
-                * Y scale of the transform
-                * @property _scaleY
-                * @type Number
-                * @default 1
-                * @private
-                */
-                this._scaleY = 1;
-                /**
-                * Rotation of the transform in radians.
-                * @property _rotation
-                * @type Number
-                * @default 0
-                * @private
-                */
-                this._rotation = 0;
-                /**
-                * Rotation offset on X axis.
-                * @property _rotPointX
-                * @type Number
-                * @default 0
-                * @private
-                */
-                this._rotPointX = 0;
-                /**
-                * Rotation offset on Y axis.
-                * @property _rotPointY
-                * @type Number
-                * @default 0
-                * @private
-                */
-                this._rotPointY = 0;
-                /**
-                * The parent transform. If set to null there is no parent. Otherwise this is used by getConcatenatedMatrix to offset the current transforms by the another matrix
-                * @property _parent
-                * @type Kiwi.Geom.Transform
-                * @default null
-                * @private
-                */
-                this._parent = null;
-                /**
-                * Private copy.
-                * Whether the Transform is locked. In locked mode, the Transform
-                * will not update its matrix, saving on computation.
-                * However, it will still follow its parent.
-                * @property _locked
-                * @type boolean
-                * @default false
-                * @private
-                * @since 1.2.0
-                */
-                this._locked = false;
-                /**
-                * Private copy.
-                * Whether to ignore its parent when concatenating matrices.
-                * If true, it won't compute parent matrices.
-                * This can save computation, but prevents it from following
-                * its parent's transforms.
-                * Use this to save some processor cycles if the transform isn't
-                * following a parent and the state does not transform.
-                * @property _ignoreParent
-                * @type boolean
-                * @default false
-                * @private
-                * @since 1.2.0
-                */
-                this._ignoreParent = false;
-                /**
-                * Private copy.
-                * Whether to prevent children from acquiring this as a parent
-                * when concatenating matrices. This can save computation,
-                * but prevents it from passing any transform data to children.
-                *
-                * Use this to save some processor cycles if this is a Group
-                * that does not control its children, and the state does not
-                * transform.
-                *
-                * @property _ignoreChild
-                * @type boolean
-                * @default false
-                * @private
-                * @since 1.3.1
-                */
-                this._ignoreChild = false;
-                /**
-                * Whether the transform has been altered since the last time
-                * it was used to create a matrix. Used to determine whether to rebuild
-                * the matrix or not.
-                *
-                * @property _dirty
-                * @type boolean
-                * @default true
-                * @private
-                * @since 1.3.1
-                */
+                 * Whether the transform has been altered since the last time
+                 * it was used to create a Matrix. Used to determine whether to rebuild
+                 * the Matrix or not.
+                 *
+                 * @property _dirty
+                 * @type boolean
+                 * @default true
+                 * @private
+                 * @since 1.3.1
+                 */
                 this._dirty = true;
-                this.setTransform(x, y, scaleX, scaleY, rotation, rotPointX, rotPointY);
-                this._matrix = new Geom.Matrix();
-                this._cachedConcatenatedMatrix = new Geom.Matrix();
-                this._matrix.setFromOffsetTransform(this._x, this._y, this._scaleX, this._scaleY, this._rotation, this._rotPointX, this._rotPointY);
-            }
-            /**
-            * The type of this object.
-            * @method objType
-            * @return {String} "Transform"
-            * @public
-            */
-            Transform.prototype.objType = function () {
-                return "Transform";
-            };
-            Object.defineProperty(Transform.prototype, "x", {
-                get: function () {
-                    return this._x;
-                },
+                this._origin = new Geom.Point(0, 0);
+                this._pivotPoint = new Geom.Point(0, 0);
+                this._scale = new Geom.Point(1, 1);
+                this._xy = new Geom.Point(0, 0);
                 /**
-                * Return the X value of the transform.
-                * @property x
-                * @type Number
-                * @public
-                */
-                set: function (value) {
-                    this._x = value;
-                    this._dirty = true;
+                 * Rotation of the transform in radians.
+                 * @property _rotation
+                 * @type Number
+                 * @default 0
+                 * @private
+                 */
+                this._rotation = 0;
+                this._children = [];
+                /**
+                 * The parent transform. If set to null there is no parent. Otherwise this is used by getConcatenatedMatrix to offset the current transforms by the another Matrix
+                 * @property _parent
+                 * @type Kiwi.Geom.Transform
+                 * @default null
+                 * @private
+                 */
+                this._parent = null;
+                this._owner = owner;
+                this.setTransform(0, 0, 1, 1, 0, 0, 0);
+                this._matrix = new Geom.Matrix();
+                this._freeformMatrix = new Geom.Matrix();
+                this._cachedConcatenatedMatrix = new Geom.Matrix();
+            }
+            Object.defineProperty(Transform.prototype, "dirty", {
+                get: function () {
+                    return this._dirty;
+                },
+                set: function (val) {
+                    var _this = this;
+                    // Muddy all the descendants
+                    if (val) {
+                        this._dirty = true;
+                        this._owner.dirty = true;
+                        this._children.forEach(function (e) {
+                            if (e !== _this)
+                                e.dirty = true;
+                        });
+                    }
+                    else
+                        this._dirty = false;
                 },
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(Transform.prototype, "y", {
+            Object.defineProperty(Transform.prototype, "origin", {
                 get: function () {
-                    return this._y;
+                    return this._origin;
                 },
-                /**
-                * Return the Y value of the transform.
-                * @property y
-                * @type Number
-                * @public
-                */
-                set: function (value) {
-                    this._y = value;
-                    this._dirty = true;
+                set: function (val) {
+                    this._origin = val;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "originX", {
+                set: function (x) {
+                    this._pivotPoint.x = x;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "originY", {
+                set: function (y) {
+                    this._pivotPoint.y = y;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Transform.prototype.setOrigin = function (x, y) {
+                this._origin.x = x;
+                this._origin.y = y;
+                this.dirty = true;
+            };
+            Object.defineProperty(Transform.prototype, "pivotPoint", {
+                get: function () {
+                    return this._pivotPoint;
+                },
+                set: function (val) {
+                    this._pivotPoint = val;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "pivotPointX", {
+                set: function (x) {
+                    this._pivotPoint.x = x;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "pivotPointY", {
+                set: function (y) {
+                    this._pivotPoint.y = y;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Transform.prototype.setPivotPoint = function (x, y) {
+                this._pivotPoint.x = x;
+                this._pivotPoint.y = y;
+                this.dirty = true;
+            };
+            Object.defineProperty(Transform.prototype, "scale", {
+                get: function () {
+                    return this._scale;
+                },
+                set: function (pt) {
+                    if (pt.x)
+                        this._scale.setTo(pt.x, pt.y);
+                    else
+                        this._scale.setTo(pt, pt);
+                    this.dirty = true;
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(Transform.prototype, "scaleX", {
                 get: function () {
-                    return this._scaleX;
+                    return this._scale.x;
                 },
-                /**
-                * Return the X scale value of the transform.
-                * @property scaleX
-                * @type Number
-                * @public
-                */
                 set: function (value) {
-                    this._scaleX = value;
-                    this._dirty = true;
+                    this._scale.x = value;
+                    this.dirty = true;
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(Transform.prototype, "scaleY", {
                 get: function () {
-                    return this._scaleY;
+                    return this._scale.y;
                 },
-                /**
-                * Return the Y scale value of the transform.
-                * @property scaleY
-                * @type Number
-                * @public
-                */
                 set: function (value) {
-                    this._scaleY = value;
-                    this._dirty = true;
+                    this._scale.y = value;
+                    this.dirty = true;
                 },
                 enumerable: true,
                 configurable: true
             });
+            Transform.prototype.setScale = function (x, y) {
+                this._scale.setTo(x, y);
+                this.dirty = true;
+            };
+            Object.defineProperty(Transform.prototype, "xy", {
+                get: function () {
+                    return this._xy;
+                },
+                set: function (val) {
+                    this._xy = val;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "x", {
+                get: function () {
+                    return this._xy.x;
+                },
+                set: function (value) {
+                    this._xy.x = value;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "y", {
+                get: function () {
+                    return this._xy.y;
+                },
+                set: function (value) {
+                    this._xy.y = value;
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Transform.prototype.setXY = function (x, y) {
+                this._xy.setTo(x, y);
+                this.dirty = true;
+            };
             Object.defineProperty(Transform.prototype, "rotation", {
                 get: function () {
                     return this._rotation;
                 },
-                /**
-                * Return the rotation value of the transform in radians.
-                * @property rotation
-                * @type Number
-                * @public
-                */
+                set: function (value) {
+                    this._rotation = Kiwi.Utils.GameMath.degreesToRadians(value);
+                    this.dirty = true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Transform.prototype, "rotationRad", {
                 set: function (value) {
                     this._rotation = value;
-                    this._dirty = true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "rotPointX", {
-                get: function () {
-                    return this._rotPointX;
-                },
-                /**
-                * Return the rotation offset from the x axis.
-                * @property rotPointX
-                * @type Number
-                * @default 0
-                * @public
-                */
-                set: function (value) {
-                    this._rotPointX = value;
-                    this._dirty = true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "rotPointY", {
-                get: function () {
-                    return this._rotPointY;
-                },
-                /**
-                * Return the rotation offset from the y axis.
-                * @property rotPointY
-                * @type Number
-                * @public
-                */
-                set: function (value) {
-                    this._rotPointY = value;
-                    this._dirty = true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "anchorPointX", {
-                get: function () {
-                    return (this.rotPointX);
-                },
-                /**
-                * Return the anchor point value from the X axis. (Aliases to rotPointX.)
-                * @property anchorPointX
-                * @type Number
-                * @public
-                * @since 1.1.0
-                */
-                set: function (value) {
-                    this.rotPointX = value;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "anchorPointY", {
-                get: function () {
-                    return (this.rotPointY);
-                },
-                /**
-                * Return the anchor point value from the Y axis. (Aliases to rotPointY.)
-                * @property anchorPointY
-                * @type Number
-                * @public
-                * @since 1.1.0
-                */
-                set: function (value) {
-                    this.rotPointY = value;
+                    this.dirty = true;
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(Transform.prototype, "matrix", {
-                /**
-                * Return the Matrix being used by this Transform
-                * @property matrix
-                * @type Kiwi.Geom.Matrix
-                * @readOnly
-                * @public
-                */
                 get: function () {
                     return this._matrix;
                 },
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(Transform.prototype, "worldX", {
-                /**
-                * Return the x of this transform translated to world space.
-                * @property worldX
-                * @type Number
-                * @readOnly
-                * @public
-                */
+            Object.defineProperty(Transform.prototype, "freeformMatrix", {
                 get: function () {
-                    return this.getConcatenatedMatrix().tx - this._rotPointX;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "worldY", {
-                /**
-                * Return the y of this transform translated to world space.
-                * @property worldY
-                * @type Number
-                * @readOnly
-                * @public
-                */
-                get: function () {
-                    return this.getConcatenatedMatrix().ty - this._rotPointY;
+                    return this._freeformMatrix;
                 },
                 enumerable: true,
                 configurable: true
@@ -24770,318 +22280,101 @@ var Kiwi;
                 get: function () {
                     return this._parent;
                 },
-                /**
-                * Return the parent Transform. If the transform does not have a parent this null is returned.
-                * @property parent
-                * @type Kiwi.Geom.Transform
-                * @default null
-                * @public
-                */
                 set: function (value) {
+                    if (value)
+                        value._children.push(this);
                     if (!this.checkAncestor(value)) {
                         this._parent = value;
-                        this._dirty = true;
+                        this.dirty = true;
                     }
                 },
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(Transform.prototype, "locked", {
-                get: function () {
-                    return this._locked;
-                },
-                /**
-                * Whether the Transform is locked. In locked mode, the Transform
-                * will not update its matrix, saving on computation.
-                * However, it will still follow its parent.
-                * When locked is set to true, it will set the matrix according to
-                * current transform values.
-                * @property locked
-                * @type boolean
-                * @default false
-                * @public
-                * @since 1.2.0
-                */
-                set: function (value) {
-                    this._locked = value;
-                    if (this._locked) {
-                        this._matrix.setFromOffsetTransform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.anchorPointX, this.anchorPointY);
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "ignoreParent", {
-                get: function () {
-                    return this._ignoreParent;
-                },
-                /**
-                * Whether to ignore its parent when concatenating matrices.
-                * If true, it won't compute parent matrices.
-                * This can save computation, but prevents it from following
-                * its parent's transforms.
-                *
-                * Use this to save some processor cycles if the transform isn't
-                * following a parent and the state does not transform.
-                * @property ignoreParent
-                * @type boolean
-                * @default false
-                * @public
-                * @since 1.2.0
-                */
-                set: function (value) {
-                    this._ignoreParent = value;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Transform.prototype, "ignoreChild", {
-                /**
-                * Whether to prevent children from acquiring this as a parent
-                * when concatenating matrices. This can save computation,
-                * but prevents it from passing any transform data to children.
-                *
-                * Use this to save some processor cycles if this is a Group
-                * that does not control its children, and the state does not
-                * transform.
-                *
-                * @property ignoreChild
-                * @type boolean
-                * @default false
-                * @public
-                * @since 1.3.1
-                */
-                get: function () {
-                    return this._ignoreChild;
-                },
-                set: function (value) {
-                    this._ignoreChild = value;
-                },
-                enumerable: true,
-                configurable: true
-            });
+            // TODO: this should only be performed during an update
+            Transform.prototype.freeformScale = function (x, y, aroundX, aroundY) {
+                this._freeformMatrix.multiplyMatrixInPlace(new Geom.Matrix(x, 0, 0, y, -aroundX * x + aroundX, -aroundY * y + aroundY));
+                this.dirty = true;
+            };
+            Transform.prototype._performTransformation = function () {
+                var cos = Math.cos(this.rotation);
+                var sin = Math.sin(this.rotation);
+                // Translation, then Scaling around origin, then rotation around pivotPoint
+                // T(x,y) * T(origin) * T(scale) * T(-origin) * T(pivot) * T(rotation) * T(-pivot)
+                this._matrix.setTo(cos * this._scale.x, -sin * this._scale.y, sin * this._scale.x, cos * this._scale.y, (((-this._pivotPoint.x * cos + -this._pivotPoint.y * sin + this._pivotPoint.x) * this._scale.x) + (-this._origin.x * this._scale.x + this._origin.x)) + this._xy.x + this._origin.x, (((-this._pivotPoint.x * -sin + -this._pivotPoint.y * cos + this._pivotPoint.y) * this._scale.y) + (-this._origin.y * this._scale.y + this._origin.y)) + this._xy.y + this._origin.x).multiplyMatrixInPlace(this._freeformMatrix);
+            };
             /**
-            * Set the X and Y values of the transform.
-            * @method setPosition
-            * @param x {Number}
-            * @param y {Number}
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.setPosition = function (x, y) {
-                this._x = x;
-                this._y = y;
-                this._dirty = true;
+             * Translate the X and Y value of the transform by point components.
+             * @method translatePositionFromPoint
+             * @param point {Kiwi.Geom.Point} point.
+             * @return {Kiwi.Geom.Transform} This object.
+             * @public
+             */
+            Transform.prototype.translate = function (point) {
+                this._xy.x += point.x;
+                this._xy.y += point.y;
+                this.dirty = true;
                 return this;
             };
             /**
-            * Set the X and Y values of the transform from a point.
-            * @method setPositionPoint
-            * @param point {Kiwi.Geom.Point} point.
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.setPositionFromPoint = function (point) {
-                this._x = point.x;
-                this._y = point.y;
-                this._dirty = true;
-                return this;
-            };
-            /**
-            * Translate the X and Y value of the transform by point components.
-            * @method translatePositionFromPoint
-            * @param point {Kiwi.Geom.Point} point.
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.translatePositionFromPoint = function (point) {
-                this._x += point.x;
-                this._y += point.y;
-                this._dirty = true;
-                return this;
-            };
-            /**
-            * Return a Point representing the X and Y values of the transform.
-            * If no point is given a new Point objected will be created.
-            *
-            * @method getPositionPoint
-            * @param [output] {Kiwi.Geom.Point} The Point to output the coordinates into. Creates a new Point if none given.
-            * @return {Kiwi.Geom.Point} A point representing the X and Y values of the transform.
-            * @public
-            */
-            Transform.prototype.getPositionPoint = function (output) {
-                if (output === void 0) { output = new Kiwi.Geom.Point; }
-                return output.setTo(this._x, this._y);
-            };
-            Object.defineProperty(Transform.prototype, "scale", {
-                /**
-                * Set the X and Y scale value of the transform.
-                * This property is set only.
-                * In the future this will be looked into and updated as needed.
-                *
-                * @property scale
-                * @type Number
-                * @public
-                */
-                set: function (value) {
-                    this._scaleX = value;
-                    this._scaleY = value;
-                    this._dirty = true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-            * Set the core properties of the transform.
-            *
-            * @method setTransform
-            * @param [x=0] {Number} X position of the transform.
-            * @param [y=0] {Number} Y position of the transform.
-            * @param [scaleX=1] {Number} X scaling of the transform.
-            * @param [scaleY=1] {Number} Y scaling of the transform.
-            * @param [rotation=0] {Number} Rotation of the transform in radians.
-            * @param [rotX=0] {Number} rotationPoint offset on X axis.
-            * @param [rotY=0] {Number} rotationPoint offset on Y axis.
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.setTransform = function (x, y, scaleX, scaleY, rotation, rotPointX, rotPointY) {
+             * Set the core properties of the transform.
+             *
+             * @method setTransform
+             * @param [x=0] {Number} X position of the transform.
+             * @param [y=0] {Number} Y position of the transform.
+             * @param [scaleX=1] {Number} X scaling of the transform.
+             * @param [scaleY=1] {Number} Y scaling of the transform.
+             * @param [rotation=0] {Number} Rotation of the transform in radians.
+             * @param [originX=0] {Number} origin on X axis.
+             * @param [originY=0] {Number} origin on Y axis.
+             * @return {Kiwi.Geom.Transform} This object.
+             * @public
+             */
+            Transform.prototype.setTransform = function (x, y, scaleX, scaleY, rotation, originX, originY) {
                 if (x === void 0) { x = 0; }
                 if (y === void 0) { y = 0; }
                 if (scaleX === void 0) { scaleX = 1; }
                 if (scaleY === void 0) { scaleY = 1; }
                 if (rotation === void 0) { rotation = 0; }
-                if (rotPointX === void 0) { rotPointX = 0; }
-                if (rotPointY === void 0) { rotPointY = 0; }
-                this._x = x;
-                this._y = y;
-                this._scaleX = scaleX;
-                this._scaleY = scaleY;
+                if (originX === void 0) { originX = 0; }
+                if (originY === void 0) { originY = 0; }
+                this._xy.x = x;
+                this._xy.y = y;
+                this._scale.x = scaleX;
+                this._scale.y = scaleY;
                 this._rotation = rotation;
-                this._rotPointX = rotPointX;
-                this._rotPointY = rotPointY;
-                this._dirty = true;
+                this._origin.x = originX;
+                this._origin.y = originY;
+                this.dirty = true;
                 return this;
             };
             /**
-            * Return the parent matrix of the transform.
-            * If there is no parent then null is returned.
-            * @method getParentMatrix
-            * @return {Kiwi.Geom.Matrix} Parent transform matrix
-            * @public
-            */
-            Transform.prototype.getParentMatrix = function () {
-                if (this._parent) {
-                    return this._parent.getConcatenatedMatrix();
-                }
-                return null;
-            };
-            /**
-            * Return the transformation matrix that concatenates this transform
-            * with all ancestor transforms. If there is no parent then this will
-            * return a matrix the same as this transform's matrix.
-            * @method getConcatenatedMatrix
-            * @return {Kiwi.Geom.Matrix} The concatenated matrix.
-            * @public
-            */
+             * Return the transformation Matrix that concatenates this transform
+             * with all ancestor transforms. If there is no parent then this will
+             * return a Matrix the same as this transform's Matrix.
+             * @method getConcatenatedMatrix
+             * @return {Kiwi.Geom.Matrix} The concatenated Matrix.
+             * @public
+             */
             Transform.prototype.getConcatenatedMatrix = function () {
-                /*
-    
-                Matrix caching
-    
-                Potential cases:
-                - This dirty, parent dirty	:	Update matrix, build concat
-                - This dirty, parent clean	:	Update matrix, build concat
-                - This dirty, no parent		:	Update matrix
-                - This clean, parent dirty	:	Build concat
-                - This clean, parent clean	:	Use cachedConcatenated
-                - This clean, no parent		:	Use cachedConcatenated
-    
-                Simplifies to four cases:
-                - This dirty, has parent	:	Update matrix, build concat
-                - This dirty, no parent		:	Update matrix
-                - This clean, parent dirty	:	Build concat
-                - Otherwise					:	Use cachedConcatenated
-    
-                This has been further simplified because of some issues.
-                Now, the matrix is updated if it's dirty;
-                and the parent is applied if it exists.
-                Parent dirtiness is not considered, as this appeared to be
-                causing issues.
-    
-                */
-                // Set correct local matrix
-                if (this._dirty && !this.locked) {
-                    this._matrix.setFromOffsetTransform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.anchorPointX, this.anchorPointY);
+                if (this.dirty) {
+                    this._performTransformation();
+                    this._cachedConcatenatedMatrix.setToMatrix(this._matrix);
+                    // Apply parent transform
+                    if (this._parent)
+                        this._cachedConcatenatedMatrix = this._parent.getConcatenatedMatrix().multiplyMatrix(this._cachedConcatenatedMatrix);
+                    this.dirty = false;
                 }
-                // Get local matrix
-                this._cachedConcatenatedMatrix.copyFrom(this._matrix);
-                // Apply parent transform
-                if (this._parent && !this._parent.ignoreChild && !this.ignoreParent) {
-                    this._cachedConcatenatedMatrix.tx -= this._parent.anchorPointX;
-                    this._cachedConcatenatedMatrix.ty -= this._parent.anchorPointY;
-                    this._cachedConcatenatedMatrix.prependMatrix(this.getParentMatrix());
-                }
-                this._dirty = false;
                 return this._cachedConcatenatedMatrix;
             };
             /**
-            * Apply this matrix to a an object with x and y properties representing a point and return the transformed point.
-            * @method transformPoint
-            * @param point {Kiwi.Geom.Point}
-            * @return {Kiwi.Geom.Point}
-            * @public
-            */
-            Transform.prototype.transformPoint = function (point) {
-                var mat = this.getConcatenatedMatrix();
-                return mat.transformPoint(point);
-            };
-            /**
-            * Copy another transforms data to this transform. A clone of the source matrix is created for the matrix property.
-            * @method copyFrom
-            * @param transform {Kiwi.Geom.Transform} transform. The tranform to be copied from.
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.copyFrom = function (source) {
-                this.setTransform(source.x, source.y, source.scaleX, source.scaleY, source.rotation, source.rotPointX, source.rotPointY);
-                this.parent = source.parent;
-                this._matrix = source.matrix.clone();
-                return this;
-            };
-            /**
-            * Copy this transforms data to the destination Transform.
-            * A clone of this transforms matrix is created in the destination Transform Matrix.
-            *
-            * @method copyTo
-            * @param destination {Kiwi.Geom.Transform} The tranform to copy to.
-            * @return {Kiwi.Geom.Transform} This object.
-            * @public
-            */
-            Transform.prototype.copyTo = function (destination) {
-                destination.copyFrom(this);
-                return this;
-            };
-            /**
-            * Return a clone of this transform.
-            *
-            * @method clone
-            * @param [output] {Kiwi.Geom.Transform} A Transform to copy the clone in to. If none is given a new Transform object will be made.
-            * @return {Kiwi.Geom.Transform} A clone of this object.
-            * @public
-            */
-            Transform.prototype.clone = function (output) {
-                if (output === void 0) { output = new Transform(); }
-                output.copyFrom(this);
-                return output;
-            };
-            /**
-            * Recursively check that a transform does not appear as its own ancestor
-            * @method checkAncestor
-            * @param transform {Kiwi.Geom.Transform} The Transform to check.
-            * @return {boolean} Returns true if the given transform is the same as this or an ancestor, otherwise false.
-            * @public
-            */
+             * Recursively check that a transform does not appear as its own ancestor
+             * @method checkAncestor
+             * @param transform {Kiwi.Geom.Transform} The Transform to check.
+             * @return {boolean} Returns true if the given transform is the same as this or an ancestor, otherwise false.
+             * @TODO: implement this
+             * @public
+             */
             Transform.prototype.checkAncestor = function (transform) {
                 /*if (transform === this)
                 {
@@ -25094,19 +22387,30 @@ var Kiwi;
                 }*/
                 return false;
             };
+            Transform.prototype.destroy = function () {
+            };
             Object.defineProperty(Transform.prototype, "toString", {
                 /**
-                * Return a string represention of this object.
-                * @method toString
-                * @return {String} A string represention of this object.
-                * @public
-                */
+                 * Return a string represention of this object.
+                 * @method toString
+                 * @return {String} A string represention of this object.
+                 * @public
+                 */
                 get: function () {
-                    return "[{Transform (x=" + this._x + " y=" + this._y + " scaleX=" + this._scaleX + " scaleY=" + this._scaleY + " rotation=" + this._rotation + " regX=" + this._rotPointX + " regY=" + this.rotPointY + " matrix=" + this._matrix + ")}]";
+                    return "[{Transform (x=" + this._xy.x + " y=" + this._xy.y + " scale= { " + this._scale.x + ", " + this._scale.y + " } rotation=" + this._rotation + " origin= { " + this._origin.x + ", " + this.origin.y + " } Matrix=" + this._matrix + ")}]";
                 },
                 enumerable: true,
                 configurable: true
             });
+            /**
+             * The type of this object.
+             * @method objType
+             * @return {String} "Transform"
+             * @public
+             */
+            Transform.prototype.objType = function () {
+                return "Transform";
+            };
             return Transform;
         })();
         Geom.Transform = Transform;
@@ -25274,7 +22578,10 @@ var Kiwi;
             * @public
             */
             Vector2.prototype.unit = function () {
-                var invLen = 1.0 / this.len();
+                var len = this.len();
+                if (len === 0)
+                    return new Vector2(0, 0);
+                var invLen = 1.0 / len;
                 return this.multiplyScalar(invLen);
             };
             /**
@@ -34439,6 +31746,7 @@ var Kiwi;
 /// <reference path="core/CameraManager.ts" />
 /// <reference path="core/StateConfig.ts" />
 /// <reference path="core/StateManager.ts" />
+/// <reference path="core/Transformable.ts" />
 /// <reference path="core/IChild.ts" />
 /// <reference path="core/Entity.ts" />
 /// <reference path="core/Component.ts" />
@@ -34572,7 +31880,7 @@ var Kiwi;
     * @type string
     * @public
     */
-    Kiwi.VERSION = "1.4.0";
+    Kiwi.VERSION = "1.4.0-M";
     //DIFFERENT RENDERER STATIC VARIABLES
     /**
     * A Static property that contains the number associated with the CANVAS RENDERER.
@@ -34858,7 +32166,10 @@ var Kiwi;
                 configurable: true
             });
             Box2.prototype.clean = function () {
-                this._invertedTransformMatrix = this.owner.transform.getConcatenatedMatrix().clone().invert();
+                this._invertedTransformMatrix = this.owner.transform.getConcatenatedMatrix().invertCopy();
+                // this._invertedTransformMatrix.tx -= this.owner.transform.rotPointX;
+                // this._invertedTransformMatrix.ty -= this.owner.transform.rotPointY;
+                // this._invertedTransformMatrix.invert();
             };
             /**
              * Check if a point is inside hitbox
@@ -35401,6 +32712,262 @@ var Kiwi;
         })(Kiwi.Files.File);
         Files.TextureFile = TextureFile;
     })(Files = Kiwi.Files || (Kiwi.Files = {}));
+})(Kiwi || (Kiwi = {}));
+/**
+*
+* @module GameObjects
+* @submodule Tilemap
+*
+*/
+var Kiwi;
+(function (Kiwi) {
+    var GameObjects;
+    (function (GameObjects) {
+        var Tilemap;
+        (function (Tilemap) {
+            /**
+            * Contains the code for managing and rendering Orthogonal types of TileMaps.
+            * This class should not be directly created, but instead should be created via methods on the TileMap class.
+            *
+            * @class TileMapLayerOrthogonal
+            * @extends Kiwi.GameObjects.Tilemap.TileMapLayer
+            * @namespace Kiwi.GameObjects.Tilemap
+            * @since 1.3.0
+            * @constructor
+            * @param tilemap {Kiwi.GameObjects.Tilemap.TileMap} The TileMap that this layer belongs to.
+            * @param name {String} The name of this TileMapLayer.
+            * @param atlas {Kiwi.Textures.TextureAtlas} The texture atlas that should be used when rendering this TileMapLayer onscreen.
+            * @param data {Number[]} The information about the tiles.
+            * @param tw {Number} The width of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+            * @param th {Number} The height of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+            * @param [x=0] {Number} The x coordinate of the tilemap in pixels.
+            * @param [y=0] {Number} The y coordinate of the tilemap in pixels.
+            * @param [w=0] {Number} The width of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+            * @param [h=0] {Number} The height of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+            * @return {TileMapLayer}
+            */
+            var TileMapLayerDynamicOrthogonal = (function (_super) {
+                __extends(TileMapLayerDynamicOrthogonal, _super);
+                function TileMapLayerDynamicOrthogonal(tilemap, name, atlas, data, tw, th, x, y, w, h) {
+                    var _this = this;
+                    if (x === void 0) { x = 0; }
+                    if (y === void 0) { y = 0; }
+                    if (w === void 0) { w = 0; }
+                    if (h === void 0) { h = 0; }
+                    _super.call(this, tilemap, name, atlas, data, tw, th, 0, 0, w, h);
+                    this.offset = new Kiwi.Geom.Point();
+                    this._data2 = {};
+                    /**
+                    * The orientation of the of tilemap.
+                    * TileMaps can be either 'orthogonal' (normal) or 'isometric'.
+                    * @property orientation
+                    * @type String
+                    * @default 'orthogonal'
+                    * @public
+                    */
+                    this.orientation = Tilemap.ORTHOGONAL;
+                    this.offset.setTo(x, y);
+                    // TODO: convert data into hashmap. Include x: y coords into
+                    this._data.forEach(function (e, i) {
+                        var yM = Math.floor(i / w);
+                        var xM = i - yM * w;
+                        yM += y;
+                        xM += x;
+                        _this._data2[("" + xM + "|" + yM)] = e;
+                    });
+                    this._data = [];
+                }
+                TileMapLayerDynamicOrthogonal.prototype.getTileFromXY = function (x, y) {
+                    return this.tilemap.tileTypes[this._data2[("" + x + "|" + y)]];
+                };
+                /**
+                * The type of object that it is.
+                * @method objType
+                * @return {String} "TileMapLayer"
+                * @public
+                */
+                TileMapLayerDynamicOrthogonal.prototype.objType = function () {
+                    return "TileMapLayer";
+                };
+                /**
+                * Returns the index of the tile based on the x and y pixel coordinates that are passed.
+                * If no tile is a the coordinates given then -1 is returned instead.
+                * Coordinates are in pixels not tiles and use the world coordinates of the tilemap.
+                *
+                * @method getIndexFromCoords
+                * @param x {Number} The x coordinate of the Tile you would like to retrieve.
+                * @param y {Number} The y coordinate of the Tile you would like to retrieve.
+                * @return {Number} Either the index of the tile retrieved or -1 if none was found.
+                * @public
+                */
+                // public getIndexFromCoords(x: number, y: number): number {
+                //
+                // 	// TODO: reimplemnt this method
+                // 	// TODO: culling of tiles outside camera
+                //     //Not with the bounds?
+                //     // if (x > this.transform.worldX + this.widthInPixels || y > this.transform.worldY + this.heightInPixels || x < this.transform.worldX || y < this.transform.worldY)
+                //     //     return -1;
+                //
+                //     //Is so get the tile
+                //     var tx = Kiwi.Utils.GameMath.snapToFloor(x - this.transform.worldX, this.tileWidth) / this.tileWidth;
+                //     var ty = Kiwi.Utils.GameMath.snapToFloor(y - this.transform.worldY, this.tileHeight) / this.tileHeight;
+                //
+                //     return this.getIndexFromXY(tx, ty);
+                // }
+                /**
+                * Returns the tiles which overlap with a provided entities hitbox component.
+                * Only collidable tiles on ANY side will be returned unless you pass a particular side.
+                *
+                * @method getOverlappingTiles
+                * @param entity {Kiwi.Entity} The entity you would like to check for the overlap.
+                * @param [collisionType=ANY] {Number} The particular type of collidable tiles which you would like to check for.
+                * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
+                * @public
+                */
+                // public getOverlappingTiles(entity: Kiwi.Entity, collisionType: number = Kiwi.Components.ArcadePhysics.ANY): any {
+                //
+                //     //Do they have a box?
+                //     if (entity.components.hasComponent("Box") == false)
+                //         return [];
+                //
+                //     //Get the box off them
+                //     var b: Kiwi.Geom.Rectangle = entity.components.getComponent('Box').worldHitbox;
+                //
+                //     var worldX = this.transform.worldX;
+                //     var worldY = this.transform.worldY;
+                //
+                //     //Is the person within the map's bounds?
+                //     if (b.left > worldX + this.widthInPixels || b.right < worldX || b.bottom < worldY || b.top > worldY + this.heightInPixels)
+                //         return [];
+                //
+                //
+                //     var nx = b.x - worldX;
+                //     var ny = b.y - worldY;
+                //
+                //     //Get starting location and now many tiles from there we will check.
+                //     var x = Kiwi.Utils.GameMath.snapToFloor(nx, this.tileWidth) / this.tileWidth;
+                //     var y = Kiwi.Utils.GameMath.snapToFloor(ny, this.tileHeight) / this.tileHeight;
+                //     var w = Kiwi.Utils.GameMath.snapToCeil(b.width, this.tileWidth) / this.tileWidth;
+                //     var h = Kiwi.Utils.GameMath.snapToCeil(b.height, this.tileHeight) / this.tileHeight;
+                //
+                //     //Add one, because we want to include the very end tile.
+                //     var tiles = this.getCollidableTiles(x, y, w + 1, h + 1, collisionType);
+                //
+                //     //Loop through the tiles and make sure they are actually overlapping with the Entity.
+                //     for (var i = 0; i < tiles.length; i++) {
+                //         var t = tiles[i];
+                //
+                //         if (t.x + worldX > b.right || t.x + this.tileWidth + worldX < b.left || t.y + worldY > b.bottom || t.y + this.tileHeight + worldY < b.top) {
+                //             tiles.splice(i, 1);
+                //             i--;
+                //         }
+                //     }
+                //
+                //     return tiles;
+                //
+                // }
+                /**
+                * Used to calculate the position of the tilemap on the stage as well as how many tiles can fit on the screen.
+                * All coordinates calculated are stored as temporary properties (maxX/Y, startX/Y).
+                *
+                * @method _calculateBoundaries
+                * @param camera {Camera}
+                * @param matrix {matrix}
+                * @protected
+                */
+                TileMapLayerDynamicOrthogonal.prototype._calculateBoundaries = function (camera, matrix) {
+                    //If we are calculating the coordinates for 'regular' then we can do that rather easy
+                    // Account for camera and object transformation
+                    // Initialise corners...
+                    this._corner1.setTo(0, 0);
+                    this._corner2.setTo(this.game.stage.width, 0);
+                    this._corner3.setTo(this.game.stage.width, this.game.stage.height);
+                    this._corner4.setTo(0, this.game.stage.height);
+                    // TODO: Transform corners by camera...
+                    camera.transformStageToWorld(this._corner1, false);
+                    camera.transformStageToWorld(this._corner2, false);
+                    camera.transformStageToWorld(this._corner3, false);
+                    camera.transformStageToWorld(this._corner4, false);
+                    // Transform corners by object...
+                    var m = matrix.clone();
+                    m.invert();
+                    m.transformPointInPlace(this._corner1);
+                    m.transformPointInPlace(this._corner2);
+                    m.transformPointInPlace(this._corner3);
+                    m.transformPointInPlace(this._corner4);
+                    // Find min/max values in X and Y...
+                    this._startX = Math.min(this._corner1.x, this._corner2.x, this._corner3.x, this._corner4.x);
+                    this._startY = Math.min(this._corner1.y, this._corner2.y, this._corner3.y, this._corner4.y);
+                    this._maxX = Math.max(this._corner1.x, this._corner2.x, this._corner3.x, this._corner4.x);
+                    this._maxY = Math.max(this._corner1.y, this._corner2.y, this._corner3.y, this._corner4.y);
+                    // Convert to tile units...
+                    this._startX /= this.tileWidth;
+                    this._startY /= this.tileHeight;
+                    this._maxX /= this.tileWidth;
+                    this._maxY /= this.tileHeight;
+                    // Truncate units...
+                    this._startX = Math.floor(this._startX);
+                    this._startY = Math.floor(this._startY);
+                    this._maxX = Math.ceil(this._maxX);
+                    this._maxY = Math.ceil(this._maxY);
+                    // Clamp values to tilemap range...
+                    this._startX = Kiwi.Utils.GameMath.clamp(this._startX, this.width + this.offset.x, this.offset.x);
+                    this._startY = Kiwi.Utils.GameMath.clamp(this._startY, this.height + this.offset.y, this.offset.y);
+                    this._maxX = Kiwi.Utils.GameMath.clamp(this._maxX, this.width + this.offset.x, this.offset.x);
+                    this._maxY = Kiwi.Utils.GameMath.clamp(this._maxY, this.height + this.offset.y, this.offset.y);
+                };
+                /**
+                * The render loop which is used when using the Canvas renderer.
+                * @method render
+                * @param camera {Camera}
+                * @public
+                */
+                TileMapLayerDynamicOrthogonal.prototype.render = function (camera) {
+                    throw "Not yet implemented";
+                };
+                TileMapLayerDynamicOrthogonal.prototype.renderGL = function (gl, camera, params) {
+                    if (params === void 0) { params = null; }
+                    //Setup
+                    var vertexItems = [];
+                    //Transform/Matrix
+                    var t = this.transform;
+                    var m = t.getConcatenatedMatrix();
+                    //Find which ones we need to render.
+                    this._calculateBoundaries(camera, m);
+                    for (var y = this._startY; y < this._maxY; y++) {
+                        for (var x = this._startX; x < this._maxX; x++) {
+                            //Get the tile type
+                            this._temptype = this.getTileFromXY(x, y);
+                            //Skip tiletypes that don't use a cellIndex.
+                            if (this._temptype.cellIndex == -1)
+                                continue;
+                            //Get the cell index
+                            var cell = this.atlas.cells[this._temptype.cellIndex];
+                            // TODO: should tile offset be used?
+                            var tx = x * this.tileWidth + this._temptype.offset.x;
+                            var ty = y * this.tileHeight + this._temptype.offset.y;
+                            //Set up the points
+                            this._corner1.setTo(tx, ty); // TODO: if you figure out if this is needed give a comment: ty - (cell.h - this.tileHeight)
+                            this._corner2.setTo(tx + cell.w, ty); // ty - (cell.h - this.tileHeight)
+                            this._corner3.setTo(tx + cell.w, ty + cell.h); // cell.h - (cell.h - this.tileHeight)
+                            this._corner4.setTo(tx, ty + cell.h); // cell.h - (cell.h - this.tileHeight)
+                            //Add on the matrix to the points
+                            m.transformPointInPlace(this._corner1);
+                            m.transformPointInPlace(this._corner2);
+                            m.transformPointInPlace(this._corner3);
+                            m.transformPointInPlace(this._corner4);
+                            //Append to the xyuv array
+                            vertexItems.push(this._corner1.x, this._corner1.y, cell.x, cell.y, this.alpha, this._corner2.x, this._corner2.y, cell.x + cell.w - 1, cell.y, this.alpha, this._corner3.x, this._corner3.y, cell.x + cell.w - 1, cell.y + cell.h - 1, this.alpha, this._corner4.x, this._corner4.y, cell.x, cell.y + cell.h - 1, this.alpha);
+                        }
+                    }
+                    //Concat points to the Renderer.
+                    this.glRenderer.concatBatch(vertexItems);
+                };
+                return TileMapLayerDynamicOrthogonal;
+            })(Tilemap.TileMapLayer);
+            Tilemap.TileMapLayerDynamicOrthogonal = TileMapLayerDynamicOrthogonal;
+        })(Tilemap = GameObjects.Tilemap || (GameObjects.Tilemap = {}));
+    })(GameObjects = Kiwi.GameObjects || (Kiwi.GameObjects = {}));
 })(Kiwi || (Kiwi = {}));
 /**
 *
@@ -35980,3 +33547,4 @@ var Kiwi;
         Geom.Vector3 = Vector3;
     })(Geom = Kiwi.Geom || (Kiwi.Geom = {}));
 })(Kiwi || (Kiwi = {}));
+//# sourceMappingURL=kiwi.js.map

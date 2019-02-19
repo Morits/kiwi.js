@@ -1,20 +1,19 @@
 /**
-* 
-* @module Kiwi
-* @submodule Shaders
-* @namespace Kiwi.Shaders
-*/
-
+ *
+ * @module Kiwi
+ * @submodule Shaders
+ * @namespace Kiwi.Shaders
+ */
 module Kiwi.Shaders {
 
 	/**
-	* Shader wrapper for rendering Texture Atlases
-	* @class TextureAtlasShader
-	* @extends Kiwi.Shaders.ShaderPair
-	* @constructor
-	* @namespace Kiwi.Shaders
-	* @return {Kiwi.Shaders.TextureAtlasShader}
-	*/
+	 * Shader wrapper for rendering Texture Atlases
+	 * @class TextureAtlasShader
+	 * @extends Kiwi.Shaders.ShaderPair
+	 * @constructor
+	 * @namespace Kiwi.Shaders
+	 * @return {Kiwi.Shaders.TextureAtlasShader}
+	 */
 	export class TextureAtlasShader extends ShaderPair {
 
 		constructor() {
@@ -67,7 +66,7 @@ module Kiwi.Shaders {
 			uSampler: {
 				type: "1i",
 			}
-		}
+		};
 
 
 		/**
@@ -76,41 +75,41 @@ module Kiwi.Shaders {
 		* @type Array
 		* @public
 		*/
-		public fragSource: Array<string> = [
-			"precision mediump float;",
-			"varying vec2 vTextureCoord;",
-			"varying float vAlpha;",
-			"uniform sampler2D uSampler;",
-			"void main(void) {",
-			"gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x, vTextureCoord.y));",
-			"gl_FragColor.a *= vAlpha;",
-			"}"
-		];
-
+		// language=GLSL
+		public fragSource: string = `
+			precision mediump float;
+			varying vec2 vTextureCoord;
+			varying float vAlpha;
+			uniform sampler2D uSampler;
+			void main(void) {
+				gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x, vTextureCoord.y));
+				gl_FragColor.a *= vAlpha;
+			}
+		`;
 
 		/**
-		* The source for the GLSL vertex shader
-		* @property vertSource
-		* @type Array
-		* @public
-		*/
-		public vertSource: Array<string> = [
-			"attribute vec4 aXYUV;",
-			"attribute float aAlpha;",
-			"uniform mat3 uCamMatrix;",
-			"uniform vec2 uResolution;",
-			"uniform vec2 uTextureSize;",
-			"varying vec2 vTextureCoord;",
-			"varying float vAlpha;",
-			"void main(void) {",
-			"   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy; ",
-			"   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);",
-			"   vTextureCoord = aXYUV.zw / uTextureSize;",
-			"   vAlpha = aAlpha;",
-			"}"
-		];
-
-
+		 * The source for the GLSL vertex shader
+		 * @property vertSource
+		 * @type Array
+		 * @public
+		 */
+		// language=GLSL
+		public vertSource: string = `
+			attribute vec4 aXYUV;
+			attribute float aAlpha;
+			uniform mat3 uCamMatrix;
+			uniform vec2 uResolution;
+			uniform vec2 uTextureSize;
+			varying vec2 vTextureCoord;
+			varying float vAlpha;
+			void main(void) {
+			   vec2 pos = (uCamMatrix * vec3(aXYUV.xy,1)).xy;
+//			   vec2 pos = aXYUV.xy; 
+			   // pos / resolution = 0 => 1 : * 2 = 0 => 2 : - 1 = -1 => 1. vec2(2, -1) to flip y
+			   gl_Position = vec4((pos / uResolution * 2.0 - 1.0) * vec2(1, -1), 0, 1);
+			   vTextureCoord = aXYUV.zw / uTextureSize;
+			   vAlpha = aAlpha;
+			}
+		`;
 	}
-
 }

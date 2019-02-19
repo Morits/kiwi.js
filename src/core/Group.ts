@@ -18,9 +18,10 @@ module Kiwi {
 	* @return {Kiwi.Group}
 	* 
 	*/
-	export class Group implements Kiwi.IChild {
+	export class Group extends Transformable implements Kiwi.IChild {
 
 		constructor(state: Kiwi.State, name: string = '') {
+			super();
 
 			//prevents the state going AHHH...since the state extends group.
 			if (state !== null) {
@@ -38,7 +39,6 @@ module Kiwi {
 			this._active = true;
 			this._visible = true;
 
-			this.transform = new Kiwi.Geom.Transform();
 			this.members = [];
 		}
 
@@ -72,15 +72,6 @@ module Kiwi {
 		public name: string = '';
 
 		/**
-		* The transform object for this group. 
-		* Transform handles the calculation of coordinates/rotation/scale e.t.c in the Game World.
-		* @property transform
-		* @type Kiwi.Geom.Transform
-		* @public
-		*/
-		public transform: Kiwi.Geom.Transform;
-
-		/**
 		* The parent group of this group.
 		* @property _parent
 		* @type Kiwi.Group
@@ -103,160 +94,6 @@ module Kiwi {
 		}
 		public get parent(): Kiwi.Group {
 			return this._parent;
-		}
-
-		/**
-		* The X coordinate of this group. This is just aliased to the transform property.
-		* @property x
-		* @type Number
-		* @public
-		*/
-		public get x(): number {
-			return this.transform.x;
-		}
-		public set x(value: number) {
-			this.transform.x = value;
-		}
-
-		/**
-		* The Y coordinate of this group. This is just aliased to the transform property.
-		* @property y
-		* @type Number
-		* @public
-		*/
-		public get y(): number {
-			return this.transform.y;
-		}
-		public set y(value: number) {
-			this.transform.y = value;
-		}
-
-		/**
-		* The X coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-		* @property worldX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldX(): number {
-			return this.transform.worldX;
-		}
-
-		/**
-		* The Y coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-		* @property worldY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get worldY(): number {
-			return this.transform.worldY;
-		}
-
-		/*
-		* The Scale X of this group. This is just aliased to the transform property.
-		* @property scaleX
-		* @type Number
-		* @public
-		*/
-		public get scaleX(): number {
-			return this.transform.scaleX;
-		}
-		public set scaleX(value: number) {
-			this.transform.scaleX = value;
-		}
-
-		/*
-		* The Scale Y coordinate of this group. This is just aliased to the transform property.
-		* @property scaleY
-		* @type Number
-		* @public
-		*/
-		public get scaleY(): number {
-			return this.transform.scaleY;
-		}
-		public set scaleY(value: number) {
-			this.transform.scaleY = value;
-		}
-
-		/**
-		* The scale of this group. This is just aliased to the transform property. This is WRITE-ONLY.
-		* @property scale
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public set scale(value: number) {
-			this.transform.scale = value;
-		}
-
-		/*
-		* The rotation of this group. This is just aliased to the transform property.
-		* @property rotation
-		* @type Number
-		* @public
-		*/
-		public get rotation(): number {
-			return this.transform.rotation;
-		}
-		public set rotation(value: number) {
-			this.transform.rotation = value;
-		}
-
-		/**
-		* The rotation offset of this group in the X axis. This is just aliased to the transform property.
-		* @property rotPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get rotPointX(): number {
-			return this.transform.rotPointX;
-		}
-		public set rotPointX(value: number) {
-			this.transform.rotPointX = value;
-		}
-
-		/**
-		* The rotation offset of this group in the Y axis. This is just aliased to the transform property.
-		* @property rotPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get rotPointY(): number {
-			return this.transform.rotPointY;
-		}
-		public set rotPointY(value: number) {
-			this.transform.rotPointY = value;
-		}
-
-		/**
-		* The anchor point offset of this group in the X axis. This is just aliased to the transform property, and is in turn an alias of rotPointX.
-		* @property anchorPointX
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointX(): number {
-			return this.transform.anchorPointX;
-		}
-		public set anchorPointX(value: number) {
-			this.transform.anchorPointX = value;
-		}
-
-		/**
-		* The anchor point offset of this group in the Y axis. This is just aliased to the transform property, and is in turn an alias of rotPointY.
-		* @property anchorPointY
-		* @type number
-		* @public
-		* @since 1.1.0
-		*/
-		public get anchorPointY(): number {
-			return this.transform.anchorPointY;
-		}
-		public set anchorPointY(value: number) {
-			this.transform.anchorPointY = value;
 		}
 
 		/**
@@ -310,30 +147,18 @@ module Kiwi {
 		}
 
 		/**
-		* An indication of whether or not this group is 'dirty' and thus needs to be re-rendered or not.
-		* @property _dirty
-		* @type boolean
-		* @private
-		*/
-		private _dirty: boolean = true;
-
-		/**
 		* Sets all children of the Group to be dirty.
 		* @property dirty
 		* @type boolean
 		* @public
 		*/
 		public set dirty(value: boolean) {
-			if (value !== undefined) {
-				this._dirty = value;
-
+			this._dirty = value;
+			if(value && this.members) {
 				for (var i = 0; i < this.members.length; i++) {
-					this.members[i].dirty = value;
+					this.members[i].dirty = true;
 				}
 			}
-		}
-		public get dirty(): boolean {
-			return this._dirty;
 		}
 
 		/**
@@ -1191,30 +1016,6 @@ module Kiwi {
 		}
  
 		/**
-		* Controls whether render is automatically called by the parent.
-		* @property _willRender
-		* @type Boolean
-		* @private
-		* @deprecated Use _visible instead
-		*/
-		private _willRender: boolean;
-
-		/**
-		* Controls whether render is automatically called by the parent.
-		* @property willRender
-		* @type boolean
-		* @return {boolean}
-		* @public
-		* @deprecated Use visible instead
-		*/
-		public set willRender(value: boolean) {
-			this._willRender = value;
-		}
-		public get willRender():boolean {
-			return this._willRender;
-		}
-
-		/**
 		* A boolean that indicates whether or not this entity is visible or not. Note that is does not get set to false if the alpha is 0.
 		* @property _visible
 		* @type boolean
@@ -1321,9 +1122,9 @@ module Kiwi {
 		* @public
 		*/
 		public destroy(immediate:boolean = false, destroyChildren:boolean = true) {
-			
+			super.destroy();
 			this._exists = false;
-			this._active = false
+			this._active = false;
 			this._visible = false;
 
 			if (immediate === true) {
@@ -1343,7 +1144,6 @@ module Kiwi {
 
 				if (this.parent !== null) this.parent.removeChild(this);
 				if (this.state) this.state.removeFromTrackingList(this);
-				delete this.transform;
 				if (this.components) this.components.removeAll();
 				delete this.components;
 				delete this.game;

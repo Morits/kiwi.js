@@ -464,7 +464,7 @@ module Kiwi.GameObjects {
 				var m: Kiwi.Geom.Matrix = t.getConcatenatedMatrix();
 
 				ctx.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
-				ctx.drawImage(this._canvas, 0, 0, this._canvas.width, this._canvas.height, -t.rotPointX - x, -t.rotPointY, this._canvas.width, this._canvas.height);
+				ctx.drawImage(this._canvas, 0, 0, this._canvas.width, this._canvas.height); // , -t.rotPointX - x, -t.rotPointY, this._canvas.width, this._canvas.height
 				
 
 				ctx.restore();
@@ -507,16 +507,20 @@ module Kiwi.GameObjects {
 			}
 
 			//Create the Point Objects.
-			this._pt1.setTo(x - t.rotPointX, 0 - t.rotPointY);
-			this._pt2.setTo(this._canvas.width + x - t.rotPointX , 0 - t.rotPointY);
-			this._pt3.setTo(this._canvas.width + x - t.rotPointX , this._canvas.height - t.rotPointY);
-			this._pt4.setTo(x - t.rotPointX, this._canvas.height - t.rotPointY);
+			// this._pt1.setTo(x - t.pivotPoint.x, 0 - t.pivotPoint.y);
+			// this._pt2.setTo(this._canvas.width + x - t.pivotPoint.x , 0 - t.pivotPoint.y);
+			// this._pt3.setTo(this._canvas.width + x - t.pivotPoint.x , this._canvas.height - t.pivotPoint.y);
+			// this._pt4.setTo(x - t.pivotPoint.x, this._canvas.height - t.pivotPoint.y);
+			this._pt1.setTo(x, 0);
+			this._pt2.setTo(this._canvas.width , 0);
+			this._pt3.setTo(this._canvas.width , this._canvas.height);
+			this._pt4.setTo(x, this._canvas.height);
 
 			//Add on the matrix to the points
-			m.transformPoint(this._pt1);
-			m.transformPoint(this._pt2);
-			m.transformPoint(this._pt3);
-			m.transformPoint(this._pt4);
+			m.transformPointInPlace(this._pt1);
+			m.transformPointInPlace(this._pt2);
+			m.transformPointInPlace(this._pt3);
+			m.transformPointInPlace(this._pt4);
 
 			//Append to the xyuv and alpha arrays 
 			vertexItems.push(

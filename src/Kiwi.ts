@@ -5,6 +5,7 @@
 /// <reference path="core/CameraManager.ts" />
 /// <reference path="core/StateConfig.ts" />
 /// <reference path="core/StateManager.ts" />
+/// <reference path="core/Transformable.ts" />
 
 /// <reference path="core/IChild.ts" />
 /// <reference path="core/Entity.ts" />
@@ -159,7 +160,7 @@ module Kiwi {
 	* @type string
 	* @public
 	*/
-	export var VERSION: string = "1.4.0";
+	export var VERSION: string = "1.4.0-M";
 
 	//DIFFERENT RENDERER STATIC VARIABLES
 	/**

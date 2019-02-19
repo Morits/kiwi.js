@@ -375,7 +375,7 @@ module Kiwi.Input {
 		*/
 		private onMouseWheel(event: WheelEvent) {
 			this._cursor.wheel(event);
-			this.onWheel.dispatch(this._cursor.wheelDeltaX, this._cursor.wheelDeltaY, this._cursor);
+			this.onWheel.dispatch(this._cursor.wheelDeltaX, this._cursor.wheelDeltaY, this._cursor, event);
 		}
 
 		/**  
