@@ -236,233 +236,201 @@ module Kiwi.Geom {
 		* @return {Number} angle to point.
 		*/
 		public angleToXY(x: number, y: number): number {
-			
 			//Y then X ....cause JavaScript :P
 			return Math.atan2(y - this.y, x - this.x);
-
 		}
 		
 		/**
-		* Returns the distance from this Point object to the given Point object.
-		* @method distanceTo
-		* @param target {Kiwi.Geom.Point} The destination Point object.
-		* @param round {boolean} Round the distance to the nearest integer (default false)
-		* @return {Number} The distance between this Point object and the destination Point object.
-		* @public
-		*/
+		 * Returns the distance from this Point object to the given Point object.
+		 * @method distanceTo
+		 * @param target {Kiwi.Geom.Point} The destination Point object.
+		 * @param round {boolean} Round the distance to the nearest integer (default false)
+		 * @return {Number} The distance between this Point object and the destination Point object.
+		 * @public
+		 */
 		public distanceTo(target: Point, round: boolean = false): number {
-
 			var dx = this.x - target.x;
 			var dy = this.y - target.y;
 
 			if (round === true)
-			{
 				return Math.round(Math.sqrt(dx * dx + dy * dy));
-			}
-			else
-			{
-				return Math.sqrt(dx * dx + dy * dy);
-			}
 
+			else
+				return Math.sqrt(dx * dx + dy * dy);
 		}
 
 		/**
-		* Returns the distance from this Point object to the given Point object.
-		* @method distanceToXY
-		* @param x {Number} The x value.
-		* @param y {Number} The y value.
-		* @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-		* @return {Number} The distance between this Point object and the x/y values.
-		* @public
-		*/
+		 * Returns the distance from this Point object to the given Point object.
+		 * @method distanceToXY
+		 * @param x {Number} The x value.
+		 * @param y {Number} The y value.
+		 * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+		 * @return {Number} The distance between this Point object and the x/y values.
+		 * @public
+		 */
 		public distanceToXY(x: number, y: number, round: boolean = false): number {
-
 			var dx = this.x - x;
 			var dy = this.y - y;
 
 			if (round === true)
-			{
 				return Math.round(Math.sqrt(dx * dx + dy * dy));
-			}
-			else
-			{
-				return Math.sqrt(dx * dx + dy * dy);
-			}
 
+			else
+				return Math.sqrt(dx * dx + dy * dy);
 		}
 
 		/**
-		* Returns the distance between the two Point objects.
-		* @method distanceBetween
-		* @param pointA {Kiwi.Geom.Point} The first Point object.
-		* @param pointB {Kiwi.Geom.Point} The second Point object.
-		* @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-		* @return {Number} The distance between the two Point objects.
-		* @public
-		*/
+		 * Returns the distance between the two Point objects.
+		 * @method distanceBetween
+		 * @param pointA {Kiwi.Geom.Point} The first Point object.
+		 * @param pointB {Kiwi.Geom.Point} The second Point object.
+		 * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+		 * @return {Number} The distance between the two Point objects.
+		 * @public
+		 */
 		static distanceBetween(pointA: Point, pointB: Point, round: boolean = false): number {
-
 			var dx: number = pointA.x - pointB.x;
 			var dy: number = pointA.y - pointB.y;
 
 			if (round === true)
-			{
 				return Math.round(Math.sqrt(dx * dx + dy * dy));
-			}
-			else
-			{
-				return Math.sqrt(dx * dx + dy * dy);
-			}
 
+			else
+				return Math.sqrt(dx * dx + dy * dy);
 		}
 		
 		/**
-		* Creates a new point with cartesian coordinates from a pair of polar coordinates
-		* @method polar
-		* @param length {Number} The length coordinate of the polar pair.
-		* @param angle {Number} The angle, in radians, of the polar pair.
-		* @return {Kiwi.Geom.Point} The new Cartesian Point object.
-		* @public
-		*/
+		 * Creates a new point with cartesian coordinates from a pair of polar coordinates
+		 * @method polar
+		 * @param length {Number} The length coordinate of the polar pair.
+		 * @param angle {Number} The angle, in radians, of the polar pair.
+		 * @return {Kiwi.Geom.Point} The new Cartesian Point object.
+		 * @public
+		 */
 		static polar(length: number, angle: number): Point {
 			return new Point(length * Math.cos(angle), length * Math.sin(angle));
-				   
 		}
 
 		/**
-		* Returns true if the distance between this point and a target point is greater than or equal a specified distance.
-		* This avoids using a costly square root operation
-		* @method distanceCompare
-		* @param target {Kiwi.Geom.Point} The Point object to use for comparison.
-		* @param distance {Number} The distance to use for comparison.
-		* @return {Boolean} True if distance is >= specified distance.
-		* @public
-		*/
+		 * Returns true if the distance between this point and a target point is greater than or equal a specified distance.
+		 * This avoids using a costly square root operation
+		 * @method distanceCompare
+		 * @param target {Kiwi.Geom.Point} The Point object to use for comparison.
+		 * @param distance {Number} The distance to use for comparison.
+		 * @return {Boolean} True if distance is >= specified distance.
+		 * @public
+		 */
 		public distanceCompare(target: Point, distance: number): boolean {
-
 			if (this.distanceTo(target) >= distance)
-			{
 				return true;
-			}
-			else
-			{
-				return false;
-			}
 
+			else
+				return false;
 		}
 
 		/**
-		* Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
-		* @method equals
-		* @param point {Kiwi.Geom.Point} The point to compare against.
-		* @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
-		* @public
-		*/
+		 * Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
+		 * @method equals
+		 * @param point {Kiwi.Geom.Point} The point to compare against.
+		 * @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
+		 * @public
+		 */
 		public equals(toCompare: Point): boolean {
-
 			if (this.x === toCompare.x && this.y === toCompare.y)
-			{
 				return true;
-			}
-			else
-			{
-				return false;
-			}
 
+			else
+				return false;
 		}
 
 		/**
-		* Determines a point between two specified points. 
-		* The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
-		*
-		* The closer the value of the parameter f is to 1.0, 
-		* the closer the interpolated point is to the first point (parameter pt1). 
-		* The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
-		*
-		* @method interpolate
-		* @param pointA{Kiwi.Geom.Point} The first Point object.
-		* @param pointB {Kiwi.Geom.Point} The second Point object.
-		* @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
-		* @return {Kiwi.Geom.Point} The new interpolated Point object.
-		* @public
-		*/
+		 * Determines a point between two specified points.
+		 * The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
+		 *
+		 * The closer the value of the parameter f is to 1.0,
+		 * the closer the interpolated point is to the first point (parameter pt1).
+		 * The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
+		 *
+		 * @method interpolate
+		 * @param pointA{Kiwi.Geom.Point} The first Point object.
+		 * @param pointB {Kiwi.Geom.Point} The second Point object.
+		 * @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
+		 * @return {Kiwi.Geom.Point} The new interpolated Point object.
+		 * @public
+		 */
 		public static interpolate(pointA:Point, pointB:Point, f:number):Point {
-			
 			var xDiff: number = pointB.x - pointA.x;
 			var yDiff: number = pointB.y - pointA.y;
 			return new Point(pointB.x - xDiff * f, pointB.y - yDiff * f);
-
 		}
 
 		/**
-		* Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
-		* The value of dy is added to the original value of y to create the new y value.
-		*
-		* @method offset
-		* @param dx {Number} The amount by which to offset the horizontal coordinate, x.
-		* @param dy {Number} The amount by which to offset the vertical coordinate, y.
-		* @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-		* @public
-		*/
+		 * Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
+		 * The value of dy is added to the original value of y to create the new y value.
+		 *
+		 * @method offset
+		 * @param dx {Number} The amount by which to offset the horizontal coordinate, x.
+		 * @param dy {Number} The amount by which to offset the vertical coordinate, y.
+		 * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+		 * @public
+		 */
 		public offset(dx: number, dy: number): Point {
-
 			this.x += dx;
 			this.y += dy;
 
 			return this;
-
 		}
 
-
 		/**
-		* Sets the x and y values of this Point object to the given coordinates.
-		* @method setTo
-		* @param x {Number} The horizontal position of this point.
-		* @param y {Number} The vertical position of this point.
-		* @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-		* @public
-		*/
+		 * Sets the x and y values of this Point object to the given coordinates.
+		 * @method setTo
+		 * @param x {Number} The horizontal position of this point.
+		 * @param y {Number} The vertical position of this point.
+		 * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+		 * @public
+		 */
 		public setTo(x: number, y: number): Point {
-
 			this.x = x;
 			this.y = y;
 
 			return this;
-
 		}
 
 		/**
-		* Subtracts the coordinates of another point from the coordinates of this point to create a new point.
-		* @method subtract
-		* @param point {Kiwi.Geom.Point} The point to be subtracted.
-		* @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
-		* @return {Kiwi.Geom.Point} The new Point object.
-		* @public
-		*/
+		 * Sets the x and y values of this Point object to the given point.
+		 * @method setTo
+		 * @param pt {Point} the point which to set.
+		 * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+		 * @public
+		 */
+		public setToPoint(pt: Point) {
+			return this.setTo(pt.x, pt.y);
+		}
+
+		/**
+		 * Subtracts the coordinates of another point from the coordinates of this point to create a new point.
+		 * @method subtract
+		 * @param point {Kiwi.Geom.Point} The point to be subtracted.
+		 * @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
+		 * @return {Kiwi.Geom.Point} The new Point object.
+		 * @public
+		 */
 		public subtract(point: Point, output: Point = new Point): Point {
-
 			return output.setTo(this.x - point.x, this.y - point.y);
-
 		}
 
 		public getCSS(): string {
-
 			return this.x + 'px ' + this.y + 'px';
-
 		}
 
 		/**
-		* Returns a string representation of this object.
-		* @method toString
-		* @return {String} a string representation of the instance.
-		* @public
-		*/
+		 * Returns a string representation of this object.
+		 * @method toString
+		 * @return {String} a string representation of the instance.
+		 * @public
+		 */
 		public toString(): string {
-
 			return '[{Point (x=' + this.x + ' y=' + this.y + ')}]';
-
 		}
-
 	}
-
 }

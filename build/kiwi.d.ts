@@ -1,286 +1,286 @@
 /**
-*
-* @module Kiwi
-*
-*/
+ *
+ * @module Kiwi
+ *
+ */
 declare module Kiwi {
     /**
-    * The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
-    *
-    * @class Game
-    * @namespace Kiwi
-    * @constructor
-    * @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
-    * @param [name='KiwiGame'] {String} The name of the game that is being created.
-    * @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
-    * @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
-    *   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
-    *   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
-    *   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
-    *   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use.
-    *   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
-    *   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
-    *   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
-    *   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
-    *   @param [options.log] {Object} Default state of the Log properties
-    *       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
-    *       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
-    *       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
-    *       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
-    * @return {Kiwi.Game}
-    *
-    */
+     * The base class that is used when you create a new Game. Handles the initialisation of all of the various individual game managers and holds the RAF (RequestAnimationFrame object) which is used for the game loop.
+     *
+     * @class Game
+     * @namespace Kiwi
+     * @constructor
+     * @param [domParent=''] {String} The ID of a DOM element that the game should use as its 'container'. If you are targeting Cocoon then you don't need to worry about this and can leave it blank.
+     * @param [name='KiwiGame'] {String} The name of the game that is being created.
+     * @param [state=null] {Any} The state to load initially. This can either be the name of a state, but preferably this would be the state object itself.
+     * @param [options] {Object} Any special options for the game. E.g. Is DEBUG_ON or DEBUG_OFF, RENDERER_CANVAS or RENDERER_WEBGL, TARGET_BROWSER or TARGET_COCOON
+     *   @param [options.debug=Kiwi.DEBUG_ON] {Number} If debugging is enabled or not.
+     *   @param [options.bootCallback=null] {Function} A callback to be executed when the game reaches the boot stage.
+     *   @param [options.deviceTarget=Kiwi.TARGET_BROWSER] {Number} The type of device Kiwi is being used on.
+     *   @param [options.renderer=Kiwi.RENDERER_AUTO] {Number} The renderer Kiwi should use.
+     *   @param [options.width=Kiwi.Stage.DEFAULT_WIDTH] {Number} The width of this instance of Kiwi.
+     *   @param [options.height=Kiwi.Stage.DEFAULT_HEIGHT] {Number} The height of this instance of Kiwi.
+     *   @param [options.scaleType=Kiwi.Stage.SCALE_NONE] {Number} The type of scaling that should be applied to Kiwi.
+     *   @param [options.plugins=[]] {Array} A list of the names of plugins that are to be used with this game.
+     *   @param [options.log] {Object} Default state of the Log properties
+     *       @param [options.log.recording=true] {Boolean} If the logs should be recorded.
+     *       @param [options.log.display=true] {Boolean} If the logs should be displayed or not.
+     *       @param [options.log.enabled=true] {Boolean} If the Logger is enabled at all.
+     *       @param [options.log.maxRecordings=Infinity] {Number} The maximum number of recordings to have at a single time.
+     * @return {Kiwi.Game}
+     *
+     */
     class Game {
         constructor(domParent?: string, name?: string, state?: any, options?: any);
         /**
-        * The render mode of the game. This will be either set to CANVAS or WEBGL.
-        * @property _renderOption
-        * @type number
-        * @private
-        */
+         * The render mode of the game. This will be either set to CANVAS or WEBGL.
+         * @property _renderOption
+         * @type number
+         * @private
+         */
         private _renderOption;
         /**
-        * Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
-        * @property renderOption
-        * @type number
-        * @public
-        */
+         * Returns the render mode of the game. This is READ ONLY and is decided once the game gets initialised.
+         * @property renderOption
+         * @type number
+         * @public
+         */
         renderOption: number;
         /**
-        * A callback function that can be passed in as an option in the conifugration object. Invoked after the boot process has completed.
-        * @property bootCallbackOption
-        * @type Function
-        * @private
-        */
+         * A callback function that can be passed in as an option in the conifugration object. Invoked after the boot process has completed.
+         * @property bootCallbackOption
+         * @type Function
+         * @private
+         */
         bootCallbackOption: Function;
         /**
-        * The type of device that you are targeting. This is either set to COCOON or BROWSER
-        * @property _deviceTargetOption
-        * @type number
-        * @private
-        */
+         * The type of device that you are targeting. This is either set to COCOON or BROWSER
+         * @property _deviceTargetOption
+         * @type number
+         * @private
+         */
         private _deviceTargetOption;
         /**
-        * Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
-        * @property deviceTargetOption
-        * @type number
-        * @public
-        */
+         * Returns the device target option for the game. This is READ ONLY and is decided once the game gets initialised.
+         * @property deviceTargetOption
+         * @type number
+         * @public
+         */
         deviceTargetOption: number;
         /**
-        * If when rendering, the game should render a new CANVAS which is above everything. This new canvas is for debugging purposes only.
-        * This gets set to either DEBUG_ON or DEBUG_OFF
-        * @property _debugOption
-        * @type number
-        * @private
-        */
+         * If when rendering, the game should render a new CANVAS which is above everything. This new canvas is for debugging purposes only.
+         * This gets set to either DEBUG_ON or DEBUG_OFF
+         * @property _debugOption
+         * @type number
+         * @private
+         */
         private _debugOption;
         /**
-        * Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
-        * @property debugOption
-        * @type number
-        * @public
-        */
+         * Returns the debug option. This is READ ONLY and is decided once the game gets initialised.
+         * @property debugOption
+         * @type number
+         * @public
+         */
         debugOption: number;
         /**
-        * Returns true if debug option is set to Kiwi.DEBUG_ON
-        * @property debug
-        * @type boolean
-        * @public
-        */
+         * Returns true if debug option is set to Kiwi.DEBUG_ON
+         * @property debug
+         * @type boolean
+         * @public
+         */
         debug: boolean;
         /**
-        * Holds the renderer that is being used. This is determined based on the _renderMode
-        * @property renderer
-        * @type IRenderManager
-        * @public
-        */
+         * Holds the renderer that is being used. This is determined based on the _renderMode
+         * @property renderer
+         * @type IRenderManager
+         * @public
+         */
         renderer: IRenderManager;
         /**
-        * Holds the hud manager.
-        * @property huds
-        * @type HUDManager
-        * @public
-        */
+         * Holds the hud manager.
+         * @property huds
+         * @type HUDManager
+         * @public
+         */
         huds: Kiwi.HUD.HUDManager;
         /**
-        * The type of object that the game is.
-        * @method objType
-        * @return {String} "Game"
-        * @public
-        */
+         * The type of object that the game is.
+         * @method objType
+         * @return {String} "Game"
+         * @public
+         */
         objType(): string;
         /**
-        * The object that peforms DOM and device startup operations for browsers (ie not cocoon)
-        * @property _startup
-        * @type Kiwi.System.Bootstrap
-        * @private
-        */
+         * The object that peforms DOM and device startup operations for browsers (ie not cocoon)
+         * @property _startup
+         * @type Kiwi.System.Bootstrap
+         * @private
+         */
         private _startup;
         id: number;
         /**
-        * The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
-        * @property audio
-        * @type Kiwi.Sound.AudioManager
-        * @public
-        */
+         * The audio manager that handles all of the audio in game. Inside you can globally mute the audio, create new sounds, e.t.c.
+         * @property audio
+         * @type Kiwi.Sound.AudioManager
+         * @public
+         */
         audio: Kiwi.Sound.AudioManager;
         /**
-        * The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
-        * @property fileStore
-        * @type Kiwi.Files.FileStore
-        * @public
-        */
+         * The global file store for this game. This handles the storage and access of information loaded, as well as tags that maybe set for them individual files.
+         * @property fileStore
+         * @type Kiwi.Files.FileStore
+         * @public
+         */
         fileStore: Kiwi.Files.FileStore;
         /**
-        * Handles any user input with the game. These could via the users keyboard, mouse or touch events.
-        * @property input
-        * @type Kiwi.Input.InputManager
-        * @public
-        */
+         * Handles any user input with the game. These could via the users keyboard, mouse or touch events.
+         * @property input
+         * @type Kiwi.Input.InputManager
+         * @public
+         */
         input: Kiwi.Input.InputManager;
         /**
-        * Manages the cameras the are on the stage. Single default Camera only in this version.
-        * @property cameras
-        * @type Kiwi.CameraManager
-        * @public
-        */
+         * Manages the cameras the are on the stage. Single default Camera only in this version.
+         * @property cameras
+         * @type Kiwi.CameraManager
+         * @public
+         */
         cameras: Kiwi.CameraManager;
         /**
-        * Manages plugins registration and initialisation for the game instance.
-        * @property pluginManager
-        * @type Kiwi.PluginManager
-        * @public
-        */
+         * Manages plugins registration and initialisation for the game instance.
+         * @property pluginManager
+         * @type Kiwi.PluginManager
+         * @public
+         */
         pluginManager: Kiwi.PluginManager;
         /**
-        * Loads files from outside sources and checks to see that they have loaded correctly or not.
-        * @property loader
-        * @type Kiwi.Files.Loader
-        * @public
-        */
+         * Loads files from outside sources and checks to see that they have loaded correctly or not.
+         * @property loader
+         * @type Kiwi.Files.Loader
+         * @public
+         */
         loader: Kiwi.Files.Loader;
         /**
-        * The Request Animation Frame that is being used for the update and render loops.
-        * @property raf
-        * @type Kiwi.Utils.RequestAnimationFrame
-        * @public
-        */
+         * The Request Animation Frame that is being used for the update and render loops.
+         * @property raf
+         * @type Kiwi.Utils.RequestAnimationFrame
+         * @public
+         */
         raf: Kiwi.Utils.RequestAnimationFrame;
         /**
-        * The ONLY stage that is being used for this game.
-        * @property stage
-        * @type Stage
-        * @public
-        */
+         * The ONLY stage that is being used for this game.
+         * @property stage
+         * @type Stage
+         * @public
+         */
         stage: Kiwi.Stage;
         /**
-        * Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
-        * @property states
-        * @type Kiwi.StateManager
-        * @public
-        */
+         * Manages all of the states that exist for this game. Via the manager you can create new states, switch states and do various other tasks.
+         * @property states
+         * @type Kiwi.StateManager
+         * @public
+         */
         states: Kiwi.StateManager;
         /**
-        * Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
-        * @property time
-        * @type Kiwi.Time.ClockManager
-        * @public
-        */
+         * Holds a reference to the clocks that are being used and has a MASTER clock that is being used for the game.
+         * @property time
+         * @type Kiwi.Time.ClockManager
+         * @public
+         */
         time: Kiwi.Time.ClockManager;
         /**
-        * The tween manager holds a reference to all of the tweens that are created and currently being used.
-        * @property tweens
-        * @type Kiwi.Animations.Tweens.TweenManager
-        * @public
-        */
+         * The tween manager holds a reference to all of the tweens that are created and currently being used.
+         * @property tweens
+         * @type Kiwi.Animations.Tweens.TweenManager
+         * @public
+         */
         tweens: Kiwi.Animations.Tweens.TweenManager;
         /**
-        * A Random Data Generator. This is useful for create unique ids and random information.
-        * @property rnd
-        * @type Kiwi.Utils.RandomDataGenerato
-        * @public
-        */
+         * A Random Data Generator. This is useful for create unique ids and random information.
+         * @property rnd
+         * @type Kiwi.Utils.RandomDataGenerato
+         * @public
+         */
         rnd: Kiwi.Utils.RandomDataGenerator;
         /**
-        * The framerate at which the game will update at.
-        * @property _framerate
-        * @type Number
-        * @default 60
-        * @private
-        */
+         * The framerate at which the game will update at.
+         * @property _framerate
+         * @type Number
+         * @default 60
+         * @private
+         */
         private _frameRate;
         /**
-        * The interval between frames.
-        * @property _interval
-        * @type Number
-        * @default 1000/60
-        * @private
-        */
+         * The interval between frames.
+         * @property _interval
+         * @type Number
+         * @default 1000/60
+         * @private
+         */
         private _interval;
         /**
-        * The current interval between frames.
-        * @property _delta
-        * @type number
-        * @private
-        */
+         * The current interval between frames.
+         * @property _delta
+         * @type number
+         * @private
+         */
         private _delta;
         /**
-        * The last time the game was updated
-        * @property _lastTime
-        * @type number
-        * @private
-        */
+         * The last time the game was updated
+         * @property _lastTime
+         * @type number
+         * @private
+         */
         private _lastTime;
         /**
-        * The number of frames since the game was launched.
-        * @property _frame
-        * @type number
-        * @private
-        * @since 1.1.0
-        */
+         * The number of frames since the game was launched.
+         * @property _frame
+         * @type number
+         * @private
+         * @since 1.1.0
+         */
         private _frame;
         /**
-        * The number of frames since the game was launched.
-        *
-        * Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
-        *
-        * The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
-        * @property frame
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
+         * The number of frames since the game was launched.
+         *
+         * Use this to drive cyclic animations. You may manually reset it in a Kiwi.State.create() function to restart the count from 0.
+         *
+         * The largest exact integer value of a JavaScript number is 2^53, or 9007199254740992. At 60 frames per second, this will take 4,760,273 years to become inaccurate.
+         * @property frame
+         * @type number
+         * @public
+         * @since 1.1.0
+         */
         frame: number;
         /**
-        * The number of ideal frames since the game was launched.
-        *
-        * Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
-        * @property idealFrame
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
+         * The number of ideal frames since the game was launched.
+         *
+         * Use this to drive cyclic animations. This will be smoother than using the frame parameter. It is derived from the total time elapsed since the game launched.
+         * @property idealFrame
+         * @type number
+         * @public
+         * @since 1.1.0
+         */
         idealFrame: number;
         /**
-        * The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
-        * @property frameRate
-        * @return string
-        * @public
-        */
+         * The current frameRate that the update/render loops are running at. Note that this may not be an  accurate representation.
+         * @property frameRate
+         * @return string
+         * @public
+         */
         frameRate: number;
         /**
-        * The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
-        * Once the managers have started up the start loop will then begin to create the game loop.
-        * @method start
-        * @private
-        */
+         * The start method gets executed when the game is ready to be booted, and handles the start-up of the managers.
+         * Once the managers have started up the start loop will then begin to create the game loop.
+         * @method start
+         * @private
+         */
         private _start();
         /**
-        * The game loop.
-        * @method _loop
-        * @private
-        */
+         * The game loop.
+         * @method _loop
+         * @private
+         */
         private _loop();
     }
 }
@@ -1136,115 +1136,115 @@ declare module Kiwi {
     }
 }
 /**
-*
-* @module Kiwi
-*
-*/
+ *
+ * @module Kiwi
+ *
+ */
 declare module Kiwi {
     /**
-    * Used to handle the creation and management of Cameras on a Game. Each Game will always have created for it a CameraManager and a default Camera on the manager.
-    * Games currently only usupport the use of a single camera, the default camera. Much of this class has been written with future multiple camera support in mind.
-    *
-    * @class CameraManager
-    * @namespace Kiwi
-    * @constructor
-    * @param {Kiwi.Game} game
-    * @return {Kiwi.CameraManager}
-    */
+     * Used to handle the creation and management of Cameras on a Game. Each Game will always have created for it a CameraManager and a default Camera on the manager.
+     * Games currently only usupport the use of a single camera, the default camera. Much of this class has been written with future multiple camera support in mind.
+     *
+     * @class CameraManager
+     * @namespace Kiwi
+     * @constructor
+     * @param {Kiwi.Game} game
+     * @return {Kiwi.CameraManager}
+     */
     class CameraManager {
         constructor(game: Kiwi.Game);
         /**
-        * Returns the type of this object
-        * @method objType
-        * @return {String} "CameraManager"
-        * @public
-        */
+         * Returns the type of this object
+         * @method objType
+         * @return {String} "CameraManager"
+         * @public
+         */
         objType(): string;
         /**
-        * The game this object belongs to
-        * @property _game
-        * @type Kiwi.Game
-        * @private
-        */
+         * The game this object belongs to
+         * @property _game
+         * @type Kiwi.Game
+         * @private
+         */
         private _game;
         /**
-        * A collection of cameras
-        * @property _cameras
-        * @type Array
-        * @private
-        */
+         * A collection of cameras
+         * @property _cameras
+         * @type Array
+         * @private
+         */
         private _cameras;
         /**
-        * The id which will be used when next creating a camera
-        * @property _nextCameraID
-        * @type Number
-        * @private
-        */
+         * The id which will be used when next creating a camera
+         * @property _nextCameraID
+         * @type Number
+         * @private
+         */
         private _nextCameraID;
         /**
-        * The default camera that is on this manager.
-        * @property defaultCamera
-        * @type Kiwi.Camara
-        * @public
-        */
+         * The default camera that is on this manager.
+         * @property defaultCamera
+         * @type Kiwi.Camara
+         * @public
+         */
         defaultCamera: Kiwi.Camera;
         /**
-        * Initializes the CameraManager, creates a new camera and assigns it to the defaultCamera
-        * @method boot
-        * @public
-        */
+         * Initializes the CameraManager, creates a new camera and assigns it to the defaultCamera
+         * @method boot
+         * @public
+         */
         boot(): void;
         /**
-        * Creates a new Camera and adds it to the collection of cameras.
-        * @param {String} name. The name of the new camera.
-        * @param {Number} x. The x position of the new camera.
-        * @param {Number} y. The y position of the new camera.
-        * @param {Number} width. The width of the new camera.
-        * @param {Number} height. The height of the new camera.
-        * @return {Kiwi.Camera} The new camera object.
-        * @public
-        */
+         * Creates a new Camera and adds it to the collection of cameras.
+         * @param {String} name. The name of the new camera.
+         * @param {Number} x. The x position of the new camera.
+         * @param {Number} y. The y position of the new camera.
+         * @param {Number} width. The width of the new camera.
+         * @param {Number} height. The height of the new camera.
+         * @return {Kiwi.Camera} The new camera object.
+         * @public
+         */
         create(name: string, x: number, y: number, width: number, height: number): Kiwi.Camera;
         /**
-        * Removes the given camera, if it is present in the camera managers camera collection.
-        * @method remove
-        * @param camera {Kiwi.Camera}
-        * @return {boolean} True if the camera was removed, false otherwise.
-        * @public
-        */
+         * Removes the given camera, if it is present in the camera managers camera collection.
+         * @method remove
+         * @param camera {Kiwi.Camera}
+         * @return {boolean} True if the camera was removed, false otherwise.
+         * @public
+         */
         remove(camera: Kiwi.Camera): boolean;
         /**
-        * Calls update on all the cameras.
-        * @method update
-        * @public
-        */
+         * Calls update on all the cameras.
+         * @method update
+         * @public
+         */
         update(): boolean;
         /**
-        * Calls the render method on all the cameras
-        * @method render
-        * @public
-        */
+         * Calls the render method on all the cameras
+         * @method render
+         * @public
+         */
         render(): boolean;
         /**
-        * Removes all cameras in the camera Manager except the default camera. Does nothing if in multi camera mode.
-        * @method removeAll
-        * @public
-        */
+         * Removes all cameras in the camera Manager except the default camera. Does nothing if in multi camera mode.
+         * @method removeAll
+         * @public
+         */
         removeAll(): void;
         /**
-        * Returns all cameras to origin. Called when starting a new state.
-        * @method zeroAllCameras
-        * @public
-        * @since 1.1.0
-        */
+         * Returns all cameras to origin. Called when starting a new state.
+         * @method zeroAllCameras
+         * @public
+         * @since 1.1.0
+         */
         zeroAllCameras(): void;
         /**
-        * Returns camera to origin.
-        * @method zeroCamera
-        * @param camera {Kiwi.Camera}
-        * @public
-        * @since 1.1.0
-        */
+         * Returns camera to origin.
+         * @method zeroCamera
+         * @param camera {Kiwi.Camera}
+         * @public
+         * @since 1.1.0
+         */
         zeroCamera(camera: Kiwi.Camera): void;
     }
 }
@@ -1564,6 +1564,43 @@ declare module Kiwi {
     }
 }
 /**
+ * @module Kiwi
+ */
+declare module Kiwi {
+    class Transformable {
+        protected _dirty: boolean;
+        dirty: boolean;
+        transform: Kiwi.Geom.Transform;
+        x: number;
+        y: number;
+        xy: Kiwi.Geom.Point;
+        setXY(x: number, y: number): void;
+        scale: Kiwi.Geom.Point | number;
+        scaleX: number;
+        scaleY: number;
+        setScale(w: number, h: number): void;
+        rotation: number;
+        rotationRad: number;
+        pivotPoint: Kiwi.Geom.Point;
+        pivotPointX: number;
+        pivotPointY: number;
+        setPivotPoint(x: number, y: number): void;
+        origin: Kiwi.Geom.Point;
+        originX: number;
+        originY: number;
+        setOrigin(x: number, y: number): void;
+        freeformScale(x: number, y: number, aroundX: number, aroundY: number): void;
+        constructor();
+        /**
+         * Call this to clean up the object for deletion and garbage collection.
+         * @method destroy
+         * @param [immediate=false] {boolean} If the object should be immediately removed or if it should be removed at the end of the next update loop.
+         * @public
+         */
+        destroy(...params: any[]): void;
+    }
+}
+/**
 *
 * @module Kiwi
 *
@@ -1670,15 +1707,6 @@ declare module Kiwi {
         /**
         * Controls whether this object's render methods are called by its parent.
         *
-        * @property willRender
-        * @type boolean
-        * @public
-        * @deprecated Use visible instead
-        */
-        willRender: boolean;
-        /**
-        * Controls whether this object's render methods are called by its parent.
-        *
         * @property visible
         * @type boolean
         * @public
@@ -1701,97 +1729,6 @@ declare module Kiwi {
         * @public
         */
         transform: Kiwi.Geom.Transform;
-        /**
-        * The X coordinate of this object. This is just aliased to the transform property.
-        * @property x
-        * @type number
-        * @public
-        */
-        x: number;
-        /**
-        * The Y coordinate of this object. This is just aliased to the transform property.
-        * @property y
-        * @type number
-        * @public
-        */
-        y: number;
-        /**
-        * The X coordinate of this object in world space - that is, after inheriting transforms from parents. This is just aliased to the transform property.
-        * @property worldX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldX: number;
-        /**
-        * The Y coordinate of this object in world space - that is, after inheriting transforms from parents. This is just aliased to the transform property.
-        * @property worldY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldY: number;
-        /**
-        * The rotation of this object. This is just aliased to the transform property.
-        * @property rotation
-        * @type number
-        * @public
-        */
-        rotation: number;
-        /**
-        * The Scale X of this object. This is just aliased to the transform property.
-        * @property scaleX
-        * @type number
-        * @public
-        */
-        scaleX: number;
-        /**
-        * The Scale Y of this object. This is just aliased to the transform property.
-        * @property scaleY
-        * @type number
-        * @public
-        */
-        scaleY: number;
-        /**
-        * The scale of this object. This is just aliased to the transform property.
-        * @property scale
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        scale: number;
-        /**
-        * The rotation offset of this object on the X axis. This is just aliased to the transform property.
-        * @property rotPointX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        rotPointX: number;
-        /**
-        * The rotation offset of this object on the Y axis. This is just aliased to the transform property.
-        * @property rotPointY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        rotPointY: number;
-        /**
-        * The anchor point offset of this object on the X axis. This is an alias of the rotPointX property on the transform.
-        * @property anchorPointX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointX: number;
-        /**
-        * The anchor point offset of this object on the Y axis. This is an alias of the rotPointY property on the transform.
-        * @property anchorPointY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointY: number;
         /**
         * Call this to clean up the object for deletion and garbage collection.
         * @method destroy
@@ -1852,16 +1789,9 @@ declare module Kiwi {
     * @return {Kiwi.Entity} This entity.
     *
     */
-    class Entity implements Kiwi.IChild {
+    class Entity extends Kiwi.Transformable implements Kiwi.IChild {
         constructor(state: Kiwi.State, x: number, y: number);
         glRenderer: Kiwi.Renderers.Renderer;
-        /**
-        * Represents the position, scale, rotation and registration of this Entity.
-        * @property transform
-        * @type Kiwi.Geom.Transform
-        * @public
-        */
-        transform: Kiwi.Geom.Transform;
         /**
         * The group that this entity belongs to. If added onto the state then this is the state.
         * @property _parent
@@ -1877,95 +1807,6 @@ declare module Kiwi {
         * @public
         */
         parent: Kiwi.Group;
-        /**
-        * X coordinate of this Entity. This is just aliased to the transform property.
-        * @property x
-        * @type Number
-        * @public
-        */
-        x: number;
-        /**
-        * Y coordinate of this Entity. This is just aliased to the transform property.
-        * @property y
-        * @type Number
-        * @public
-        */
-        y: number;
-        /**
-        * X coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-        * @property worldX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldX: number;
-        /**
-        * Y coordinate of this Entity in world space; that is, after inheriting parent transforms. This is just aliased to the transform property. Property is READ-ONLY.
-        * @property worldY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldY: number;
-        /**
-        * Scale X of this Entity. This is just aliased to the transform property.
-        * @property scaleX
-        * @type Number
-        * @public
-        */
-        scaleX: number;
-        /**
-        * Scale Y coordinate of this Entity. This is just aliased to the transform property.
-        * @property scaleY
-        * @type Number
-        * @public
-        */
-        scaleY: number;
-        /**
-        * Scale both axes of this Entity. This is just aliased to the transform property. This is WRITE-ONLY.
-        * @property scale
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        scale: number;
-        /**
-        * Rotation of this Entity. This is just aliased to the transform property.
-        * @property rotation
-        * @type Number
-        * @public
-        */
-        rotation: number;
-        /**
-        * The rotation point on the x-axis. This is just aliased to the rotPointX on the transform object.
-        * @property rotPointX
-        * @type number
-        * @public
-        */
-        rotPointX: number;
-        /**
-        * The rotation point on the y-axis. This is just aliased to the rotPointY on the transform object.
-        * @property rotPointY
-        * @type number
-        * @public
-        */
-        rotPointY: number;
-        /**
-        * The anchor point on the x-axis. This is just aliased to the rotPointX on the transform object.
-        * @property anchorPointX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointX: number;
-        /**
-        * The anchor point on the y-axis. This is just aliased to the rotPointY on the transform object.
-        * @property anchorPointY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointY: number;
         /**
         * Returns the type of child that this is.
         * @type Number
@@ -2039,13 +1880,6 @@ declare module Kiwi {
         * @since 1.1.0
         */
         scaleToHeight(value: number): void;
-        /**
-        * Center the anchor point. Moves the anchor point (rotPointX and Y) to precisely halfway along the width and height properties of this Entity.
-        * @method centerAnchorPoint
-        * @public
-        * @since 1.1.0
-        */
-        centerAnchorPoint(): void;
         /**
         * The texture atlas that is to be used on this entity.
         * @property atlas
@@ -2173,41 +2007,6 @@ declare module Kiwi {
         */
         active: boolean;
         /**
-        * Controls whether render is automatically called by the parent.
-        * @property _willRender
-        * @type boolean
-        * @default true
-        * @private
-        * @deprecated Use _visible instead
-        */
-        private _willRender;
-        /**
-        * Toggles if this Entity will be rendered.
-        * @property willRender
-        * @type boolean
-        * @default true
-        * @public
-        * @deprecated Use visible instead
-        */
-        willRender: boolean;
-        /**
-        * Controls if this Entity is input enabled or not (i.e. responds to touch/mouse events)
-        * @property _inputEnabled
-        * @type boolean
-        * @private
-        * @deprecated As of 1.2.3, nothing was found to use this.
-        */
-        private _inputEnabled;
-        /**
-        * Controls if this Entity is input enabled or not (i.e. responds to touch/mouse events)
-        * This method should be over-ridden to handle specific game object implementations.
-        * @property inputEnabled
-        * @type boolean
-        * @public
-        * @deprecated As of 1.2.3, nothing was found to use this.
-        */
-        inputEnabled: boolean;
-        /**
         * The clock that this entity use's for time based calculations. This generated by the state on instatiation.
         * @property _clock
         * @type Kiwi.Clock
@@ -2221,20 +2020,6 @@ declare module Kiwi {
         * @public
         */
         clock: Kiwi.Time.Clock;
-        /**
-        * A value used by components to control if the Entity needs re-rendering
-        * @property _dirty
-        * @type boolean
-        * @private
-        */
-        private _dirty;
-        /**
-        * A value used by components to control if the Entity needs re-rendering
-        * @property dirty
-        * @type boolean
-        * @public
-        */
-        dirty: boolean;
         /**
         * The type of this object.
         * @method objType
@@ -2397,7 +2182,7 @@ declare module Kiwi {
     * @return {Kiwi.Group}
     *
     */
-    class Group implements Kiwi.IChild {
+    class Group extends Transformable implements Kiwi.IChild {
         constructor(state: Kiwi.State, name?: string);
         /**
         * Returns the type of this object
@@ -2416,14 +2201,6 @@ declare module Kiwi {
         */
         name: string;
         /**
-        * The transform object for this group.
-        * Transform handles the calculation of coordinates/rotation/scale e.t.c in the Game World.
-        * @property transform
-        * @type Kiwi.Geom.Transform
-        * @public
-        */
-        transform: Kiwi.Geom.Transform;
-        /**
         * The parent group of this group.
         * @property _parent
         * @type Kiwi.Group
@@ -2437,79 +2214,6 @@ declare module Kiwi {
         * @public
         */
         parent: Kiwi.Group;
-        /**
-        * The X coordinate of this group. This is just aliased to the transform property.
-        * @property x
-        * @type Number
-        * @public
-        */
-        x: number;
-        /**
-        * The Y coordinate of this group. This is just aliased to the transform property.
-        * @property y
-        * @type Number
-        * @public
-        */
-        y: number;
-        /**
-        * The X coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-        * @property worldX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldX: number;
-        /**
-        * The Y coordinate of this group in world space; that is, after parent transforms. This is just aliased to the transform property. This is READ-ONLY.
-        * @property worldY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        worldY: number;
-        scaleX: number;
-        scaleY: number;
-        /**
-        * The scale of this group. This is just aliased to the transform property. This is WRITE-ONLY.
-        * @property scale
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        scale: number;
-        rotation: number;
-        /**
-        * The rotation offset of this group in the X axis. This is just aliased to the transform property.
-        * @property rotPointX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        rotPointX: number;
-        /**
-        * The rotation offset of this group in the Y axis. This is just aliased to the transform property.
-        * @property rotPointY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        rotPointY: number;
-        /**
-        * The anchor point offset of this group in the X axis. This is just aliased to the transform property, and is in turn an alias of rotPointX.
-        * @property anchorPointX
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointX: number;
-        /**
-        * The anchor point offset of this group in the Y axis. This is just aliased to the transform property, and is in turn an alias of rotPointY.
-        * @property anchorPointY
-        * @type number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointY: number;
         /**
         * The Component Manager
         * @property components
@@ -2552,13 +2256,6 @@ declare module Kiwi {
         * @public
         */
         numChildren(): number;
-        /**
-        * An indication of whether or not this group is 'dirty' and thus needs to be re-rendered or not.
-        * @property _dirty
-        * @type boolean
-        * @private
-        */
-        private _dirty;
         /**
         * Sets all children of the Group to be dirty.
         * @property dirty
@@ -2914,23 +2611,6 @@ declare module Kiwi {
         * @public
         */
         clear(): void;
-        /**
-        * Controls whether render is automatically called by the parent.
-        * @property _willRender
-        * @type Boolean
-        * @private
-        * @deprecated Use _visible instead
-        */
-        private _willRender;
-        /**
-        * Controls whether render is automatically called by the parent.
-        * @property willRender
-        * @type boolean
-        * @return {boolean}
-        * @public
-        * @deprecated Use visible instead
-        */
-        willRender: boolean;
         /**
         * A boolean that indicates whether or not this entity is visible or not. Note that is does not get set to false if the alpha is 0.
         * @property _visible
@@ -3298,167 +2978,145 @@ declare module Kiwi {
     }
 }
 /**
-*
-* @module Kiwi
-*
-*/
+ * @module Kiwi
+ */
 declare module Kiwi {
     /**
-    * A Camera is used to render a particular section of the game world on the stage. Each Camera has a coordinates which are held in the transform property, and a width/height. Note: This class should never be directly instantiated but instead should be made through a CameraManager's 'create' method.
-    *
-    * @class Camera
-    * @namespace Kiwi
-    * @constructor
-    * @param game {Kiwi.Game} The game that this camera belongs to.
-    * @param id {Number} A unique ID for this camera
-    * @param name {String} The name this camera goes by
-    * @param x {Number} The x coordinate of the camera
-    * @param y {Number} The y coordinate of the camera
-    * @param width {Number} The width of the camera
-    * @param height {Number} The cameras height
-    * @return {Kiwi.Camera}
-    *
-    */
-    class Camera {
-        constructor(game: Kiwi.Game, id: number, name: string, x: number, y: number, width: number, height: number);
+     * A Camera is used to render a particular section of the game world on the stage. Each Camera has a coordinates which are held in the transform property, and a width/height. Note: This class should never be directly instantiated but instead should be made through a CameraManager's 'create' method.
+     *
+     * @class Camera
+     * @namespace Kiwi
+     * @constructor
+     * @param game {Kiwi.Game} The game that this camera belongs to.
+     * @param id {Number} A unique ID for this camera
+     * @param name {String} The name this camera goes by
+     * @param x {Number} The x coordinate of the camera
+     * @param y {Number} The y coordinate of the camera
+     * @param width {Number} The width of the camera
+     * @param height {Number} The cameras height
+     * @return {Kiwi.Camera}
+     *
+     */
+    class Camera extends Kiwi.Transformable {
         /**
-        * The width of this camara.
-        * @property width
-        * @type Number
-        * @public
-        */
+         * The width of this camara.
+         * @property width
+         * @type Number
+         * @public
+         */
         width: number;
         /**
-        * The height of this camera.
-        * @property height
-        * @type Number
-        * @public
-        */
+         * The height of this camera.
+         * @property height
+         * @type Number
+         * @public
+         */
         height: number;
         /**
-        * The type of object this is.
-        * @method objType
-        * @return {String} "Camera"
-        * @public
-        */
-        objType(): string;
-        /**
-        * If true then the camera will be resized to fit the stage when the stage is resized
-        * @property fitToStage
-        * @type boolean
-        * @default true
-        * @public
-        */
+         * If true then the camera will be resized to fit the stage when the stage is resized
+         * @property fitToStage
+         * @type boolean
+         * @default true
+         * @public
+         */
         fitToStage: boolean;
         /**
-        * The Transform controls the location of the camera within the game world. Also controls the cameras scale and rotation.
-        * @property transform
-        * @type Kiwi.Geom.Transform
-        * @public
-        */
-        transform: Kiwi.Geom.Transform;
-        /**
-        * Updates the width/height of this camera. Is used when the stage resizes.
-        * @method _updatedStageSize
-        * @param width {Number} The new width of the camera.
-        * @param height {Number} The new height of the camera.
-        * @private
-        */
-        private _updatedStageSize(width, height);
-        /**
-        * The game this Group belongs to
-        * @property game
-        * @type Kiwi.Game
-        * @private
-        */
+         * The game this Group belongs to
+         * @property game
+         * @type Kiwi.Game
+         * @private
+         */
         private _game;
         /**
-        * A unique identifier for this Layer within the game used internally by the framework. See the name property for a friendly version.
-        * @property id
-        * @type number
-        * @public
-        */
+         * A unique identifier for this Layer within the game used internally by the framework. See the name property for a friendly version.
+         * @property id
+         * @type number
+         * @public
+         */
         id: number;
         /**
-        * A name for this Camera. This is not checked for uniqueness within the Game, but is very useful for debugging.
-        * @property name
-        * @type string
-        * @public
-        */
+         * A name for this Camera. This is not checked for uniqueness within the Game, but is very useful for debugging.
+         * @property name
+         * @type string
+         * @public
+         */
         name: string;
         /**
-        * Controls whether this Camera is rendered
-        * @property _visible
-        * @type boolean
-        * @private
-        */
-        private _visible;
+         * Controls whether this Camera is rendered
+         * @property _visible
+         * @type boolean
+         * @private
+         */
+        private _enabled;
+        enabled: boolean;
+        constructor(game: Kiwi.Game, id: number, name: string, x: number, y: number, width: number, height: number);
         /**
-        * Controls whether this Camera is rendered.
-        * @property visible
-        * @type boolean
-        * @public
-        */
-        visible: boolean;
+         * Updates the width/height of this camera. Is used when the stage resizes.
+         * @method _updatedStageSize
+         * @param width {Number} The new width of the camera.
+         * @param height {Number} The new height of the camera.
+         * @private
+         */
+        private _updatedStageSize(width, height);
         /**
-        * A flag that indicates whether this camera needs to be rendered again at the next update loop, or if nothing has changed so it doesn't.
-        * @property _dirty
-        * @type boolean
-        * @private
-        * @deprecated As of 1.1.0, no use has been found for this property.
-        */
-        private _dirty;
+         * Scratch matrix used in geometry calculations
+         *
+         * @property _scratchMatrix
+         * @type Kiwi.Geom.Matrix
+         * @private
+         * @since 1.3.1
+         */
+        private _scratchMatrices;
         /**
-        * A value used by components to control if the camera needs re-rendering.
-        * @property dirty
-        * @type boolean
-        * @public
-        * @deprecated As of 1.1.0, no use has been found for this property.
-        */
-        dirty: boolean;
+         * Convert from screen coordinates to world coordinates.
+         * Apply this camera's inverted matrix to an object with x and y
+         * properties representing a point and return the transformed point.
+         * Useful for calculating coordinates with the mouse.
+         * @method transformPoint
+         * @param pt {Kiwi.Geom.Point}
+         * @param copy boolean Return a copy or in place
+         * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
+         * @public
+         */
+        transformStageToWorld(pt: Kiwi.Geom.Point, copy?: boolean): Kiwi.Geom.Point;
         /**
-        * Scratch matrix used in geometry calculations
-        *
-        * @property _scratchMatrix
-        * @type Kiwi.Geom.Matrix
-        * @private
-        * @since 1.3.1
-        */
-        private _scratchMatrix;
+         * Convert from world coordinates to screen coordinates.
+         * Useful for assessing visibility.
+         * Similar to "transformPoint", but in reverse.
+         * @method transformPointToScreen
+         * @param pt {Kiwi.Geom.Point}
+         * @param copy boolean
+         * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
+         * @public
+         * @since 1.2.0
+         */
+        transformWorldToStage(pt: Kiwi.Geom.Point, copy?: boolean): Kiwi.Geom.Point;
+        getScratchMatrices(): {
+            inverted: Geom.Matrix;
+            normal: Geom.Matrix;
+        };
+        private clean();
         /**
-        * Convert from screen coordinates to world coordinates.
-        * Apply this camera's inverted matrix to an object with x and y
-        * properties representing a point and return the transformed point.
-        * Useful for calculating coordinates with the mouse.
-        * @method transformPoint
-        * @param point {Kiwi.Geom.Point}
-        * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
-        * @public
-        */
-        transformPoint(point: Kiwi.Geom.Point): Kiwi.Geom.Point;
-        /**
-        * Convert from world coordinates to screen coordinates.
-        * Useful for assessing visibility.
-        * Similar to "transformPoint", but in reverse.
-        * @method transformPointToScreen
-        * @param point {Kiwi.Geom.Point}
-        * @return {Kiwi.Geom.Point} Transformed clone of the original Point.
-        * @public
-        * @since 1.2.0
-        */
-        transformPointToScreen(point: Kiwi.Geom.Point): Kiwi.Geom.Point;
-        /**
-        * The update loop that is executed every frame.
-        * @method update
-        * @public
-        */
+         * The update loop that is executed every frame.
+         * @method update
+         * @public
+         */
         update(): void;
+        zero(): void;
+        destroy(...params: any[]): void;
         /**
-        * The render loop that is executed whilst the game is playing.
-        * @method render
-        * @public
-        */
+         * The render loop that is executed whilst the game is playing.
+         * @method render
+         * @public
+         */
         render(): void;
+        /**
+         * The type of object this is.
+         * @method objType
+         * @return {String} "Camera"
+         * @public
+         */
+        objType(): string;
     }
 }
 /**
@@ -4259,7 +3917,6 @@ declare module Kiwi.GameObjects.Tilemap {
         * @default NONE
         * @public
         */
-        allowCollisions: number;
         /**
         * The properties associated with this type of tile.
         * These are set when loading a JSON file that had properties associated with a TileType.
@@ -4590,6 +4247,7 @@ declare module Kiwi.GameObjects.Tilemap {
     }
     var ISOMETRIC: string;
     var ORTHOGONAL: string;
+    var DYNAMIC_ORTHOGONAL: string;
 }
 /**
 *
@@ -4621,14 +4279,6 @@ declare module Kiwi.GameObjects.Tilemap {
     */
     class TileMapLayer extends Kiwi.Entity {
         constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: any[], tw: number, th: number, x?: number, y?: number, w?: number, h?: number);
-        /**
-        * The physics component contained on the Tilemap. Use for basic collisions between People and Tiles.
-        * Note: That tilemap layers a immovable and collisions with tiles are set on the individual TileTypes that are contained on the TileMap.
-        * @property physics
-        * @type ArcadePhysics
-        * @public
-        */
-        physics: Kiwi.Components.ArcadePhysics;
         /**
         * Returns the type of child that this is.
         * @type Number
@@ -4719,25 +4369,10 @@ declare module Kiwi.GameObjects.Tilemap {
         */
         cellIndex: number;
         /**
-        * Scales the tilemap to the value passed.
-        * @method scaleToWidth
-        * @param value {Number}
+        * Centers the origin to the middle of the width/height of the tilemap.
         * @public
         */
-        scaleToWidth(value: number): void;
-        /**
-        * Scales the tilemaps to the value passed.
-        * @method scaleToHeight
-        * @param value {Number}
-        * @public
-        */
-        scaleToHeight(value: number): void;
-        /**
-        * Centers the anchor point to the middle of the width/height of the tilemap.
-        * @method centerAnchorPoint
-        * @public
-        */
-        centerAnchorPoint(): void;
+        centerOrigin(): void;
         /**
         * A list containing all the types of tiles found on this TileMapLayer.
         * @property _data
@@ -4939,7 +4574,6 @@ declare module Kiwi.GameObjects.Tilemap {
         * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
         * @public
         */
-        getOverlappingTiles(entity: Kiwi.Entity, collisionType?: number): any;
         /**
         * Returns the tiles which can collide with other objects (on ANY side unless otherwise specified) within an area provided.
         * By default the area is the whole tilemap.
@@ -4953,7 +4587,6 @@ declare module Kiwi.GameObjects.Tilemap {
         * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
         * @public
         */
-        getCollidableTiles(x?: number, y?: number, width?: number, height?: number, collisionType?: number): any;
         /**
         * The update loop that is executed when this TileMapLayer is add to the Stage.
         * @method update
@@ -5042,7 +4675,7 @@ declare module Kiwi.GameObjects.Tilemap {
         *
         * @method _calculateBoundaries
         * @param camera {Camera}
-        * @param matrix {Matrix}
+        * @param matrix {matrix}
         * @protected
         */
         protected _calculateBoundaries(camera: Kiwi.Camera, matrix: Kiwi.Geom.Matrix): void;
@@ -5054,32 +4687,6 @@ declare module Kiwi.GameObjects.Tilemap {
         */
         render(camera: Kiwi.Camera): void;
         renderGL(gl: WebGLRenderingContext, camera: Kiwi.Camera, params?: any): void;
-        /**
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-        *
-        * @method chartToScreen
-        * @param chartPt {any} A Object containing x/y properties of the tile.
-        * @param [tileW] {Number} The width of the tile
-        * @param [tileH] {Number} The height of the tile
-        * @return {Object} With x/y properties of the location of the map onscreen.
-        * @deprecated
-        * @since 1.3.0
-        * @public
-        */
-        chartToScreen(chartPt: any, tileW?: number, tileH?: number): any;
-        /**
-        * Deprecated on the TileMapLayer class since it is for 'Isometric' maps only.
-        *
-        * @method screenToChart
-        * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-        * @param [tileW] {Number} The width of a single tile.
-        * @param [tileH] {Number} The height of a single tile.
-        * @return {Object} With x/y properties of the location of tile on the screen.
-        * @deprecated
-        * @since 1.3.0
-        * @public
-        */
-        screenToChart(scrPt: any, tileW?: number, tileH?: number): any;
     }
 }
 /**
@@ -5139,7 +4746,6 @@ declare module Kiwi.GameObjects.Tilemap {
         * @return {Number} Either the index of the tile retrieved or -1 if none was found.
         * @public
         */
-        getIndexFromCoords(x: number, y: number): number;
         /**
         * Returns the tiles which overlap with a provided entities hitbox component.
         * Only collidable tiles on ANY side will be returned unless you pass a particular side.
@@ -5150,14 +4756,13 @@ declare module Kiwi.GameObjects.Tilemap {
         * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
         * @public
         */
-        getOverlappingTiles(entity: Kiwi.Entity, collisionType?: number): any;
         /**
         * Used to calculate the position of the tilemap on the stage as well as how many tiles can fit on the screen.
         * All coordinates calculated are stored as temporary properties (maxX/Y, startX/Y).
         *
         * @method _calculateBoundaries
         * @param camera {Camera}
-        * @param matrix {Matrix}
+        * @param matrix {matrix}
         * @protected
         */
         protected _calculateBoundaries(camera: Kiwi.Camera, matrix: Kiwi.Geom.Matrix): void;
@@ -5202,68 +4807,6 @@ declare module Kiwi.GameObjects.Tilemap {
     */
     class TileMapLayerIsometric extends TileMapLayer {
         constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[], tw: number, th: number, x?: number, y?: number, w?: number, h?: number);
-        /**
-        * The type of object that it is.
-        * @method objType
-        * @return {String} "TileMapLayer"
-        * @public
-        */
-        objType(): string;
-        /**
-        * The orientation of the of tilemap.
-        * TileMaps can be either 'orthogonal' (normal) or 'isometric'.
-        * @property orientation
-        * @type String
-        * @default 'isometric'
-        * @public
-        */
-        orientation: string;
-        /**
-        * Returns the index of the tile based on the x and y pixel coordinates that are passed.
-        * If no tile is a the coordinates given then -1 is returned instead.
-        * Coordinates are in pixels not tiles and use the world coordinates of the tilemap.
-        *
-        * Functionality needs to be added by classes extending this class.
-        *
-        * @method getIndexFromCoords
-        * @param x {Number} The x coordinate of the Tile you would like to retrieve.
-        * @param y {Number} The y coordinate of the Tile you would like to retrieve.
-        * @return {Number} Either the index of the tile retrieved or -1 if none was found.
-        * @public
-        */
-        getIndexFromCoords(x: number, y: number): number;
-        /**
-        * ChartToScreen maps a point in the game tile coordinates into screen pixel
-        * coordinates that indicate where the tile should be drawn.
-        *
-        * @method chartToScreen
-        * @param chartPt {any} A Object containing x/y properties of the tile.
-        * @param [tileW] {Number} The width of the tile
-        * @param [tileH] {Number} The height of the tile
-        * @return {Object} With x/y properties of the location of the map onscreen.
-        * @public
-        */
-        chartToScreen(chartPt: any, tileW?: number, tileH?: number): any;
-        /**
-        * ScreenToChart maps a point in screen coordinates into the game tile chart
-        * coordinates for the tile on which the screen point falls on.
-        *
-        * @method screenToChart
-        * @param scrPt {any} An object containing x/y coordinates of the point on the screen you want to convert to tile coordinates.
-        * @param [tileW] {Number} The width of a single tile.
-        * @param [tileH] {Number} The height of a single tile.
-        * @return {Object} With x/y properties of the location of tile on the screen.
-        * @public
-        */
-        screenToChart(scrPt: any, tileW?: number, tileH?: number): any;
-        /**
-        * The render loop which is used when using the Canvas renderer.
-        * @method render
-        * @param camera {Camera}
-        * @public
-        */
-        render(camera: Kiwi.Camera): boolean;
-        renderGL(gl: WebGLRenderingContext, camera: Kiwi.Camera, params?: any): void;
     }
 }
 /**
@@ -5576,232 +5119,6 @@ declare module Kiwi.Components {
     */
     class Box extends Component {
         constructor(parent: Entity, x?: number, y?: number, width?: number, height?: number);
-        /**
-        * The entity that this box belongs to.
-        * @property entity
-        * @type Kiwi.Entity
-        * @public
-        */
-        entity: Kiwi.Entity;
-        /**
-        * The type of object that this is.
-        * @method objType
-        * @return {string} "Box"
-        * @public
-        */
-        objType(): string;
-        /**
-        * Controls whether the hitbox should update automatically to match the hitbox of the current cell on the entity this Box component is attached to (default behaviour).
-        * Or if the hitbox shouldn't auto update. Which will mean it will stay the same as the last value it had.
-        * This property is automatically set to 'false' when you override the hitboxes width/height, but you can set this to true afterwards.
-        *
-        * @property autoUpdate
-        * @type boolean
-        * @default true
-        * @private
-        */
-        autoUpdate: boolean;
-        /**
-        * Indicates whether or not this component needs re-rendering/updating or not.
-        * @property dirty
-        * @type boolean
-        * @public
-        * @deprecated in version 1.1.0 because the box always needed updating
-        */
-        dirty: boolean;
-        /**
-        * Contains offset point for the hitbox
-        * @property _hitboxOffset
-        * @type Kiwi.Geom.Point
-        * @private
-        */
-        private _hitboxOffset;
-        /**
-        * Returns the offset value of the hitbox as a point for the X/Y axis for the developer to use.
-        * This is without rotation or scaling.
-        * This is a READ ONLY property.
-        * @property hitboxOffset
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        hitboxOffset: Kiwi.Geom.Point;
-        /**
-        * Contains the offset rectangle for the raw hitbox.
-        * @property _rawHitbox
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _rawHitbox;
-        /**
-        * Returns the raw hitbox rectangle for the developer to use.
-        * 'Raw' means where it would be without rotation or scaling.
-        * This is READ ONLY.
-        * @property rawHitbox
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        rawHitbox: Kiwi.Geom.Rectangle;
-        /**
-        * The transformed or 'normal' hitbox for the entity. This is its box after rotation/scale.
-        * @property _transformedHitbox
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _transformedHitbox;
-        /**
-        * The transformed 'world' hitbox for the entity. This is its box after rotation/scale.
-        * @property _worldHitbox
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _worldHitbox;
-        /**
-        * The 'normal' or transformed hitbox for the entity. This is its box after rotation/Kiwi.Geom.Rectangle.
-        * @property hitbox
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        hitbox: Kiwi.Geom.Rectangle;
-        /**
-        * Returns the transformed hitbox for the entity using its 'world' coordinates.
-        * This is READ ONLY.
-        * @property worldHitbox
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        worldHitbox: Kiwi.Geom.Rectangle;
-        /**
-        * The 'raw' bounds of entity. This is its bounds before rotation/scale.
-        * This for property is only for storage of the values and should be accessed via the getter 'rawBounds' so that it can update.
-        *
-        * @property _rawBounds
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _rawBounds;
-        /**
-        * Returns the 'raw' bounds for this entity.
-        * This is READ ONLY.
-        * @property rawBounds
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        rawBounds: Kiwi.Geom.Rectangle;
-        /**
-        * Contains the 'raw' center point for the bounds.
-        * @property Kiwi.Geom.Point
-        * @type Kiwi.Geom.Point
-        * @private
-        */
-        private _rawCenter;
-        /**
-        * Returns the raw center point of the box.
-        * This is READ ONLY.
-        * @property rawCenter
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        rawCenter: Kiwi.Geom.Point;
-        /**
-        * Scratch matrix used in geometry calculations
-        *
-        * @property _scratchMatrix
-        * @type Kiwi.Geom.Matrix
-        * @private
-        * @since 1.3.1
-        */
-        private _scratchMatrix;
-        /**
-        * Contains the center point after the box has been transformed.
-        * @property _transformedCenter
-        * @type Kiwi.Geom.Point
-        * @private
-        */
-        private _transformedCenter;
-        /**
-        * Returns the center point for the box after it has been transformed.
-        * World coordinates.
-        * This is READ ONLY.
-        * @property center
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        center: Kiwi.Geom.Point;
-        /**
-        * Contains the transformed or 'normal' bounds for this entity.
-        * @property _transformedBounds
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _transformedBounds;
-        /**
-        * The 'world' transformed bounds for this entity.
-        * @property _worldBounds
-        * @type Kiwi.Geom.Rectangle
-        * @private
-        */
-        private _worldBounds;
-        /**
-        * Returns the 'transformed' or 'normal' bounds for this box.
-        * This is READ ONLY.
-        * @property bounds
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        bounds: Kiwi.Geom.Rectangle;
-        /**
-        * Returns the 'transformed' bounds for this entity using the world coodinates.
-        * This is READ ONLY.
-        * @property worldBounds
-        * @type Kiwi.Geom.Rectangle
-        * @public
-        */
-        worldBounds: Kiwi.Geom.Rectangle;
-        /**
-        * Private internal method only. Used to calculate the transformed bounds after rotation/scale.
-        * @method _rotateRect
-        * @param rect {Kiwi.Geom.Rectangle}
-        * @param [useWorldCoords=false] {Boolean}
-        * @return {Kiwi.Geom.Rectangle}
-        * @private
-        */
-        private _rotateRect(rect, useWorldCoords?);
-        /**
-        * A private method that is used to calculate the transformed hitbox's coordinates after rotation.
-        * @method _rotateHitbox
-        * @param rect {Kiwi.Geom.Rectangle}
-        * @param [useWorldCoords=false] {Boolean}
-        * @return {Kiwi.Geom.Rectangle}
-        * @private
-        */
-        private _rotateHitbox(rect, useWorldCoords?);
-        /**
-        * Draws the various bounds on a context that is passed. Useful for debugging and using in combination with the debug canvas.
-        * @method draw
-        * @param ctx {CanvasRenderingContext2D} Context of the canvas that this box component is to be rendered on top of.
-        * @param [camera] {Kiwi.Camera} A camera that should be taken into account before rendered. This is the default camera by default.
-        * @public
-        */
-        draw(ctx: CanvasRenderingContext2D, camera?: Kiwi.Camera): void;
-        /**
-        * Method which takes four Points and then converts it into a Rectangle, which represents the area those points covered.
-        * The points passed can be maybe in any order, as the are checked for validity first.
-        *
-        * @method extents
-        * @param topLeftPoint {Kiwi.Geom.Point} The top left Point that the Rectangle should have.
-        * @param topRightPoint {Kiwi.Geom.Point} The top right Point that the Rectangle should have.
-        * @param bottomRightPoint {Kiwi.Geom.Point} The bottom right Point that the Rectangle should have.
-        * @param bottomLeftPoint {Kiwi.Geom.Point} The bottom left Point that the Rectangle should have.
-        * @return {Kiwi.Geom.Rectangle} The new Rectangle that represents the area the points covered.
-        * @return Rectangle
-        */
-        extents(topLeftPoint: Kiwi.Geom.Point, topRightPoint: Kiwi.Geom.Point, bottomRightPoint: Kiwi.Geom.Point, bottomLeftPoint: Kiwi.Geom.Point): Kiwi.Geom.Rectangle;
-        /**
-        * Destroys this component and all of the links it may have to other objects.
-        * @method destroy
-        * @public
-        */
-        destroy(): void;
     }
 }
 /**
@@ -5829,386 +5146,6 @@ declare module Kiwi.Components {
     */
     class Input extends Component {
         constructor(owner: Kiwi.IChild, box: Kiwi.Components.Box, enabled?: boolean);
-        /**
-        * The type of object this input is.
-        * @method objType
-        * @return {string} "Input"
-        * @public
-        */
-        objType(): string;
-        /**
-        * The bounding box that is being used for the 'hitarea'.
-        * @property _box
-        * @type Kiwi.Components.Box
-        * @private
-        */
-        private _box;
-        /**
-        * Kiwi Signal for firing callbacks when a pointer is active and has entered the entities hitbox.
-        * @property _onEntered
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onEntered;
-        /**
-        * Kiwi Signal for firing callbacks when a pointer is active and has left the entities hit box.
-        * @property _onLeft
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onLeft;
-        /**
-        * Kiwi Signal for firing callbacks when a pointer is active and has pressed down on the entity.
-        * @property _onDown
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onDown;
-        /**
-        * Kiwi Signal for firing callbacks when a pointer just released from either being above the entity or the pointer was initally pressed on it.
-        * @property _onUp
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onUp;
-        /**
-        * Kiwi Signal for firing callbacks a entity starts being dragged.
-        * @property _onDragStarted
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onDragStarted;
-        /**
-        * Kiwi Signal for firing callbacks a entity stops being dragged. Like on release.
-        * @property _onDragStopped
-        * @type Kiwi.Signal
-        * @private
-        */
-        private _onDragStopped;
-        /**
-        * A Temporary Point object which is used whilst checking to see if there is any overlap.
-        * @property _tempPoint
-        * @type Kiwi.Geom.Point
-        * @private
-        */
-        private _tempPoint;
-        /**
-        * A Temporary Circle object which is used whilst checking to see if there is any overlap.
-        * @property _tempCircle
-        * @type Kiwi.Geom.Circle
-        * @private
-        */
-        private _tempCircle;
-        /**
-        * Returns the onEntered Signal, that fires events when a pointer enters the hitbox of a entity.
-        * Note: Accessing this signal enables the input.
-        * This is READ ONLY.
-        * @property onEntered
-        * @type Kiwi.Signal
-        * @public
-        */
-        onEntered: Kiwi.Signal;
-        /**
-        * Returns the onLeft Signal, that fires events when a pointer leaves the hitbox of a entity.
-        * Note: Accessing this signal enables the input.
-        * This is READ ONLY.
-        * @property onLeft
-        * @type Kiwi.Signal
-        * @public
-        */
-        onLeft: Kiwi.Signal;
-        /**
-        * Returns the onDown Signal, that fires events when a pointer is pressed within the bounds of the signal.
-        * Note: Accessing this signal enables the input.
-        * This is READ ONLY.
-        * @property onDown
-        * @type Kiwi.Signal
-        * @public
-        */
-        onDown: Kiwi.Signal;
-        /**
-        * Returns the onUp Signal, that fires events when a pointer is released either within the bounds or was pressed initially within the bounds..
-        * Note: Accessing this signal enables the input.
-        * This is READ ONLY.
-        * @property onUp
-        * @type Kiwi.Signal
-        * @public
-        */
-        onUp: Kiwi.Signal;
-        /**
-        * Returns the onDragStarted Signal.
-        * This is READ ONLY.
-        * @property onDragStarted
-        * @type Kiwi.Signal
-        * @public
-        */
-        onDragStarted: Kiwi.Signal;
-        /**
-        * Returns the onDragStopped Signal.
-        * This is READ ONLY.
-        * @property onDragStopped
-        * @type Kiwi.Signal
-        * @public
-        */
-        onDragStopped: Kiwi.Signal;
-        /**
-        * A alias for the on release signal.
-        * This is READ ONLY.
-        * @property onRelease
-        * @type Kiwi.Signal
-        * @public
-        */
-        onRelease: Kiwi.Signal;
-        /**
-        * A alias for the on press signal.
-        * This is READ ONLY.
-        * @property onPress
-        * @type Kiwi.Signal
-        * @public
-        */
-        onPress: Kiwi.Signal;
-        /**
-        * If this input is enabled or not.
-        * @property _enabled
-        * @type boolean
-        * @default false
-        * @private
-        */
-        private _enabled;
-        /**
-        * Get if the input is enabled or not. Note: Inputs should only be enabled when needed, otherwise unnecessary processing does occur which can result in a slower game.
-        * @property enabled
-        * @type boolean
-        * @public
-        */
-        enabled: boolean;
-        /**
-        * If a pointer is current pressing down on the input, this will be a reference to that pointer. Otherwise it will be null.
-        * @property _isDown
-        * @type Kiwi.Input.Pointer
-        * @private
-        */
-        private _isDown;
-        /**
-        * A boolean that indicates if no pointer is currently on the pointer
-        * @property _isUp
-        * @type boolean
-        * @default true
-        * @private
-        */
-        private _isUp;
-        /**
-        * Indicates if a pointer is within the bounds or not. If one is then it referers to the pointer that is. Other it will be null.
-        * @property _withinBounds
-        * @type Kiwi.Input.Pointer
-        * @private
-        */
-        private _withinBounds;
-        /**
-        * boolean indicating if every pointer is currently outside of the bounds.
-        * @property _outsideBounds
-        * @type boolean
-        * @default true
-        * @private
-        */
-        private _outsideBounds;
-        /**
-        * If a pointer just entered the input. Used for mouse's to indicate when to appropriately fire the down event.
-        * Note: Could be removed once mouse version of update gets updated.
-        * @property _justEntered
-        * @type boolean
-        * @default false
-        * @private
-        */
-        private _justEntered;
-        /**
-        * Used to see if a pointer is currently on this input. Returns a boolean indicating either true or false.
-        * This is READ ONLY.
-        * @property isDown
-        * @type boolean
-        * @public
-        */
-        isDown: boolean;
-        /**
-        * Used to see if no pointer is on this input (so it is up).
-        * This is READ ONLY.
-        * @property isUp
-        * @type boolean
-        * @public
-        */
-        isUp: boolean;
-        /**
-        * Check to see if any pointer is within the bounds of this input.
-        * This is READ ONLY.
-        * @property withinBounds
-        * @type boolean
-        * @public
-        */
-        withinBounds: boolean;
-        /**
-        * See if no pointers are within the bounds of this entity.
-        * This is READ ONLY.
-        * @property outsideBounds
-        * @type boolean
-        * @public
-        */
-        outsideBounds: boolean;
-        /**
-        * A reference to the pointer that is currently 'dragging' this Object.
-        * If not dragging then this is null.
-        * @property _isDragging
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _isDragging;
-        /**
-        * The distance between the top left corner of this Objects parent and the coordinates of a Pointer.
-        * @property _distance
-        * @type Kiwi.Geom.Point
-        * @private
-        */
-        private _distance;
-        /**
-        * A boolean indicating if dragging is temporarly disabled. Internal use only to stop events from misfiring.
-        * @property _tempDragDisabled
-        * @type boolean
-        * @private
-        */
-        private _tempDragDisabled;
-        /**
-        * Indicates if dragging is currently enabled.
-        * @property _dragEnabled
-        * @type boolean
-        * @default false
-        * @private
-        */
-        private _dragEnabled;
-        /**
-        * This is used while dragging so that you can make the IChild 'snap' to specific numbers to give a 'grid like' effect.
-        * E.g. If you had a 32 by 32 grid down and you wanted to make an element draggable but snap to the grid you can set this to 32.
-        * Default value is one.
-        * @property _dragDistance
-        * @type number
-        * @default 1
-        * @private
-        */
-        private _dragDistance;
-        /**
-        * If when dragging, the IChild should snap to the center of the pointer it is being dragged by.
-        * @property _dragSnapToCenter
-        * @type boolean
-        * @default false
-        * @private
-        */
-        private _dragSnapToCenter;
-        /**
-        * Returns a boolean indicating if this is currently dragging something.
-        * This is READ ONLY.
-        * @property isDragging
-        * @type boolean
-        * @public
-        */
-        isDragging: boolean;
-        /**
-        * The drag distance that is used when dragging this object. See _dragDistance for more information.
-        * @property dragDistance
-        * @type number
-        * @public
-        */
-        dragDistance: number;
-        /**
-        * Temporary property that gets updated everyframe with the pointer that is currently 'down' on this entity.
-        * @property _nowDown
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _nowDown;
-        /**
-        * Temporary property that gets updated everyframe with the pointer that was just 'released' from being down on this entity
-        * @property _nowUp
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _nowUp;
-        /**
-        * Temporary property of the pointer that is now within the bounds of the entity
-        * @property _nowEntered
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _nowEntered;
-        /**
-        * Temporary property of the pointer that just left the bounds of the entity.
-        * @property _nowLeft
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _nowLeft;
-        /**
-        * Temporary property of the pointer that just started draggging the entity.
-        * @property _nowDragging
-        * @type Kiwi.Input.Pointer
-        * @default null
-        * @private
-        */
-        private _nowDragging;
-        /**
-        * Enables the dragging of this entity.
-        * @method enableDrag
-        * @param [snapToCenter=false] {boolean} If when dragging the Entity should snap to the center of the pointer.
-        * @param [distance=1] {number} If when dragging the Entity should snap to numbers divisible by this amount.
-        * @public
-        */
-        enableDrag(snapToCenter?: boolean, distance?: number): void;
-        /**
-        * Disables the dragging of this entity.
-        * @method disableDrag
-        * @public
-        */
-        disableDrag(): void;
-        /**
-        * The update loop for the input.
-        * @method update
-        * @protected
-        */
-        update(): void;
-        /**
-        * The update loop that gets executed when the game is using the touch manager.
-        * @method _updateTouch
-        * @private
-        */
-        private _updateTouch();
-        /**
-        * A private method for checking to see if a touch pointer should activate any events.
-        * @method _evaluateTouchPointer
-        * @param pointer {Kiwi.Input.Finger} The pointer you are checking against.
-        * @private
-        */
-        private _evaluateTouchPointer(pointer);
-        /**
-        * The update loop that runs when the mouse manager is the method for interacting with the screen.
-        * @method _updateMouse
-        * @private
-        */
-        private _updateMouse();
-        /**
-        * Evaluates where and what the mouse cursor is doing in relation to this box. Needs a little bit more love.
-        * @method _evaluateMousePointer
-        * @param pointer {Kiwi.Input.MouseCursor}
-        * @private
-        */
-        private _evaluateMousePointer(pointer);
-        /**
-        * Destroys the input.
-        * @method destory
-        * @public
-        */
-        destroy(): void;
     }
 }
 /**
@@ -6351,565 +5288,6 @@ declare module Kiwi.Components {
     */
     class ArcadePhysics extends Kiwi.Component {
         constructor(entity: Kiwi.Entity, box?: Kiwi.Components.Box);
-        /**
-        * The transform component of the entity that the ArcadePhysics is a part of.
-        * @property transform
-        * @type Kiwi.Geom.Transform
-        * @public
-        */
-        transform: Kiwi.Geom.Transform;
-        /**
-        * The bounding box component that the collisions are going to be based off.
-        * You can modify the 'hitbox' of that component to modify the collision area.
-        *
-        * @property box
-        * @type Kiwi.Components.Box
-        * @public
-        */
-        box: Kiwi.Components.Box;
-        /**
-        * Whether an object will move/alter position after a collision.
-        * @property immovable
-        * @type boolean
-        * @public
-        */
-        immovable: boolean;
-        /**
-        * The basic speed of this object.
-        * You can modify the values contained inside this Object to change the speed.
-        *
-        * @property velocity
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        velocity: Kiwi.Geom.Point;
-        /**
-        * The virtual mass of the object. Default value is 1.
-        * Currently only used with <code>elasticity</code> during collision resolution.
-        * Change at your own risk; effects seem crazy unpredictable so far!
-        * @property mass
-        * @type number
-        * @public
-        */
-        mass: number;
-        /**
-        * The bounciness of this object.  Only affects collisions.  Default value is 0, or "not bouncy at all."
-        * @property elasticity
-        * @type number
-        * @public
-        */
-        elasticity: number;
-        /**
-        * How fast the speed of this object is changing.
-        * Useful for smooth movement and gravity.
-        *
-        * @property acceleration
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        acceleration: Kiwi.Geom.Point;
-        /**
-        * This isn't drag exactly, more like deceleration that is only applied
-        * when acceleration is not affecting the sprite.
-        * @property drag
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        drag: Kiwi.Geom.Point;
-        /**
-        * If you are using <code>acceleration</code>, you can use <code>maxVelocity</code> with it
-        * to cap the speed automatically (very useful!).
-        * @property maxVelocity
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        maxVelocity: Kiwi.Geom.Point;
-        /**
-        * This is how fast you want this sprite to spin.
-        * @property angularVelocity
-        * @type number
-        * @public
-        */
-        angularVelocity: number;
-        /**
-        * How fast the spin speed should change.
-        * @property angularAcceleration
-        * @type number
-        * @public
-        */
-        angularAcceleration: number;
-        /**
-        * Like <code>drag</code> but for spinning.
-        * @property angularDrag
-        * @type number
-        * @public
-        */
-        angularDrag: number;
-        /**
-        * Use in conjunction with <code>angularAcceleration</code> for fluid spin speed control.
-        * @property maxAngular
-        * @type number
-        * @public
-        */
-        maxAngular: number;
-        /**
-        * If the Entity that this component is a part of 'moves' or not, and thus if the physics should update the motion should update each frame.
-        * @property moves
-        * @type boolean
-        * @default true
-        * @public
-        */
-        moves: boolean;
-        /**
-        * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts.
-        * Use bitwise operators to check the values stored here, or use touching(), justStartedTouching(), etc.
-        * You can even use them broadly as boolean values if you're feeling saucy!
-        * @property touching
-        * @type number
-        * @public
-        */
-        touching: number;
-        /**
-        * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating surface contacts from the previous game loop step.
-        * Use bitwise operators to check the values stored here, or use isTouching().
-        * You can even use them broadly as boolean values if you're feeling saucy!
-        * @property wasTouching
-        * @type number
-        * @public
-        */
-        wasTouching: number;
-        /**
-        * Bit field of flags (use with UP, DOWN, LEFT, RIGHT, etc) indicating collision directions.
-        * Use bitwise operators to check the values stored here.
-        * Useful for things like one-way platforms (e.g. allowCollisions = UP)
-        * The accessor "solid" just flips this variable between NONE and ANY.
-        * @property allowCollisions
-        * @type number
-        * @public
-        */
-        allowCollisions: number;
-        /**
-        * Important variable for collision processing.
-        * Tracks the last location of the Entity. This is set during the time this method 'updates'.
-        * @property last
-        * @type Kiwi.Geom.Point
-        * @public
-        */
-        last: Kiwi.Geom.Point;
-        /**
-        * A boolean to indicate if this object is solid or not.
-        * @property _solid
-        * @type boolean
-        * @private
-        */
-        private _solid;
-        /**
-        * A function that is to execute when this object overlaps with another.
-        * @property _callbackFunction
-        * @type Function
-        * @default null
-        * @private
-        */
-        private _callbackFunction;
-        /**
-        * The context that the callback method should have when it executes.
-        * @property _callbackContext
-        * @type Any
-        * @private
-        */
-        private _callbackContext;
-        /**
-        * Returns a boolean indicating whether the or not the object is currently colliding on a particular side that is passed.
-        * Use the collision constants (like LEFT, FLOOR, e.t.c) when passing sides.
-        * @method isTouching
-        * @param value [number] The collision constant of the side you want to check against.
-        * @return {boolean} If the Object is currently colliding on that side or not.
-        * @public
-        */
-        isTouching(value: number): boolean;
-        /**
-        * Whether the object should collide with other objects or not.
-        * For more control over what directions the object will collide from, use collision constants (like LEFT, FLOOR, etc)
-        * and set the value of allowCollisions directly.
-        * @method solid
-        * @param [value] {boolean} If left empty, this will then just toggle between ANY and NONE.
-        * @return {boolean} If Object is currently solid or not.
-        * @public
-        */
-        solid(value?: boolean): boolean;
-        /**
-        * Sets up a callback function that will run when this object overlaps with another.
-        * When the method is dispatched it will have TWO arguments.
-        * One - The parent / entity of this ArcadePhysics.
-        * Two - The GameObject that the collision occured with.
-        *
-        * @method setCallback
-        * @param callbackFunction {Function} The method that is to be executed whe a overlap occurs.
-        * @param callbackContext {Any} The context that the method is to be called in.
-        * @public
-        */
-        setCallback(callbackFunction: any, callbackContext: any): void;
-        /**
-        * Returns the parent of this entity. Mainly used for executing callbacks.
-        * @property parent
-        * @type Kiwi.Entity
-        * @public
-        */
-        parent: Kiwi.Entity;
-        /**
-        * Sets the parent's rotation to be equal to the trajectory of the
-        * velocity of the physics component. Note that rotation 0 corresponds
-        * to pointing directly to the right.
-        * @method rotateToVelocity
-        * @return {number} New rotation value
-        * @public
-        * @since 1.3.0
-        */
-        rotateToVelocity(): number;
-        /**
-        * A static method for seperating two normal GameObjects on both the X and Y Axis's.
-        * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-        * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-        *
-        * @method seperate
-        * @static
-        * @param object1 {Kiwi.Entity} The first GameObject you would like to seperate.
-        * @param object2 {Kiwi.Entity} The second GameObject you would like to seperate from the first.
-        * @return {boolean}
-        * @public
-        */
-        static separate(object1: Kiwi.Entity, object2: Kiwi.Entity): boolean;
-        /**
-        * Separates two passed GameObjects on the x-axis.
-        * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-        * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-        *
-        * @method seperateX
-        * @param object1 {Kiwi.Entity} The first GameObject.
-        * @param object2 {Kiwi.Entity} The second GameObject.
-        * @return {boolean} Whether the objects in fact touched and were separated along the X axis.
-        * @static
-        * @public
-        */
-        static separateX(object1: Kiwi.Entity, object2: Kiwi.Entity): boolean;
-        /**
-        * Separates two GameObject on the y-axis. This method is executed from the 'separate' method.
-        * Both objects need to have both an ArcadePhysics Component and a Box component in order for the separate process to succeed.
-        * This method is not recommended to be directly used but instead use a 'collide/overlaps' method instead.
-        *
-        * @method seperateY
-        * @param object1 {Kiwi.Entity} The first GameObject.
-        * @param object2 {Kiwi.Entity} The second GameObject.
-        * @return {boolean} Whether the objects in fact touched and were separated along the Y axis.
-        * @static
-        * @public
-        */
-        static separateY(object1: Kiwi.Entity, object2: Kiwi.Entity): boolean;
-        /**
-        * Separates a GameObject from a series of passed Tiles that lie on a TileMapLayer.
-        * The gameobject needs to have a Box Component and an ArcadePhysics Component.
-        * This method is not recommended to be directly used but instead use the 'overlapsTiles' method instead.
-        *
-        * @method separateTiles
-        * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-        * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-        * @param tiles {Array}
-        * @return {Boolean} If any separation occured.
-        * @public
-        * @static
-        */
-        static separateTiles(object: Entity, layer: Kiwi.GameObjects.Tilemap.TileMapLayer, tiles: any): boolean;
-        /**
-        * Separates a GameObjects from an Array of Tiles on the x-axis.
-        * @method separateTilesX
-        * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-        * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-        * @param tile {Object} An Object containing the information (x/y/tiletypr) about the tile that is being overlapped.
-        * @return {Boolean} If any separation occured.
-        * @public
-        * @static
-        */
-        static separateTilesX(object: Entity, layer: Kiwi.GameObjects.Tilemap.TileMapLayer, tile: any): boolean;
-        /**
-        * Separates a GameObject from a tiles on the y-axis.
-        * @method separateTilesY
-        * @param object {Kiwi.Entity} The GameObject you are wanting to separate from a tile.
-        * @param layer {Kiwi.GameObjects.Tilemap.TileMapLayer} The TileMapLayer that the tiles belong on.
-        * @param tiles {Object} An Object representing the Tile which we are checking to see any overlaps occurs.
-        * @return {Boolean} If any separation occured.
-        * @public
-        * @static
-        */
-        static separateTilesY(object: Entity, layer: any, tile: any): boolean;
-        /**
-        * A method to check to see if any Tiles with in this parent TileMapLayer overlaps with a GameObject passed.
-        * If seperateObjects is true it will seperate the two entities based on their bounding box.
-        * ONLY works if the parent of the ArcadePhysics component which is calling this method is a TileMapLayer.
-        * Note: The GameObject passed must contain a box component and only if you want to separate the two objects must is ALSO contain an ArcadePhysics component.
-        *
-        * @method overlapsTiles
-        * @param gameObject {Kiwi.Entity} The GameObject you would like to separate with this one.
-        * @param [separateObjects=false] {Boolean} If you want the GameObject to be separated from any tile it collides with.
-        * @param [collisionType=ANY] {Number} If you want the GameObject to only check for collisions from a particular side of tiles. ANY by default.
-        * @return {Boolean} If any gameobject overlapped.
-        * @public
-        */
-        overlapsTiles(gameObject: Entity, separateObjects?: boolean, collisionType?: number): boolean;
-        /**
-        * A method to check to see if the parent of this physics component overlaps with another Kiwi.Entity.
-        * If seperateObjects is true it will seperate the two entities based on their bounding box.
-        * Note: The GameObject passed must contain a box component and only if you want to separate the two objects must is ALSO contain an ArcadePhysics component.
-        * Also: Not to be used for separation from tiles.
-        *
-        * @method overlaps
-        * @param gameObject {Kiwi.Entity}
-        * @param [seperateObjects=false] {boolean}
-        * @return {boolean}
-        * @public
-        */
-        overlaps(gameObject: Entity, separateObjects?: boolean): boolean;
-        /**
-        * A method to check to see if the parent of this physics component overlaps with another individual in a Kiwi Group.
-        *
-        * @method overlapsGroup
-        * @param group {Kiwi.Group}
-        * @param [seperateObjects=false] {boolean}
-        * @return { boolean } If any object in the group overlapped with the GameObject or not.
-        * @public
-        */
-        overlapsGroup(group: Kiwi.Group, separateObjects?: boolean): boolean;
-        /**
-        * A method to check to see if the parent of this physics component overlaps with any Entities that are held in an Array which is passed.
-        *
-        * @method overlapsArray
-        * @param array {Array} The array of GameObjects you want to check.
-        * @param [separateObjects=false] {boolean} If when the objects collide you want them to seperate outwards.
-        * @return {boolean} If any overlapping occured or not.
-        * @public
-        */
-        overlapsArray(array: Array<any>, separateObjects?: boolean): boolean;
-        /**
-        * Computes the velocity based on the parameters passed.
-        * @method computeVelocity
-        * @static
-        * @param velocity {number} The currently velocity.
-        * @param [acceleration=0] {number} The acceleration of the item.
-        * @param [drag=0] {number} The amount of drag effecting the item.
-        * @param [max=10000] {number} The maximum velocity.
-        * @return {Number} The new velocity
-        * @public
-        */
-        static computeVelocity(velocity: number, acceleration?: number, drag?: number, max?: number): number;
-        /**
-        * Updates the position of this object. Automatically called if the 'moves' parameter is true.
-        * This called each frame during the update method.
-        *
-        * @method updateMotion
-        * @private
-        */
-        updateMotion(): void;
-        /**
-        * The Update loop of the physics component
-        * @method update
-        * @public
-        */
-        update(): void;
-        /**
-        * Removes all properties that refer to other objects or outside of this class in order to flag this object for garbage collection.
-        * @method destroy
-        * @public
-        */
-        destroy(): void;
-        /**
-        * The type of object that this is.
-        * @method objType
-        * @return {string} "ArcadePhysics"
-        * @public
-        */
-        objType(): string;
-        /**
-        * A Static method to check to see if two objects collide or not. Returns a boolean indicating whether they overlaped or not.
-        *
-        * @method collide
-        * @static
-        * @public
-        * @param gameObject1 {Kiwi.Entity} The first game object.
-        * @param gameObject2 {Kiwi.Entity} The second game object.
-        * @param [seperate=true] {boolean} If the two gameobjects should seperated when they collide.
-        * @return {boolean}
-        */
-        static collide(gameObject1: Entity, gameObject2: Entity, seperate?: boolean): boolean;
-        /**
-        * A Static method to check to see if a single entity collides with a group of entities. Returns a boolean indicating whether they overlaped or not.
-        *
-        * @method collideGroup
-        * @static
-        * @public
-        * @param gameObject {Kiwi.Entity} The entity you would like to check against.
-        * @param group {Kiwi.Group} The Kiwi Group that you want to check the entity against.
-        * @param [seperate=true] {boolean}
-        * @return {boolean}
-        * @public
-        */
-        static collideGroup(gameObject: Entity, group: Kiwi.Group, seperate?: boolean): boolean;
-        /**
-        * A Static method to check to see if a group of entities overlap with another group of entities. Returns a boolean indicating whether they overlaped or not.
-        *
-        * @method collideGroupGroup
-        * @static
-        * @public
-        * @param group1 {Kiwi.Group} The first Kiwi Group that you want to check the entity against.
-        * @param group2 {Kiwi.Group} The second Kiwi Group that you want to check the entity against.
-        * @param [seperate=true] {boolean}
-        * @return {boolean}
-        */
-        static collideGroupGroup(group1: Kiwi.Group, group2: Kiwi.Group, seperate?: boolean): boolean;
-        /**
-        * A Static method to that checks to see if two objects overlap. Returns a boolean indicating whether they did or not.
-        *
-        * @method overlaps
-        * @static
-        * @public
-        * @param gameObject1 {Kiwi.Entity} The first game object.
-        * @param gameObject2 {Kiwi.Entity} The second gameobject you are testing the first against.
-        * @param [separateObjects=true] {boolean}
-        * @return {boolean}
-        */
-        static overlaps(gameObject1: Entity, gameObject2: Entity, separateObjects?: boolean): boolean;
-        /**
-        * A Static method to that checks to see if a single object overlaps with a group of entities. Returns a boolean indicating whether they did or not.
-        *
-        * @method overlapsObjectGroup
-        * @static
-        * @param gameObject {Kiwi.Entity}
-        * @param group {Kiwi.Group}
-        * @param [seperateObjects=true] {boolean} If they overlap should the seperate or not
-        * @return {boolean}
-        * @public
-        */
-        static overlapsObjectGroup(gameObject: Entity, group: Kiwi.Group, separateObjects?: boolean): boolean;
-        /**
-        * A Static method that checks to see if any objects in one group overlap with objects in another group.
-        *
-        * @method overlaps
-        * @static
-        * @param group1 {Kiwi.Group} The first group you would like to check against.
-        * @param group2 {Kiwi.Group} The second group you would like to check against.
-        * @param [seperate=true] {boolean} If they overlap should the seperate or not
-        * @return {boolean}
-        * @public
-        */
-        static overlapsGroupGroup(group1: Kiwi.Group, group2: Kiwi.Group, separateObjects?: boolean): boolean;
-        /**
-        * A Static method that checks to see if any objects from an Array collide with a Kiwi Group members.
-        *
-        * @method overlapsArrayGroup
-        * @param array {Array} An array you want to check collide.
-        * @param group {Kiwi.Group} A group of objects you want to check overlaps.
-        * @param [seperateObjects=true] {Boolean} If when a collision is found the objects should seperate out.
-        * @return {Boolean}
-        * @static
-        */
-        static overlapsArrayGroup(array: Array<any>, group: Kiwi.Group, separateObjects?: boolean): boolean;
-        /**
-        * How often the motion should be updated.
-        * @property updateInterval
-        * @static
-        * @default 1 / 10
-        * @type number
-        * @public
-        */
-        static updateInterval: number;
-        /**
-        * Generic value for "left" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-        * @property LEFT
-        * @type number
-        * @default 0x0001
-        * @public
-        * @static
-        */
-        static LEFT: number;
-        /**
-        * Generic value for "right" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-        * @property RIGHT
-        * @type number
-        * @default 0x0010
-        * @public
-        * @static
-        */
-        static RIGHT: number;
-        /**
-        * Generic value for "up" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-        * @property UP
-        * @type number
-        * @default 0x0100
-        * @public
-        * @static
-        */
-        static UP: number;
-        /**
-        * Generic value for "down" Used by <code>facing</code>, <code>allowCollisions</code>, and <code>touching</code>.
-        * @property DOWN
-        * @type number
-        * @default 0x1000
-        * @public
-        * @static
-        */
-        static DOWN: number;
-        /**
-        * Special-case constant meaning no collisions, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-        * @property NONE
-        * @type number
-        * @default 0
-        * @public
-        * @static
-        */
-        static NONE: number;
-        /**
-        * Special-case constant meaning up, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-        * @property CEILING
-        * @type number
-        * @default 0x0100
-        * @public
-        * @static
-        */
-        static CEILING: number;
-        /**
-        * Special-case constant meaning down, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-        * @property FLOOR
-        * @type number
-        * @default 0x1000
-        * @public
-        * @static
-        */
-        static FLOOR: number;
-        /**
-        * Special-case constant meaning only the left and right sides, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-        * @property WALL
-        * @type number
-        * @default 0x0011
-        * @public
-        * @static
-        */
-        static WALL: number;
-        /**
-        * Special-case constant meaning any direction, used mainly by <code>allowCollisions</code> and <code>touching</code>.
-        * @property ANY
-        * @type number
-        * @default 0x1111
-        * @public
-        * @static
-        */
-        static ANY: number;
-        /**
-        * Handy constant used during collision resolution (see <code>separateX()</code> and <code>separateY()</code>).
-        * @property OVERLAP_BIAS
-        * @type number
-        * @default 4
-        * @public
-        * @static
-        */
-        static OVERLAP_BIAS: number;
     }
 }
 /**
@@ -10530,350 +8908,343 @@ declare module Kiwi.Renderers {
     }
 }
 /**
-* @module Kiwi
-* @submodule Renderers
-* @main Renderers
-* @namespace Kiwi.Renderers
-*/
+ * @module Kiwi
+ * @submodule Renderers
+ * @main Renderers
+ * @namespace Kiwi.Renderers
+ */
 declare module Kiwi.Renderers {
     /**
-    * Manages all rendering using WebGL.
-    * Directly manages renderer objects, including factory methods
-    * for their creation.
-    * Creates manager objects for shaders and textures.
-    * Manages gl state at game initialisation, at state start and end,
-    * and per frame.
-    * Runs the recursive scene graph rendering sequence every frame.
-    * @class GLRenderManager
-    * @extends IRenderer
-    * @constructor
-    * @param game {Kiwi.Game} The game that this renderer belongs to.
-    * @return {Kiwi.Renderers.GLRenderManager}
-    */
+     * Manages all rendering using WebGL.
+     * Directly manages renderer objects, including factory methods
+     * for their creation.
+     * Creates manager objects for shaders and textures.
+     * Manages gl state at game initialisation, at state start and end,
+     * and per frame.
+     * Runs the recursive scene graph rendering sequence every frame.
+     * @class GLRenderManager
+     * @extends IRenderer
+     * @constructor
+     * @param game {Kiwi.Game} The game that this renderer belongs to.
+     * @return {Kiwi.Renderers.GLRenderManager}
+     */
     class GLRenderManager implements IRenderManager {
         constructor(game: Kiwi.Game);
         /**
-        * Initialises all WebGL rendering services
-        * @method boot
-        * @public
-        */
+         * Initialises all WebGL rendering services
+         * @method boot
+         * @public
+         */
         boot(): void;
         /**
-        * The type of object that this is.
-        * @method objType
-        * @return {string} "GLRenderManager"
-        * @public
-        */
+         * The type of object that this is.
+         * @method objType
+         * @return {string} "GLRenderManager"
+         * @public
+         */
         objType(): string;
         /**
-        * The game that this renderer is used with.
-        * @property _game
-        * @type Game
-        * @private
-        */
+         * The game that this renderer is used with.
+         * @property _game
+         * @type Game
+         * @private
+         */
         private _game;
         /**
-        * The texture manager object used to allocate GL Textures.
-        * @property _textureManager
-        * @type Kiwi.Renderes.GLTextureManager
-        * @private
-        */
+         * The texture manager object used to allocate GL Textures.
+         * @property _textureManager
+         * @type Kiwi.Renderes.GLTextureManager
+         * @private
+         */
         private _textureManager;
         /**
-        * The shader manager object used to allocate GL Shaders.
-        * @property _shaderManager
-        * @type Kiwi.Renderes.GLShaderManager
-        * @private
-        */
+         * The shader manager object used to allocate GL Shaders.
+         * @property _shaderManager
+         * @type Kiwi.Renderes.GLShaderManager
+         * @private
+         */
         private _shaderManager;
         /**
-        * The stage resolution in pixels
-        * @property _stageResolution
-        * @type Float32Array
-        * @private
-        */
+         * The stage resolution in pixels
+         * @property _stageResolution
+         * @type Float32Array
+         * @private
+         */
         private _stageResolution;
         /**
-        * The renderer object that is in use during a rendering batch.
-        * @property _currentRenderer
-        * @type Kiwi.Renderers.Renderer
-        * @private
-        */
+         * The renderer object that is in use during a rendering batch.
+         * @property _currentRenderer
+         * @type Kiwi.Renderers.Renderer
+         * @private
+         */
         private _currentRenderer;
         /**
-        * The current blend mode.
-        * @property _currentBlendMode
-        * @type Kiwi.Renderers.GLBlendMode
-        * @private
-        * @since 1.1.0
-        */
+         * The current blend mode.
+         * @property _currentBlendMode
+         * @type Kiwi.Renderers.GLBlendMode
+         * @private
+         * @since 1.1.0
+         */
         private _currentBlendMode;
         /**
-        * Tally of number of entities rendered per frame
-        * @property _entityCount
-        * @type number
-        * @default 0
-        * @private
-        */
+         * Tally of number of entities rendered per frame
+         * @property _entityCount
+         * @type number
+         * @default 0
+         * @private
+         */
         private _entityCount;
         /**
-        * Tally of number of draw calls per frame
-        * @property numDrawCalls
-        * @type number
-        * @default 0
-        * @public
-        */
+         * Tally of number of draw calls per frame
+         * @property numDrawCalls
+         * @type number
+         * @default 0
+         * @public
+         */
         numDrawCalls: number;
         /**
-        * Maximum allowable sprites to render per frame.
-        * Note: Not currently used  - candidate for deletion
-        * @property _maxItems
-        * @type number
-        * @default 1000
-        * @private
-        */
+         * Maximum allowable sprites to render per frame.
+         * Note: Not currently used  - candidate for deletion
+         * @property _maxItems
+         * @type number
+         * @default 1000
+         * @private
+         */
         private _maxItems;
         /**
-        * Camera matrix used on graphics card
-        * @property camMatrix
-        * @type Float32Array
-        * @public
-        */
+         * Camera matrix used on graphics card
+         * @property camMatrix
+         * @type Float32Array
+         * @public
+         */
         camMatrix: Float32Array;
         /**
-        * Geometry data used to create `camMatrix`
-        * @property _camMatrixOffset
-        * @type Kiwi.Geom.Matrix
-        * @private
-        */
-        private _camMatrixOffset;
-        /**
-        * The most recently bound texture atlas.
-        * @property _currentTextureAtlas
-        * @type TextureAtlas
-        * @private
-        */
+         * The most recently bound texture atlas.
+         * @property _currentTextureAtlas
+         * @type TextureAtlas
+         * @private
+         */
         private _currentTextureAtlas;
         /**
-        * Adds a texture to the Texture Manager.
-        * @method addTexture
-        * @param {WebGLRenderingContext} gl
-        * @param {Kiwi.Textures.TextureAtlas} atlas
-        * @public
-        */
+         * Adds a texture to the Texture Manager.
+         * @method addTexture
+         * @param {WebGLRenderingContext} gl
+         * @param {Kiwi.Textures.TextureAtlas} atlas
+         * @public
+         */
         addTexture(gl: WebGLRenderingContext, atlas: Kiwi.Textures.TextureAtlas): void;
         /**
-        * An array of renderers.
-        *
-        * Shared renderers are used for batch rendering.
-        * Multiple gameobjects can use the same renderer instance and add
-        * rendering info to a batch rather than rendering individually.
-        * This means only one draw call is necessary to render a number of
-        * objects. The most common use of this is standard 2d sprite rendering,
-        * and the TextureAtlasRenderer is added by default as a shared
-        * renderer. Sprites, StaticImages and Tilemaps (core gameobjects)
-        * can all use the same renderer/shader combination and be drawn as
-        * part of the same batch.
-        *
-        * Custom gameobjects can also choose to use a shared renderer, fo example in the case that a custom gameobject's rendering requirements matched the TextureAtlasRenderer
-        * capabilities.
-        *
-        * @property _sharedRenderers
-        * @type Array
-        * @private
-        */
+         * An array of renderers.
+         *
+         * Shared renderers are used for batch rendering.
+         * Multiple gameobjects can use the same renderer instance and add
+         * rendering info to a batch rather than rendering individually.
+         * This means only one draw call is necessary to render a number of
+         * objects. The most common use of this is standard 2d sprite rendering,
+         * and the TextureAtlasRenderer is added by default as a shared
+         * renderer. Sprites, StaticImages and Tilemaps (core gameobjects)
+         * can all use the same renderer/shader combination and be drawn as
+         * part of the same batch.
+         *
+         * Custom gameobjects can also choose to use a shared renderer, fo example in the case that a custom gameobject's rendering requirements matched the TextureAtlasRenderer
+         * capabilities.
+         *
+         * @property _sharedRenderers
+         * @type Array
+         * @private
+         */
         private _sharedRenderers;
         /**
-        * Adds a renderer to the sharedRenderer array.
-        *
-        * The rendererID is a string that must match a renderer property
-        * of the Kiwi.Renderers object. If a match is found and an instance
-        * does not already exist, then a renderer is instantiated and added
-        * to the array.
-        * @method addSharedRenderer
-        * @param {string} rendererID
-        * @param {object} params
-        * @return {boolean} success
-        * @public
-        */
+         * Adds a renderer to the sharedRenderer array.
+         *
+         * The rendererID is a string that must match a renderer property
+         * of the Kiwi.Renderers object. If a match is found and an instance
+         * does not already exist, then a renderer is instantiated and added
+         * to the array.
+         * @method addSharedRenderer
+         * @param {string} rendererID
+         * @param {object} params
+         * @return {boolean} success
+         * @public
+         */
         addSharedRenderer(rendererID: string, params?: any): boolean;
         /**
-        * Adds a cloned renderer to the sharedRenderer array.
-        * The rendererID is a string that must match a renderer property of
-        * the Kiwi.Renderers object. The cloneID is the name for the
-        * cloned renderer.
-        *
-        * If a match is found and an instance does not already exist,
-        * then a renderer is instantiated and added to the array.
-        *
-        * Cloned shared renderers are useful if some items in your scene
-        * will use a special shader or blend mode, but others will not.
-        * You can subsequently access the clones with a normal
-        * `requestSharedRenderer()` call. You should use this instead of
-        * `requestRendererInstance()` whenever possible, because shared
-        * renderers are more efficient than instances.
-        *
-        * @method addSharedRendererClone
-        * @param {string} rendererID
-        * @param {string} cloneID
-        * @param {object} params
-        * @return {boolean} success
-        * @public
-        * @since 1.1.0
-        */
+         * Adds a cloned renderer to the sharedRenderer array.
+         * The rendererID is a string that must match a renderer property of
+         * the Kiwi.Renderers object. The cloneID is the name for the
+         * cloned renderer.
+         *
+         * If a match is found and an instance does not already exist,
+         * then a renderer is instantiated and added to the array.
+         *
+         * Cloned shared renderers are useful if some items in your scene
+         * will use a special shader or blend mode, but others will not.
+         * You can subsequently access the clones with a normal
+         * `requestSharedRenderer()` call. You should use this instead of
+         * `requestRendererInstance()` whenever possible, because shared
+         * renderers are more efficient than instances.
+         *
+         * @method addSharedRendererClone
+         * @param {string} rendererID
+         * @param {string} cloneID
+         * @param {object} params
+         * @return {boolean} success
+         * @public
+         * @since 1.1.0
+         */
         addSharedRendererClone(rendererID: string, cloneID: string, params?: any): boolean;
         /**
-        * Requests a shared renderer. A game object that wants to use a shared
-        * renderer uses this method to obtain a reference to the shared
-        * renderer instance.
-        * @method requestSharedRenderer
-        * @param {string} rendererID
-        * @param {object} params
-        * @return {Kiwi.Renderers.Renderer} A shared renderer
-        *	or null if none found.
-        * @public
-        */
+         * Requests a shared renderer. A game object that wants to use a shared
+         * renderer uses this method to obtain a reference to the shared
+         * renderer instance.
+         * @method requestSharedRenderer
+         * @param {string} rendererID
+         * @param {object} params
+         * @return {Kiwi.Renderers.Renderer} A shared renderer
+         *	or null if none found.
+         * @public
+         */
         requestSharedRenderer(rendererID: string, params?: any): Kiwi.Renderers.Renderer;
         /**
-        * Requests a new renderer instance. This factory method is the only
-        * way gameobjects should instantiate their own renderer.
-        *
-        * The rendererID is a string that must match a renderer property
-        * of the Kiwi.Renderers object. If a match is found then a renderer
-        * is instantiated and returned. Gameobjects which have rendering
-        * requirements that do not suit batch rendering use this technique.
-        * @method requestRendererInstance
-        * @param {string} rendererID The name of the requested renderer
-        * @param {object} params
-        * @return {Kiwi.Renderers.Renderer} A renderer or null if none found.
-        * @public
-        */
+         * Requests a new renderer instance. This factory method is the only
+         * way gameobjects should instantiate their own renderer.
+         *
+         * The rendererID is a string that must match a renderer property
+         * of the Kiwi.Renderers object. If a match is found then a renderer
+         * is instantiated and returned. Gameobjects which have rendering
+         * requirements that do not suit batch rendering use this technique.
+         * @method requestRendererInstance
+         * @param {string} rendererID The name of the requested renderer
+         * @param {object} params
+         * @return {Kiwi.Renderers.Renderer} A renderer or null if none found.
+         * @public
+         */
         requestRendererInstance(rendererID: string, params?: any): Kiwi.Renderers.Renderer;
         private _init();
         /**
-        * Scales the viewport according to a scale mode and space dimensions.
-        *
-        * This is used internally for compatibility with CocoonJS and should not be called.
-        * @method scaleViewport
-        * @param gl {WebGLRenderingContext}
-        * @param mode {number} Scale mode; should be either
-        *	Kiwi.Stage.SCALE_FIT, Kiwi.Stage.SCALE_STRETCH, or
-        *	Kiwi.Stage.SCALE_NONE. Defaults to Kiwi.Stage.SCALE_NONE
-        * @param width {number} Width of the target space
-        * @param height {number} Height of the target space
-        * @public
-        * @since 1.1.1
-        */
+         * Scales the viewport according to a scale mode and space dimensions.
+         *
+         * This is used internally for compatibility with CocoonJS and should not be called.
+         * @method scaleViewport
+         * @param gl {WebGLRenderingContext}
+         * @param mode {number} Scale mode; should be either
+         *	Kiwi.Stage.SCALE_FIT, Kiwi.Stage.SCALE_STRETCH, or
+         *	Kiwi.Stage.SCALE_NONE. Defaults to Kiwi.Stage.SCALE_NONE
+         * @param width {number} Width of the target space
+         * @param height {number} Height of the target space
+         * @public
+         * @since 1.1.1
+         */
         scaleViewport(gl: WebGLRenderingContext, mode: number, width: number, height: number): void;
         /**
-        * Performs initialisation required when switching to a different state.
-        * Called when a state has been switched to.
-        * The textureManager is told to clear its contents from video memory,
-        * then rebuild its cache of textures from the state's texture library.
-        * @method initState
-        * @public
-        */
+         * Performs initialisation required when switching to a different state.
+         * Called when a state has been switched to.
+         * The textureManager is told to clear its contents from video memory,
+         * then rebuild its cache of textures from the state's texture library.
+         * @method initState
+         * @public
+         */
         initState(state: Kiwi.State): void;
         /**
-        * Performs cleanup required before switching to a different state.
-        * Called whwn a state is about to be switched from.
-        * The textureManager is told to empty its cache.
-        * @method endState
-        * @param state {Kiwi.State}
-        * @public
-        */
+         * Performs cleanup required before switching to a different state.
+         * Called whwn a state is about to be switched from.
+         * The textureManager is told to empty its cache.
+         * @method endState
+         * @param state {Kiwi.State}
+         * @public
+         */
         endState(state: Kiwi.State): void;
         /**
-        * Manages rendering of the scene graph - called once per frame.
-        * Sets up per frame gl uniforms such as the view matrix and
-        * camera offset. Clears the current renderer ready for a new batch.
-        * Initiates recursive render of scene graph starting at the root.
-        * @method render
-        * @param camera {Camera}
-        * @public
-        */
+         * Manages rendering of the scene graph - called once per frame.
+         * Sets up per frame gl uniforms such as the view matrix and
+         * camera offset. Clears the current renderer ready for a new batch.
+         * Initiates recursive render of scene graph starting at the root.
+         * @method render
+         * @param camera {Camera}
+         * @public
+         */
         render(camera: Kiwi.Camera): void;
         private _sequence;
         private _batches;
         /**
-        * Creates a new render sequence
-        * @method collateRenderSequence
-        * @public
-        */
+         * Creates a new render sequence
+         * @method collateRenderSequence
+         * @public
+         */
         collateRenderSequence(): void;
         /**
-        * Adds a child to the render sequence
-        * (may be a group with children of its own).
-        * @method collateChild
-        * @public
-        */
+         * Adds a child to the render sequence
+         * (may be a group with children of its own).
+         * @method collateChild
+         * @public
+         */
         collateChild(child: IChild): void;
         /**
-        * Sorts the render sequence into batches.
-        * Each batch requires the same renderer/shader/texture combination.
-        * @method collateBatches
-        * @public
-        */
+         * Sorts the render sequence into batches.
+         * Each batch requires the same renderer/shader/texture combination.
+         * @method collateBatches
+         * @public
+         */
         collateBatches(): void;
         /**
-        * Renders all the batches
-        * @method renderBatches
-        * @param {WebGLRenderingContext} gl
-        * @param {Kiwi.Camera} camera
-        * @public
-        */
+         * Renders all the batches
+         * @method renderBatches
+         * @param {WebGLRenderingContext} gl
+         * @param {Kiwi.Camera} camera
+         * @public
+         */
         renderBatches(gl: WebGLRenderingContext, camera: any): void;
         /**
-        * Renders a single batch
-        * @method renderBatch
-        * @param {WebGLRenderingContext} gl
-        * @param {object} batch
-        * @param {Kiwi.Camera} camera
-        * @public
-        */
+         * Renders a single batch
+         * @method renderBatch
+         * @param {WebGLRenderingContext} gl
+         * @param {object} batch
+         * @param {Kiwi.Camera} camera
+         * @public
+         */
         renderBatch(gl: any, batch: any, camera: any): void;
         /**
-        * Calls the render function on a single entity
-        * @method renderEntity
-        * @param {WebGLRenderingContext} gl
-        * @param {Kiwi.Entity} entity
-        * @param {Kiwi.Camera} camera
-        * @public
-        * @deprecated Used internally; should not be called from external functions
-        */
+         * Calls the render function on a single entity
+         * @method renderEntity
+         * @param {WebGLRenderingContext} gl
+         * @param {Kiwi.Entity} entity
+         * @param {Kiwi.Camera} camera
+         * @public
+         * @deprecated Used internally; should not be called from external functions
+         */
         renderEntity(gl: WebGLRenderingContext, entity: any, camera: any): void;
         /**
-        * Ensures the atlas and renderer needed for a batch is setup
-        * @method setupGLState
-        * @param {WebGLRenderingContext} gl
-        * @public
-        * @deprecated Used internally; should not be called from external functions.
-        */
+         * Ensures the atlas and renderer needed for a batch is setup
+         * @method setupGLState
+         * @param {WebGLRenderingContext} gl
+         * @public
+         * @deprecated Used internally; should not be called from external functions.
+         */
         setupGLState(gl: WebGLRenderingContext, entity: any): void;
         /**
-        * Switch renderer to the one needed by the entity that needs rendering
-        * @method _switchRenderer
-        * @param gl {WebGLRenderingContext}
-        * @param entity {Kiwi.Entity}
-        * @private
-        */
+         * Switch renderer to the one needed by the entity that needs rendering
+         * @method _switchRenderer
+         * @param gl {WebGLRenderingContext}
+         * @param entity {Kiwi.Entity}
+         * @private
+         */
         private _switchRenderer(gl, entity);
         /**
-        * Switch texture to the one needed by the entity that needs rendering
-        * @method _switchTexture
-        * @param gl {WebGLRenderingContext}
-        * @param entity {Kiwi.Entity}
-        * @private
-        */
+         * Switch texture to the one needed by the entity that needs rendering
+         * @method _switchTexture
+         * @param gl {WebGLRenderingContext}
+         * @param entity {Kiwi.Entity}
+         * @private
+         */
         private _switchTexture(gl, entity);
         /**
-        * Switch blend mode to a new set of constants
-        * @method _switchBlendMode
-        * @param gl {WebGLRenderingContext}
-        * @param blendMode {Kiwi.Renderers.GLBlendMode}
-        * @private
-        * @since 1.1.0
-        */
+         * Switch blend mode to a new set of constants
+         * @method _switchBlendMode
+         * @param gl {WebGLRenderingContext}
+         * @param blendMode {Kiwi.Renderers.GLBlendMode}
+         * @private
+         * @since 1.1.0
+         */
         private _switchBlendMode(gl, blendMode);
     }
 }
@@ -11968,14 +10339,14 @@ declare module Kiwi.Shaders {
         * @type Array
         * @public
         */
-        fragSource: Array<any>;
+        fragSource: string;
         /**
         * Shader vert source (for override)
         * @property texture2DVert
         * @type Array
         * @public
         */
-        vertSource: Array<any>;
+        vertSource: string;
         /**
         * Sets a single uniform value and marks it as dirty.
         * @method setParam
@@ -12009,20 +10380,20 @@ declare module Kiwi.Shaders {
     }
 }
 /**
-*
-* @module Kiwi
-* @submodule Shaders
-* @namespace Kiwi.Shaders
-*/
+ *
+ * @module Kiwi
+ * @submodule Shaders
+ * @namespace Kiwi.Shaders
+ */
 declare module Kiwi.Shaders {
     /**
-    * Shader wrapper for rendering Texture Atlases
-    * @class TextureAtlasShader
-    * @extends Kiwi.Shaders.ShaderPair
-    * @constructor
-    * @namespace Kiwi.Shaders
-    * @return {Kiwi.Shaders.TextureAtlasShader}
-    */
+     * Shader wrapper for rendering Texture Atlases
+     * @class TextureAtlasShader
+     * @extends Kiwi.Shaders.ShaderPair
+     * @constructor
+     * @namespace Kiwi.Shaders
+     * @return {Kiwi.Shaders.TextureAtlasShader}
+     */
     class TextureAtlasShader extends ShaderPair {
         constructor();
         /**
@@ -12053,14 +10424,14 @@ declare module Kiwi.Shaders {
         * @type Array
         * @public
         */
-        fragSource: Array<string>;
+        fragSource: string;
         /**
-        * The source for the GLSL vertex shader
-        * @property vertSource
-        * @type Array
-        * @public
-        */
-        vertSource: Array<string>;
+         * The source for the GLSL vertex shader
+         * @property vertSource
+         * @type Array
+         * @public
+         */
+        vertSource: string;
     }
 }
 /**
@@ -16178,295 +14549,216 @@ declare module Kiwi.Geom {
     }
 }
 /**
-*
-* @module Kiwi
-* @submodule Geom
-*/
+ *
+ * @module Kiwi
+ * @submodule Geom
+ */
 declare module Kiwi.Geom {
     /**
-    * Represents a 2d transformation matrix. This can be used to map points
-    * between different coordinate spaces. Matrices are used by Transform
-    * objects to represent translation, scale and rotation transformations,
-    * and to determine where objects are in world space or camera space.
-    * Objects such as entities and groups may be nested, and their associated
-    * transforms may represent how they are scaled, translated and rotated
-    * relative to a parent transform. By concatenating an object's
-    * transformation matrix with its ancestors matrices, it is possible to
-    * determine the absolute position of the object in world space.
-    * See
-    * http://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_2D_graphics
-    * for an in depth discussion of 2d tranformation matrices.
-    *
-    * @class Matrix
-    * @namespace Kiwi.Geom
-    * @constructor
-    * @param [a=1] {Number}  position 0,0 of the matrix,
-    *	affects scaling and rotation.
-    * @param [b=0] {Number}  position 0,1 of the matrix,
-    *	affects scaling and rotation.
-    * @param [c=0] {Number}  position 1,0 of the matrix,
-    *	affects scaling and rotation.
-    * @param [d=1] {Number}  position 1,1 of the matrix,
-    *	affects scaling and rotation.
-    * @param [tx=0] {Number}  position 2,0 of the matrix,
-    *	affects translation on x axis.
-    * @param [ty=0] {Number}  position 2,1 of the matrix,
-    *	affects translation on y axis.
-    * @return (Object) This object.
-    *
-    */
+     * Represents a 2d transformation Matrix. This can be used to map points
+     * between different coordinate spaces. Matrices are used by Transform
+     * objects to represent translation, scale and rotation transformations,
+     * and to determine where objects are in world space or camera space.
+     * Objects such as entities and groups may be nested, and their associated
+     * transforms may represent how they are scaled, translated and rotated
+     * relative to a parent transform. By concatenating an object's
+     * transformation Matrix with its ancestors matrices, it is possible to
+     * determine the absolute position of the object in world space.
+     * See
+     * http://en.wikipedia.org/wiki/Transformation_Matrix#Examples_in_2D_graphics
+     * for an in depth discussion of 2d tranformation matrices.
+     *
+     * <pre>
+     *  a c tx
+     *  b d ty
+     *  0 0 1
+     * </pre>
+     *
+     * @class Matrix
+     * @namespace Kiwi.Geom
+     * @constructor
+     * @param [a=1] {Number}  position 0,0 of the Matrix,
+     *	affects scaling and rotation.
+     * @param [b=0] {Number}  position 0,1 of the Matrix,
+     *	affects scaling and rotation.
+     * @param [c=0] {Number}  position 1,0 of the Matrix,
+     *	affects scaling and rotation.
+     * @param [d=1] {Number}  position 1,1 of the Matrix,
+     *	affects scaling and rotation.
+     * @param [tx=0] {Number}  position 2,0 of the Matrix,
+     *	affects translation on x axis.
+     * @param [ty=0] {Number}  position 2,1 of the Matrix,
+     *	affects translation on y axis.
+     * @return (Object) This object.
+     *
+     */
     class Matrix {
         constructor(a?: number, b?: number, c?: number, d?: number, tx?: number, ty?: number);
         /**
-        * The type of object this is.
-        * @method objType
-        * @return {String} "Matrix"
-        * @public
-        */
+         * The type of object this is.
+         * @method objType
+         * @return {String} "Matrix"
+         * @public
+         */
         objType(): string;
         /**
-        * Position 0,0 of the matrix, affects scaling and rotation
-        * @property a
-        * @type Number
-        * @default 1
-        * @public
-        */
+         * Position 0,0 of the Matrix, affects scaling and rotation
+         * @property a
+         * @type Number
+         * @default 1
+         * @public
+         */
         a: number;
         /**
-        * Position 0,1 of the matrix, affects scaling and rotation.
-        * @property b
-        * @type Number
-        * @default 0
-        * @public
-        */
+         * Position 0,1 of the Matrix, affects scaling and rotation.
+         * @property b
+         * @type Number
+         * @default 0
+         * @public
+         */
         b: number;
         /**
-        * Position 1,0 of the matrix, affects scaling and rotation.
-        * @property c
-        * @type Number
-        * @default 0
-        * @public
-        */
+         * Position 1,0 of the Matrix, affects scaling and rotation.
+         * @property c
+         * @type Number
+         * @default 0
+         * @public
+         */
         c: number;
         /**
-        * Position 1,1 of the matrix, affects scaling and rotation.
-        * @property d
-        * @type Number
-        * @default 1
-        * @public
-        */
+         * Position 1,1 of the Matrix, affects scaling and rotation.
+         * @property d
+         * @type Number
+         * @default 1
+         * @public
+         */
         d: number;
         /**
-        * Position 2,0 of the matrix, affects translation on x axis.
-        * @property tx
-        * @type Number
-        * @default 0
-        * @public
-        */
+         * Position 2,0 of the Matrix, affects translation on x axis.
+         * @property tx
+         * @type Number
+         * @default 0
+         * @public
+         */
         tx: number;
         /**
-        * Position 2,1 of the matrix, affects translation on y axis.
-        * @property ty
-        * @type Number
-        * @default 0
-        * @public
-        */
+         * Position 2,1 of the Matrix, affects translation on y axis.
+         * @property ty
+         * @type Number
+         * @default 0
+         * @public
+         */
         ty: number;
+        xy: Point;
         /**
-        * Set all matrix values
-        * @method setTo
-        * @param [a=1] {Number} position 0,0 of the matrix, affects scaling and rotation.
-        * @param [b=0] {Number} position 0,1 of the matrix, affects scaling and rotation.
-        * @param [c=0] {Number} position 1,0 of the matrix, affects scaling and rotation.
-        * @param [d=1] {Number} position 1,1 of the matrix, affects scaling and rotation.
-        * @param [tx=0] {Number} position 2,0 of the matrix, affects translation on x axis.
-        * @param [ty=0] {Number} position 2,1 of the matrix, affects translation on y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
+         * Set all Matrix values
+         * @method setTo
+         * @param [a=1] {Number} position 0,0 of the Matrix, affects scaling and rotation.
+         * @param [b=0] {Number} position 0,1 of the Matrix, affects scaling and rotation.
+         * @param [c=0] {Number} position 1,0 of the Matrix, affects scaling and rotation.
+         * @param [d=1] {Number} position 1,1 of the Matrix, affects scaling and rotation.
+         * @param [tx=0] {Number} position 2,0 of the Matrix, affects translation on x axis.
+         * @param [ty=0] {Number} position 2,1 of the Matrix, affects translation on y axis.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
         setTo(a?: number, b?: number, c?: number, d?: number, tx?: number, ty?: number): Matrix;
         /**
-        * Set matrix values from transform values
-        * @method setFromTransform
-        * @param tx {Number} Translation on x axis.
-        * @param ty {Number} Translation on y axis.
-        * @param scaleX {Number} scaleX. Scale on x axis.
-        * @param scaleY {Number} scaleY. Scale on y axis.
-        * @param rotation {Number} rotation.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        setFromTransform(tx: number, ty: number, scaleX: number, scaleY: number, rotation: number): Matrix;
+         * Set all Matrix values
+         * @method setTo
+         * @param [a=1] {Number} position 0,0 of the Matrix, affects scaling and rotation.
+         * @param [b=0] {Number} position 0,1 of the Matrix, affects scaling and rotation.
+         * @param [c=0] {Number} position 1,0 of the Matrix, affects scaling and rotation.
+         * @param [d=1] {Number} position 1,1 of the Matrix, affects scaling and rotation.
+         * @param [tx=0] {Number} position 2,0 of the Matrix, affects translation on x axis.
+         * @param [ty=0] {Number} position 2,1 of the Matrix, affects translation on y axis.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        setToMatrix(m: Matrix): Matrix;
         /**
-        * Set matrix values from transform values, with rotation point data included
-        * @method setFromOffsetTransform
-        * @param tx {Number} tx. Translation on x axis.
-        * @param ty {Number} ty. Translation on y axis.
-        * @param scaleX {Number} scaleX. Scale on x axis.
-        * @param scaleY {Number} scaleY. Scale on y axis.
-        * @param rotation {Number} rotation.
-        * @param rotPointX {Number} Rotation point offset on x axis.
-        * @param rotPointY {Number} Rotation point offset on y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        * @since 1.0.1
-        */
-        setFromOffsetTransform(tx: number, ty: number, scaleX: number, scaleY: number, rotation: number, rotPointX: number, rotPointY: number): Matrix;
+         * Alias for append for people used to Matrix calculations
+         * @param m {Kiwi.Geom.Matrix} The Matrix to append.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        multiplyMatrix(b: Matrix): Matrix;
         /**
-        * Prepend values to this matrix, paramters supplied individually.
-        * @method prepend
-        * @param [a=1]{Number} position 0,0 of the matrix, affects scaling and rotation.
-        * @param [b=0]{Number} position 0,1 of the matrix, affects scaling and rotation.
-        * @param [c=0]{Number} position 1,0 of the matrix, affects scaling and rotation.
-        * @param [d=0]{Number} position 1,1 of the matrix, affects scaling and rotation.
-        * @param [tx=0]{Number} position 2,0 of the matrix, affects translation on x axis.
-        * @param [ty=0]{Number} position 2,1 of the matrix, affects translation on y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        prepend(a?: number, b?: number, c?: number, d?: number, tx?: number, ty?: number): Matrix;
+         * Alias for append for people used to Matrix calculations
+         * @param m {Kiwi.Geom.Matrix} The Matrix to append.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        multiplyMatrixInPlace(b: Matrix): Matrix;
+        preMultiplyMatrixInPlace(b: Matrix): void;
+        postMultiply(b: Matrix): void;
         /**
-        * Prepend a matrix to this matrix.
-        * @method prependMatrix
-        * @param m {Kiwi.Geom.Matrix} The matrix to prepend.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        prependMatrix(m: Matrix): Matrix;
+         * Set the Matrix to the identity Matrix - when appending or prepending this Matrix to another there will be no change in the resulting Matrix
+         * @method identity
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        static identity(): Matrix;
         /**
-        * Append values to this matrix, parameters supplied individually.
-        * @method append
-        * @param [a=1]{Number} position 0,0 of the matrix, affects scaling and rotation.
-        * @param [b=0]{Number} position 0,1 of the matrix, affects scaling and rotation.
-        * @param [c=0]{Number} position 1,0 of the matrix, affects scaling and rotation.
-        * @param [d=1]{Number} position 1,1 of the matrix, affects scaling and rotation.
-        * @param [tx=0]{Number} position 2,0 of the matrix, affects translation on x axis.
-        * @param [ty=0]{Number} position 2,1 of the matrix, affects translation on y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        append(a?: number, b?: number, c?: number, d?: number, tx?: number, ty?: number): Matrix;
+         * Set the Matrix to the identity Matrix - when appending or prepending this Matrix to another there will be no change in the resulting Matrix
+         * @method identity
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        setIdentity(): Matrix;
         /**
-        * Append a matrix to this matrix.
-        * @method appendMatrix
-        * @param m {Kiwi.Geom.Matrix} The matrix to append.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        appendMatrix(m: Matrix): Matrix;
+         * Apply this Matrix to a an object with x and y properties representing a point and return the transformed point.
+         * @method transformPoint
+         * @param pt {Object} The point to be translated.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        transformPoint(pt: Point): Point;
         /**
-        * Set the tx and ty elements of the matrix.
-        * @method setPosition
-        * @param x {Number} Translation on x axis.
-        * @param y {Number} Translation on y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        setPosition(x: number, y: number): Matrix;
+         * Apply this Matrix to a an object with x and y properties representing a point and return the transformed point.
+         * @method transformPoint
+         * @param pt {Object} The point to be translated.
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        transformPointInPlace(pt: Point): void;
         /**
-        * Set the tx and ty elements of the matrix from an object with x and y properties.
-        * @method setPositionPoint
-        * @param p {Number} The object from which to copy the x and y properties from.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        setPositionPoint(p: any): Matrix;
-        /**
-        * Get the x and y position of the matrix as an object with x and y properties
-        * @method getPosition
-        * @return {Kiwi.Geom.Point} An object constructed from a literal with x and y properties.
-        * @public
-        */
-        getPosition(output?: Kiwi.Geom.Point): Kiwi.Geom.Point;
-        /**
-        * Set the matrix to the identity matrix - when appending or prepending this matrix to another there will be no change in the resulting matrix
-        * @method identity
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        identity(): Matrix;
-        /**
-        * Rotate the matrix by "radians" degrees
-        * @method rotate
-        * @param radians {Number} The angle (in radians) to rotate this matrix by.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        rotate(radians: number): Matrix;
-        /**
-        * Translate the matrix by the amount passed.
-        *
-        * @method translate
-        * @param tx {Number} The amount to translate on the x axis.
-        * @param ty {Number} The amount to translate on the y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        translate(tx: number, ty: number): Matrix;
-        /**
-        * Scales the matrix by the amount passed.
-        *
-        * @method scale
-        * @param scaleX {Number} The amount to scale on the x axis.
-        * @param scaleY {Number} The amount to scale on the y axis.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        scale(scaleX: number, scaleY: number): Matrix;
-        /**
-        * Apply this matrix to a an object with x and y properties representing a point and return the transformed point.
-        * @method transformPoint
-        * @param pt {Object} The point to be translated.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        transformPoint(pt: any): any;
-        /**
-        * Invert this matrix so that it represents the opposite of its orginal tranformaation.
-        * @method invert
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
+         * Invert this Matrix so that it represents the opposite of its orginal tranformaation.
+         * @method invert
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
         invert(): Matrix;
         /**
-        * Copy another matrix to this matrix.
-        * @method copyFrom
-        * @param m {Kiwi.Geom.Matrix} The matrixto be copied from.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        copyFrom(m: Matrix): Matrix;
+         * Invert this Matrix so that it represents the opposite of its orginal tranformaation.
+         * @method invert
+         * @return {Kiwi.Geom.Matrix} This object.
+         * @public
+         */
+        invertCopy(): Matrix;
         /**
-        * Copy this matrix to another matrix.
-        * @method copyTo
-        * @param m {Kiwi.Geom.Matrix} The matrix to copy to.
-        * @return {Kiwi.Geom.Matrix} This object.
-        * @public
-        */
-        copyTo(m: Matrix): Matrix;
-        /**
-        * Clone this matrix and returns a new Matrix object.
-        * @method clone
-        * @return {Kiwi.Geom.Matrix}
-        * @public
-        */
+         * Clone this Matrix and returns a new Matrix object.
+         * @method clone
+         * @return {Kiwi.Geom.Matrix}
+         * @public
+         */
         clone(): Matrix;
         /**
-        * Returns a string representation of this object.
-        * @method toString
-        * @return {string} A string representation of the instance.
-        * @public
-        */
+         * Returns a string representation of this object.
+         * @method toString
+         * @return {string} A string representation of the instance.
+         * @public
+         */
         toString: string;
         /**
-        * Check whether this matrix equals another matrix.
-        *
-        * @method equals
-        * @param matrix {Kiwi.Geom.Matrix}
-        * @return boolean
-        * @public
-        */
-        equals(matrix: Matrix): boolean;
+         * Check whether this Matrix equals another Matrix.
+         *
+         * @method equals
+         * @param Matrix {Kiwi.Geom.Matrix}
+         * @return boolean
+         * @public
+         */
+        equals(Matrix: Matrix): boolean;
     }
 }
 /**
@@ -16487,6 +14779,7 @@ declare module Kiwi.Geom {
     */
     class Point {
         constructor(x?: number, y?: number);
+        xy: Point;
         /**
         * The type of this object.
         * @method objType
@@ -16619,113 +14912,121 @@ declare module Kiwi.Geom {
         */
         angleToXY(x: number, y: number): number;
         /**
-        * Returns the distance from this Point object to the given Point object.
-        * @method distanceTo
-        * @param target {Kiwi.Geom.Point} The destination Point object.
-        * @param round {boolean} Round the distance to the nearest integer (default false)
-        * @return {Number} The distance between this Point object and the destination Point object.
-        * @public
-        */
+         * Returns the distance from this Point object to the given Point object.
+         * @method distanceTo
+         * @param target {Kiwi.Geom.Point} The destination Point object.
+         * @param round {boolean} Round the distance to the nearest integer (default false)
+         * @return {Number} The distance between this Point object and the destination Point object.
+         * @public
+         */
         distanceTo(target: Point, round?: boolean): number;
         /**
-        * Returns the distance from this Point object to the given Point object.
-        * @method distanceToXY
-        * @param x {Number} The x value.
-        * @param y {Number} The y value.
-        * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-        * @return {Number} The distance between this Point object and the x/y values.
-        * @public
-        */
+         * Returns the distance from this Point object to the given Point object.
+         * @method distanceToXY
+         * @param x {Number} The x value.
+         * @param y {Number} The y value.
+         * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+         * @return {Number} The distance between this Point object and the x/y values.
+         * @public
+         */
         distanceToXY(x: number, y: number, round?: boolean): number;
         /**
-        * Returns the distance between the two Point objects.
-        * @method distanceBetween
-        * @param pointA {Kiwi.Geom.Point} The first Point object.
-        * @param pointB {Kiwi.Geom.Point} The second Point object.
-        * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
-        * @return {Number} The distance between the two Point objects.
-        * @public
-        */
+         * Returns the distance between the two Point objects.
+         * @method distanceBetween
+         * @param pointA {Kiwi.Geom.Point} The first Point object.
+         * @param pointB {Kiwi.Geom.Point} The second Point object.
+         * @param [round=false] {boolean} Round the distance to the nearest integer (default false)
+         * @return {Number} The distance between the two Point objects.
+         * @public
+         */
         static distanceBetween(pointA: Point, pointB: Point, round?: boolean): number;
         /**
-        * Creates a new point with cartesian coordinates from a pair of polar coordinates
-        * @method polar
-        * @param length {Number} The length coordinate of the polar pair.
-        * @param angle {Number} The angle, in radians, of the polar pair.
-        * @return {Kiwi.Geom.Point} The new Cartesian Point object.
-        * @public
-        */
+         * Creates a new point with cartesian coordinates from a pair of polar coordinates
+         * @method polar
+         * @param length {Number} The length coordinate of the polar pair.
+         * @param angle {Number} The angle, in radians, of the polar pair.
+         * @return {Kiwi.Geom.Point} The new Cartesian Point object.
+         * @public
+         */
         static polar(length: number, angle: number): Point;
         /**
-        * Returns true if the distance between this point and a target point is greater than or equal a specified distance.
-        * This avoids using a costly square root operation
-        * @method distanceCompare
-        * @param target {Kiwi.Geom.Point} The Point object to use for comparison.
-        * @param distance {Number} The distance to use for comparison.
-        * @return {Boolean} True if distance is >= specified distance.
-        * @public
-        */
+         * Returns true if the distance between this point and a target point is greater than or equal a specified distance.
+         * This avoids using a costly square root operation
+         * @method distanceCompare
+         * @param target {Kiwi.Geom.Point} The Point object to use for comparison.
+         * @param distance {Number} The distance to use for comparison.
+         * @return {Boolean} True if distance is >= specified distance.
+         * @public
+         */
         distanceCompare(target: Point, distance: number): boolean;
         /**
-        * Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
-        * @method equals
-        * @param point {Kiwi.Geom.Point} The point to compare against.
-        * @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
-        * @public
-        */
+         * Determines whether this Point object and the given point object are equal. They are equal if they have the same x and y values.
+         * @method equals
+         * @param point {Kiwi.Geom.Point} The point to compare against.
+         * @return {boolean} A value of true if the object is equal to this Point object; false if it is not equal.
+         * @public
+         */
         equals(toCompare: Point): boolean;
         /**
-        * Determines a point between two specified points.
-        * The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
-        *
-        * The closer the value of the parameter f is to 1.0,
-        * the closer the interpolated point is to the first point (parameter pt1).
-        * The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
-        *
-        * @method interpolate
-        * @param pointA{Kiwi.Geom.Point} The first Point object.
-        * @param pointB {Kiwi.Geom.Point} The second Point object.
-        * @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
-        * @return {Kiwi.Geom.Point} The new interpolated Point object.
-        * @public
-        */
+         * Determines a point between two specified points.
+         * The parameter f determines where the new interpolated point is located relative to the two end points specified by parameters pt1 and pt2.
+         *
+         * The closer the value of the parameter f is to 1.0,
+         * the closer the interpolated point is to the first point (parameter pt1).
+         * The closer the value of the parameter f is to 0, the closer the interpolated point is to the second point (parameter pt2).
+         *
+         * @method interpolate
+         * @param pointA{Kiwi.Geom.Point} The first Point object.
+         * @param pointB {Kiwi.Geom.Point} The second Point object.
+         * @param f {Number} The level of interpolation between the two points. Indicates where the new point will be, along the line between pt1 and pt2. If f=1, pt1 is returned; if f=0, pt2 is returned.
+         * @return {Kiwi.Geom.Point} The new interpolated Point object.
+         * @public
+         */
         static interpolate(pointA: Point, pointB: Point, f: number): Point;
         /**
-        * Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
-        * The value of dy is added to the original value of y to create the new y value.
-        *
-        * @method offset
-        * @param dx {Number} The amount by which to offset the horizontal coordinate, x.
-        * @param dy {Number} The amount by which to offset the vertical coordinate, y.
-        * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-        * @public
-        */
+         * Offsets the Point object by the specified amount. The value of dx is added to the original value of x to create the new x value.
+         * The value of dy is added to the original value of y to create the new y value.
+         *
+         * @method offset
+         * @param dx {Number} The amount by which to offset the horizontal coordinate, x.
+         * @param dy {Number} The amount by which to offset the vertical coordinate, y.
+         * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+         * @public
+         */
         offset(dx: number, dy: number): Point;
         /**
-        * Sets the x and y values of this Point object to the given coordinates.
-        * @method setTo
-        * @param x {Number} The horizontal position of this point.
-        * @param y {Number} The vertical position of this point.
-        * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
-        * @public
-        */
+         * Sets the x and y values of this Point object to the given coordinates.
+         * @method setTo
+         * @param x {Number} The horizontal position of this point.
+         * @param y {Number} The vertical position of this point.
+         * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+         * @public
+         */
         setTo(x: number, y: number): Point;
         /**
-        * Subtracts the coordinates of another point from the coordinates of this point to create a new point.
-        * @method subtract
-        * @param point {Kiwi.Geom.Point} The point to be subtracted.
-        * @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
-        * @return {Kiwi.Geom.Point} The new Point object.
-        * @public
-        */
+         * Sets the x and y values of this Point object to the given point.
+         * @method setTo
+         * @param pt {Point} the point which to set.
+         * @return {Kiwi.Geom.Point} This Point object. Useful for chaining method calls.
+         * @public
+         */
+        setToPoint(pt: Point): Point;
+        /**
+         * Subtracts the coordinates of another point from the coordinates of this point to create a new point.
+         * @method subtract
+         * @param point {Kiwi.Geom.Point} The point to be subtracted.
+         * @param output {Kiwi.Geom.Point} Optional Point object. If given the values will be set into this object, otherwise a brand new Point object will be created and returned.
+         * @return {Kiwi.Geom.Point} The new Point object.
+         * @public
+         */
         subtract(point: Point, output?: Point): Point;
         getCSS(): string;
         /**
-        * Returns a string representation of this object.
-        * @method toString
-        * @return {String} a string representation of the instance.
-        * @public
-        */
+         * Returns a string representation of this object.
+         * @method toString
+         * @return {String} a string representation of the instance.
+         * @public
+         */
         toString(): string;
     }
 }
@@ -17071,443 +15372,162 @@ declare module Kiwi.Geom {
     }
 }
 /**
-*
-* @module Kiwi
-* @submodule Geom
-*/
+ *
+ * @module Kiwi
+ * @submodule Geom
+ */
 declare module Kiwi.Geom {
     /**
-    * Represents position, scale, rotation and rotationPoint of an Entity.
-    * - Values can be transformed with a 3x3 affine transformation matrix, which each transform is assigned.
-    * - A tranform can be assigned a parent, which may in turn have it's own parent, thereby creating a tranform inheritence heirarchy
-    * - A concatenated transformation matrix, representing the combined matrices of the transform and its ancestors.
-    *
-    * @class Transform
-    * @namespace Kiwi.Geom
-    * @constructor
-    * @param [x=0] {Number} X position of the transform.
-    * @param [y=0] {Number} Y position of the transform.
-    * @param [scaleX=1] {Number} X scaling of the transform.
-    * @param [scaleY=1] {Number} Y scaling of the transform.
-    * @param [rotation=0] {Number} Rotation of the transform in radians.
-    * @param [rotX=0] {Number} rotationPoint offset on X axis.
-    * @param [rotY=0] {Number} rotationPoint offset on Y axis.
-    * @return {Transform} This object.
-    *
-    */
+     * Represents position, scale, rotation and pivotPoint of an Entity.
+     * - Values can be transformed with a 3x3 affine transformation Matrix, which each Transform is assigned.
+     * - A tranform can be assigned a parent, which may in turn have it's own parent, thereby creating a tranform inheritence heirarchy
+     * - A concatenated transformation Matrix, representing the combined matrices of the Transform and its ancestors.
+     *
+     * @class Transform
+     * @namespace Kiwi.Geom
+     * @constructor
+     * @param [x=0] {Number} X position of the Transform.
+     * @param [y=0] {Number} Y position of the Transform.
+     * @param [scaleX=1] {Number} X scaling of the Transform.
+     * @param [scaleY=1] {Number} Y scaling of the Transform.
+     * @param [rotation=0] {Number} Rotation of the Transform in radians.
+     * @param [rotX=0] {Number} pivotPoint offset on X axis.
+     * @param [rotY=0] {Number} pivotPoint offset on Y axis.
+     * @return {Transform} This object.
+     *
+     */
     class Transform {
-        constructor(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, rotPointX?: number, rotPointY?: number);
         /**
-        * The type of this object.
-        * @method objType
-        * @return {String} "Transform"
-        * @public
-        */
-        objType(): string;
-        /**
-        * X position of the transform
-        * @property _x
-        * @type Number
-        * @default 0
-        * @private
-        */
-        private _x;
-        /**
-        * Return the X value of the transform.
-        * @property x
-        * @type Number
-        * @public
-        */
-        x: number;
-        /**
-        * Y position of the transform
-        * @property _y
-        * @type Number
-        * @default 0
-        * @private
-        */
-        private _y;
-        /**
-        * Return the Y value of the transform.
-        * @property y
-        * @type Number
-        * @public
-        */
-        y: number;
-        /**
-        * X scaleof the transform
-        * @property _scaleX
-        * @type Number
-        * @default 1
-        * @private
-        */
-        private _scaleX;
-        /**
-        * Return the X scale value of the transform.
-        * @property scaleX
-        * @type Number
-        * @public
-        */
-        scaleX: number;
-        /**
-        * Y scale of the transform
-        * @property _scaleY
-        * @type Number
-        * @default 1
-        * @private
-        */
-        private _scaleY;
-        /**
-        * Return the Y scale value of the transform.
-        * @property scaleY
-        * @type Number
-        * @public
-        */
-        scaleY: number;
-        /**
-        * Rotation of the transform in radians.
-        * @property _rotation
-        * @type Number
-        * @default 0
-        * @private
-        */
-        private _rotation;
-        /**
-        * Return the rotation value of the transform in radians.
-        * @property rotation
-        * @type Number
-        * @public
-        */
-        rotation: number;
-        /**
-        * Rotation offset on X axis.
-        * @property _rotPointX
-        * @type Number
-        * @default 0
-        * @private
-        */
-        private _rotPointX;
-        /**
-        * Return the rotation offset from the x axis.
-        * @property rotPointX
-        * @type Number
-        * @default 0
-        * @public
-        */
-        rotPointX: number;
-        /**
-        * Rotation offset on Y axis.
-        * @property _rotPointY
-        * @type Number
-        * @default 0
-        * @private
-        */
-        private _rotPointY;
-        /**
-        * Return the rotation offset from the y axis.
-        * @property rotPointY
-        * @type Number
-        * @public
-        */
-        rotPointY: number;
-        /**
-        * Return the anchor point value from the X axis. (Aliases to rotPointX.)
-        * @property anchorPointX
-        * @type Number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointX: number;
-        /**
-        * Return the anchor point value from the Y axis. (Aliases to rotPointY.)
-        * @property anchorPointY
-        * @type Number
-        * @public
-        * @since 1.1.0
-        */
-        anchorPointY: number;
-        /**
-        * A 3x3 transformation matrix object that can be use this tranform to manipulate points or the context transformation.
-        * @property _matrix
-        * @type Kiwi.Geom.Matrix
-        * @private
-        */
-        private _matrix;
-        /**
-        * Return the Matrix being used by this Transform
-        * @property matrix
-        * @type Kiwi.Geom.Matrix
-        * @readOnly
-        * @public
-        */
-        matrix: Matrix;
-        /**
-        * The most recently calculated matrix from getConcatenatedMatrix.
-        *
-        * @property _cachedConcatenatedMatrix
-        * @type Kiwi.Geom.Matrix
-        * @private
-        */
-        private _cachedConcatenatedMatrix;
-        /**
-        * Return the x of this transform translated to world space.
-        * @property worldX
-        * @type Number
-        * @readOnly
-        * @public
-        */
-        worldX: number;
-        /**
-        * Return the y of this transform translated to world space.
-        * @property worldY
-        * @type Number
-        * @readOnly
-        * @public
-        */
-        worldY: number;
-        /**
-        * The parent transform. If set to null there is no parent. Otherwise this is used by getConcatenatedMatrix to offset the current transforms by the another matrix
-        * @property _parent
-        * @type Kiwi.Geom.Transform
-        * @default null
-        * @private
-        */
-        private _parent;
-        /**
-        * Return the parent Transform. If the transform does not have a parent this null is returned.
-        * @property parent
-        * @type Kiwi.Geom.Transform
-        * @default null
-        * @public
-        */
-        parent: Transform;
-        /**
-        * Private copy.
-        * Whether the Transform is locked. In locked mode, the Transform
-        * will not update its matrix, saving on computation.
-        * However, it will still follow its parent.
-        * @property _locked
-        * @type boolean
-        * @default false
-        * @private
-        * @since 1.2.0
-        */
-        private _locked;
-        /**
-        * Whether the Transform is locked. In locked mode, the Transform
-        * will not update its matrix, saving on computation.
-        * However, it will still follow its parent.
-        * When locked is set to true, it will set the matrix according to
-        * current transform values.
-        * @property locked
-        * @type boolean
-        * @default false
-        * @public
-        * @since 1.2.0
-        */
-        locked: boolean;
-        /**
-        * Private copy.
-        * Whether to ignore its parent when concatenating matrices.
-        * If true, it won't compute parent matrices.
-        * This can save computation, but prevents it from following
-        * its parent's transforms.
-        * Use this to save some processor cycles if the transform isn't
-        * following a parent and the state does not transform.
-        * @property _ignoreParent
-        * @type boolean
-        * @default false
-        * @private
-        * @since 1.2.0
-        */
-        private _ignoreParent;
-        /**
-        * Whether to ignore its parent when concatenating matrices.
-        * If true, it won't compute parent matrices.
-        * This can save computation, but prevents it from following
-        * its parent's transforms.
-        *
-        * Use this to save some processor cycles if the transform isn't
-        * following a parent and the state does not transform.
-        * @property ignoreParent
-        * @type boolean
-        * @default false
-        * @public
-        * @since 1.2.0
-        */
-        ignoreParent: boolean;
-        /**
-        * Private copy.
-        * Whether to prevent children from acquiring this as a parent
-        * when concatenating matrices. This can save computation,
-        * but prevents it from passing any transform data to children.
-        *
-        * Use this to save some processor cycles if this is a Group
-        * that does not control its children, and the state does not
-        * transform.
-        *
-        * @property _ignoreChild
-        * @type boolean
-        * @default false
-        * @private
-        * @since 1.3.1
-        */
-        private _ignoreChild;
-        /**
-        * Whether to prevent children from acquiring this as a parent
-        * when concatenating matrices. This can save computation,
-        * but prevents it from passing any transform data to children.
-        *
-        * Use this to save some processor cycles if this is a Group
-        * that does not control its children, and the state does not
-        * transform.
-        *
-        * @property ignoreChild
-        * @type boolean
-        * @default false
-        * @public
-        * @since 1.3.1
-        */
-        ignoreChild: boolean;
-        /**
-        * Whether the transform has been altered since the last time
-        * it was used to create a matrix. Used to determine whether to rebuild
-        * the matrix or not.
-        *
-        * @property _dirty
-        * @type boolean
-        * @default true
-        * @private
-        * @since 1.3.1
-        */
+         * Whether the transform has been altered since the last time
+         * it was used to create a Matrix. Used to determine whether to rebuild
+         * the Matrix or not.
+         *
+         * @property _dirty
+         * @type boolean
+         * @default true
+         * @private
+         * @since 1.3.1
+         */
         private _dirty;
+        dirty: boolean;
+        private _origin;
+        origin: Point;
+        originX: number;
+        originY: number;
+        setOrigin(x: number, y: number): void;
+        private _pivotPoint;
+        pivotPoint: Point;
+        pivotPointX: number;
+        pivotPointY: number;
+        setPivotPoint(x: number, y: number): void;
+        private _scale;
+        scale: any;
+        scaleX: number;
+        scaleY: number;
+        setScale(x: number, y: number): void;
+        private _xy;
+        xy: Point;
+        x: number;
+        y: number;
+        setXY(x: number, y: number): void;
         /**
-        * Set the X and Y values of the transform.
-        * @method setPosition
-        * @param x {Number}
-        * @param y {Number}
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        setPosition(x: number, y: number): Transform;
+         * Rotation of the transform in radians.
+         * @property _rotation
+         * @type Number
+         * @default 0
+         * @private
+         */
+        private _rotation;
+        rotation: number;
+        rotationRad: number;
         /**
-        * Set the X and Y values of the transform from a point.
-        * @method setPositionPoint
-        * @param point {Kiwi.Geom.Point} point.
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        setPositionFromPoint(point: Point): Transform;
+         * A 3x3 transformation Matrix object that can be use this tranform to manipulate points or the context transformation.
+         * @property _Matrix
+         * @type Kiwi.Geom.Matrix
+         * @private
+         */
+        private _matrix;
+        matrix: Matrix;
+        private _freeformMatrix;
+        freeformMatrix: Matrix;
         /**
-        * Translate the X and Y value of the transform by point components.
-        * @method translatePositionFromPoint
-        * @param point {Kiwi.Geom.Point} point.
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        translatePositionFromPoint(point: Point): Transform;
+         * The most recently calculated Matrix from getConcatenatedMatrix.
+         *
+         * @property _cachedConcatenatedMatrix
+         * @type Kiwi.Geom.Matrix
+         * @private
+         */
+        private _cachedConcatenatedMatrix;
+        private _children;
         /**
-        * Return a Point representing the X and Y values of the transform.
-        * If no point is given a new Point objected will be created.
-        *
-        * @method getPositionPoint
-        * @param [output] {Kiwi.Geom.Point} The Point to output the coordinates into. Creates a new Point if none given.
-        * @return {Kiwi.Geom.Point} A point representing the X and Y values of the transform.
-        * @public
-        */
-        getPositionPoint(output?: Point): Point;
+         * The parent transform. If set to null there is no parent. Otherwise this is used by getConcatenatedMatrix to offset the current transforms by the another Matrix
+         * @property _parent
+         * @type Kiwi.Geom.Transform
+         * @default null
+         * @private
+         */
+        private _parent;
+        parent: Transform;
+        private _owner;
+        constructor(owner: Transformable);
+        freeformScale(x: number, y: number, aroundX: number, aroundY: number): void;
+        private _performTransformation();
         /**
-        * Set the X and Y scale value of the transform.
-        * This property is set only.
-        * In the future this will be looked into and updated as needed.
-        *
-        * @property scale
-        * @type Number
-        * @public
-        */
-        scale: number;
+         * Translate the X and Y value of the transform by point components.
+         * @method translatePositionFromPoint
+         * @param point {Kiwi.Geom.Point} point.
+         * @return {Kiwi.Geom.Transform} This object.
+         * @public
+         */
+        translate(point: any): Transform;
         /**
-        * Set the core properties of the transform.
-        *
-        * @method setTransform
-        * @param [x=0] {Number} X position of the transform.
-        * @param [y=0] {Number} Y position of the transform.
-        * @param [scaleX=1] {Number} X scaling of the transform.
-        * @param [scaleY=1] {Number} Y scaling of the transform.
-        * @param [rotation=0] {Number} Rotation of the transform in radians.
-        * @param [rotX=0] {Number} rotationPoint offset on X axis.
-        * @param [rotY=0] {Number} rotationPoint offset on Y axis.
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, rotPointX?: number, rotPointY?: number): Transform;
+         * Set the core properties of the transform.
+         *
+         * @method setTransform
+         * @param [x=0] {Number} X position of the transform.
+         * @param [y=0] {Number} Y position of the transform.
+         * @param [scaleX=1] {Number} X scaling of the transform.
+         * @param [scaleY=1] {Number} Y scaling of the transform.
+         * @param [rotation=0] {Number} Rotation of the transform in radians.
+         * @param [originX=0] {Number} origin on X axis.
+         * @param [originY=0] {Number} origin on Y axis.
+         * @return {Kiwi.Geom.Transform} This object.
+         * @public
+         */
+        setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, originX?: number, originY?: number): Transform;
         /**
-        * Return the parent matrix of the transform.
-        * If there is no parent then null is returned.
-        * @method getParentMatrix
-        * @return {Kiwi.Geom.Matrix} Parent transform matrix
-        * @public
-        */
-        getParentMatrix(): Matrix;
-        /**
-        * Return the transformation matrix that concatenates this transform
-        * with all ancestor transforms. If there is no parent then this will
-        * return a matrix the same as this transform's matrix.
-        * @method getConcatenatedMatrix
-        * @return {Kiwi.Geom.Matrix} The concatenated matrix.
-        * @public
-        */
+         * Return the transformation Matrix that concatenates this transform
+         * with all ancestor transforms. If there is no parent then this will
+         * return a Matrix the same as this transform's Matrix.
+         * @method getConcatenatedMatrix
+         * @return {Kiwi.Geom.Matrix} The concatenated Matrix.
+         * @public
+         */
         getConcatenatedMatrix(): Matrix;
         /**
-        * Apply this matrix to a an object with x and y properties representing a point and return the transformed point.
-        * @method transformPoint
-        * @param point {Kiwi.Geom.Point}
-        * @return {Kiwi.Geom.Point}
-        * @public
-        */
-        transformPoint(point: Point): Point;
-        /**
-        * Copy another transforms data to this transform. A clone of the source matrix is created for the matrix property.
-        * @method copyFrom
-        * @param transform {Kiwi.Geom.Transform} transform. The tranform to be copied from.
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        copyFrom(source: Transform): Transform;
-        /**
-        * Copy this transforms data to the destination Transform.
-        * A clone of this transforms matrix is created in the destination Transform Matrix.
-        *
-        * @method copyTo
-        * @param destination {Kiwi.Geom.Transform} The tranform to copy to.
-        * @return {Kiwi.Geom.Transform} This object.
-        * @public
-        */
-        copyTo(destination: Transform): Transform;
-        /**
-        * Return a clone of this transform.
-        *
-        * @method clone
-        * @param [output] {Kiwi.Geom.Transform} A Transform to copy the clone in to. If none is given a new Transform object will be made.
-        * @return {Kiwi.Geom.Transform} A clone of this object.
-        * @public
-        */
-        clone(output?: Transform): Transform;
-        /**
-        * Recursively check that a transform does not appear as its own ancestor
-        * @method checkAncestor
-        * @param transform {Kiwi.Geom.Transform} The Transform to check.
-        * @return {boolean} Returns true if the given transform is the same as this or an ancestor, otherwise false.
-        * @public
-        */
+         * Recursively check that a transform does not appear as its own ancestor
+         * @method checkAncestor
+         * @param transform {Kiwi.Geom.Transform} The Transform to check.
+         * @return {boolean} Returns true if the given transform is the same as this or an ancestor, otherwise false.
+         * @TODO: implement this
+         * @public
+         */
         checkAncestor(transform: Transform): boolean;
+        destroy(): void;
         /**
-        * Return a string represention of this object.
-        * @method toString
-        * @return {String} A string represention of this object.
-        * @public
-        */
+         * Return a string represention of this object.
+         * @method toString
+         * @return {String} A string represention of this object.
+         * @public
+         */
         toString: string;
+        /**
+         * The type of this object.
+         * @method objType
+         * @return {String} "Transform"
+         * @public
+         */
+        objType(): string;
     }
 }
 /**
@@ -24266,6 +22286,96 @@ declare module Kiwi.Files {
         * @public
         */
         destroy(): void;
+    }
+}
+/**
+*
+* @module GameObjects
+* @submodule Tilemap
+*
+*/
+declare module Kiwi.GameObjects.Tilemap {
+    /**
+    * Contains the code for managing and rendering Orthogonal types of TileMaps.
+    * This class should not be directly created, but instead should be created via methods on the TileMap class.
+    *
+    * @class TileMapLayerOrthogonal
+    * @extends Kiwi.GameObjects.Tilemap.TileMapLayer
+    * @namespace Kiwi.GameObjects.Tilemap
+    * @since 1.3.0
+    * @constructor
+    * @param tilemap {Kiwi.GameObjects.Tilemap.TileMap} The TileMap that this layer belongs to.
+    * @param name {String} The name of this TileMapLayer.
+    * @param atlas {Kiwi.Textures.TextureAtlas} The texture atlas that should be used when rendering this TileMapLayer onscreen.
+    * @param data {Number[]} The information about the tiles.
+    * @param tw {Number} The width of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+    * @param th {Number} The height of a single tile in pixels. Usually the same as the TileMap unless told otherwise.
+    * @param [x=0] {Number} The x coordinate of the tilemap in pixels.
+    * @param [y=0] {Number} The y coordinate of the tilemap in pixels.
+    * @param [w=0] {Number} The width of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+    * @param [h=0] {Number} The height of the whole tilemap in tiles. Usually the same as the TileMap unless told otherwise.
+    * @return {TileMapLayer}
+    */
+    class TileMapLayerDynamicOrthogonal extends TileMapLayer {
+        private offset;
+        constructor(tilemap: Kiwi.GameObjects.Tilemap.TileMap, name: string, atlas: Kiwi.Textures.TextureAtlas, data: number[], tw: number, th: number, x?: number, y?: number, w?: number, h?: number);
+        private _data2;
+        getTileFromXY(x: any, y: any): TileType;
+        /**
+        * The type of object that it is.
+        * @method objType
+        * @return {String} "TileMapLayer"
+        * @public
+        */
+        objType(): string;
+        /**
+        * The orientation of the of tilemap.
+        * TileMaps can be either 'orthogonal' (normal) or 'isometric'.
+        * @property orientation
+        * @type String
+        * @default 'orthogonal'
+        * @public
+        */
+        orientation: string;
+        /**
+        * Returns the index of the tile based on the x and y pixel coordinates that are passed.
+        * If no tile is a the coordinates given then -1 is returned instead.
+        * Coordinates are in pixels not tiles and use the world coordinates of the tilemap.
+        *
+        * @method getIndexFromCoords
+        * @param x {Number} The x coordinate of the Tile you would like to retrieve.
+        * @param y {Number} The y coordinate of the Tile you would like to retrieve.
+        * @return {Number} Either the index of the tile retrieved or -1 if none was found.
+        * @public
+        */
+        /**
+        * Returns the tiles which overlap with a provided entities hitbox component.
+        * Only collidable tiles on ANY side will be returned unless you pass a particular side.
+        *
+        * @method getOverlappingTiles
+        * @param entity {Kiwi.Entity} The entity you would like to check for the overlap.
+        * @param [collisionType=ANY] {Number} The particular type of collidable tiles which you would like to check for.
+        * @return {Object[]} Returns an Array of Objects containing information about the tiles which were found. Index/X/Y information is contained within each Object.
+        * @public
+        */
+        /**
+        * Used to calculate the position of the tilemap on the stage as well as how many tiles can fit on the screen.
+        * All coordinates calculated are stored as temporary properties (maxX/Y, startX/Y).
+        *
+        * @method _calculateBoundaries
+        * @param camera {Camera}
+        * @param matrix {matrix}
+        * @protected
+        */
+        protected _calculateBoundaries(camera: Kiwi.Camera, matrix: Kiwi.Geom.Matrix): void;
+        /**
+        * The render loop which is used when using the Canvas renderer.
+        * @method render
+        * @param camera {Camera}
+        * @public
+        */
+        render(camera: Kiwi.Camera): void;
+        renderGL(gl: WebGLRenderingContext, camera: Kiwi.Camera, params?: any): void;
     }
 }
 /**
